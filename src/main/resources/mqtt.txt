@@ -1,0 +1,4 @@
+mosquitto_sub -h iot.eclipse.org -p 1883 -t ch.bfh.barta3/state/# -v
+mosquitto_sub -h iot.eclipse.org -p 1883 -t ch.bfh.barta3/events/# -v
+
+mosquitto_pub -h iot.eclipse.org -t ch.bfh.barta3/actions/LedL -m "2"
