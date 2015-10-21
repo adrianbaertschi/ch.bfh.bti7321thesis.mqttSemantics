@@ -1,0 +1,57 @@
+\chapter{Einleitung}
+\label{chap:einleitung}
+
+
+\acrfull{iot} ist momentan einer der grossen Trends in der Informatik und demensprechend wagen immer mehr Unternehmen erste Versuche in diesem Umfeld. Da es für die Umsetzung von IoT Systemen noch keine grossen Erfahrungswerte und 'Best-Practices' gibt, ist die Entwicklung von Prototypen ein geeignetets Hilfsmittel. Für diesem Zweck gibt es bereits mehrere Produkte auf dem Markt, unter anderen das Tinkerforge System. Die darin enthaltenen Bausteine (Sensoren, Displays, LEDS, Buttons, etc.) können auf einfache Weise ohne Werkzeug zusammengesteckt werden. 
+Um die einzelnen Komponenten anzusprechen, zum Beipspiel für die Abgrage eines Sensorwerts, muss ein Programm erstellt werden, welches mithilfe der bereitgestellten Libraries die Komponenten initialisiert und ansteuert.
+
+Beim Bau von Prototypen sind schnelle Ergegebenisse und häufiges Anpassen des Systems wichtige Aspekte. Wenn nach dem Zusammensetzen der Hardware Komponenten das System selbständig die Daten in einer Schnittstelle zur Verfügung stellen würde, könnte das dem Entwickler der eigentlich Anwendung viel Aufwand ersparen. Er müsste sich nicht mehr um die Initialisierung der Komponenten und das Auslesen und Aggregieren der Daten kümmern.
+
+Stattdessen kann er auf einfache Weise auf die Daten zugreifen seine Applikation losgelöst davon entwerfen und implementieren. 
+
+
+
+\chapter{Einleitung v2}
+Bei Anwendungen, die im aufstrebenden Bereich von \acrfull{iot} angesiedelt sind, spielt das Netwerkprotokoll \Gls{mqtt} eine wichtige Rolle. Damit lassen sich beliebige Nutzdaten an verschiedenen Empfänger versenden. Der einfache und leichtgewichtige Aufbau des Protokolls hat viele Vorteile bei eingeschränkten Systemen, bringt aber auch gewisse Schwierigkeiten mit sich.
+
+Netzwerkteilnehmer, welche eine Nachricht empfangen, müssen deren Syntax und Semantik kennen um die Daten sinnvoll auswerten zu können. Wie diese Beschreibung der Daten strukturiert werden und den Emfängern der Daten zur Verfügung gestellt wird, ist derzeit ein unglöstes Problem. Die meisten Systeme, die \Gls{mqtt} bereits einsetzen, liefern die Dokumentation in einen separaten Dokument. \\
+Bei häufigen Änderungen der Datenstruktur hat dies einen grossen Aufwand für das Nachführen der Dokumentation zur Folge.
+
+Anwendugen, welche selbst mit einem Dienst oder Gerät via \Gls{mqtt} kommunizieren wollen, brauchen eine Beschreibung der zur Verfügung stehenden Operationen. Beispielsweise muss eine vernetze Glühbirne wie man sie ein- und ausschalten kann und welche Informationen ausgelesen werden können.
+
+\chapter{Einleitung v3}
+Bei Systemen im \acrfull{iot} Umfeld sind sehr viele und auch unterschiedliche Geräte in einen Netzwerk miteindander verbunden. 
+Für diese IoT - Machine-To-Machine Kommunikation werden andere Netzwerkprotokolle eingesetzt als im 'klassischen' Internet. Dies ist nötig, weil die Geräte stark eingeschränkte Resourcen haben und die Netzwerke geringe Bandbreiten aufweisen.
+
+MQTT ist ein Protokoll, welches die Anforderungen für IoT Systeme erfüllen soll. Beim Entwurf des Protokolls wurde auf Einfachheit und Leichtgewichtigkeit grossen Wert gelegt. Mit MQTT ist es möglich, beliebige Daten in beliebiger Codierung zu versenden. Dies bietet den Entwicklern der Systeme grosse Freiheiten. \\
+Es ist aber ersichtlich, dass die fehlende Struktur und Beschreibung der Daten gewisse Schwierigkeiten mit sich bringen kann. Eine Anwendung, welche Daten per MQTT erhält, muss wissen wie diese vom Absender codiert wurden und was sie bedeuten.
+
+Um diese Information vom Anbieter der Daten resp. des Diestes oder Geräts den Entwicklern einer Anwedung zur Verfügung zu stellen, werden zurzeit Beschreibungen in Dokumentenform verwendet. Diese sogenannte out-out-band Dokumentation ist aber aufwändig in der Nachführung und bekanntegabe von Änderungen. Auch ist es schwierig die Struktur der Daten einheitlich und klar zu erklären.
+
+Ziel dieser Thesis ist es, dass Geräte welche ihre Daten per MQTT versenden, die Möglichkeit erhalten, sich selbst inkusive ihrer Daten und Möglichkeiten zur Interkation zu beschreiben. Dies soll so getan werden, dass die Beschreibung für Mensch und Maschine les- und verstehbar ist, die Eigenschaften der eingeschränkten Geräte und Netze berücksichtig wird und der MQTT Standard weiterhin eigehalten wird.
+
+
+\chapter{Related Work}
+
+\section{Tinkerforge MQTT Proxy}
+% www.tinkerforge.com/en/doc/Software/Brick_MQTT_Proxy.html
+
+Python Script, Doku Homepage
+
+Eigene Impl. Java
+
+\section{CoAP?}
+
+\section{Eclipse Vorto}
+% https://www.eclipse.org/vorto/index.html
+
+\section{OMA LWM2M - Leshan}
+% https://eclipse.org/leshan/
+
+\section{Konzept aus der nicht-IoT Welt}
+SOAP-WSDL, REST, etc.
+HATEOAS
+
+MQTT REST
+http://dejanglozic.com/2014/05/06/rest-and-mqtt-yin-and-yang-of-micro-service-apis/
+
