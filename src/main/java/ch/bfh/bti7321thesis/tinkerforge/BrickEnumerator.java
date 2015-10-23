@@ -61,8 +61,9 @@ public class BrickEnumerator extends Thread {
 				case BrickletTemperatureIR.DEVICE_IDENTIFIER:
 					LOG.info(this.getHostname() + " " + BrickletTemperatureIR.DEVICE_DISPLAY_NAME + " found");
 					BrickletTemperatureIR brickletTemperatureIR = new BrickletTemperatureIR(uid, ipcon);
+					TinkerforgeDeviceRegistry.getInstance().add(host, brickletTemperatureIR);
 					BrickletSetup.setUpTempIR(brickletTemperatureIR, host);
-					MqttPublisher.getInstance().publishTempIrState(host, brickletTemperatureIR);
+//					MqttPublisher.getInstance().publishTempIrState(host, brickletTemperatureIR);
 					break;
 				case BrickletDualButton.DEVICE_IDENTIFIER:
 					LOG.info(host + " " + BrickletDualButton.DEVICE_DISPLAY_NAME + " found");

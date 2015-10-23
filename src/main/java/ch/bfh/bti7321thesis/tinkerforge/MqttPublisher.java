@@ -14,11 +14,12 @@ import com.tinkerforge.TimeoutException;
 
 public class MqttPublisher {
 	
-	static final String topicMaster = "ch.bfh.barta3/";
+	// TODO: 
+	
 //	static final String broker = "tcp://iot.eclipse.org:1883";
 //	static final String broker = "tcp://test.mosquitto.org:1883";
 	static final String broker = "tcp://46.101.165.125:1883";
-	static final String clientId = "JavaSampleBarta3";
+	static final String clientId = "barta3Tinker";
 	
 	private MemoryPersistence persistence = new MemoryPersistence();
 	private MqttClient mqttClient;
@@ -46,6 +47,9 @@ public class MqttPublisher {
 			connOpts.setCleanSession(true);
 			mqttClient = new MqttClient(broker, clientId, persistence);
 			mqttClient.connect(connOpts);
+			mqttClient.setCallback(new MqttActionReveiver());
+							   //"ch.bfh.barta3/X1-Carbon/tfstack1/Temperature IR Bricklet/qC1/actions/setAmbientTemperatureCallbackPeriod"
+			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/actions/#");
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -74,7 +78,7 @@ public class MqttPublisher {
 		
 		System.out.println("Publishing on " + topic + " data: " + payload);
 		try {
-			MqttMessage message = new MqttMessage(payload.toString().getBytes());
+			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
 			mqttClient.publish(topic, message);
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
@@ -83,9 +87,9 @@ public class MqttPublisher {
 	}
 	
 	
-	public void publishTempIrState(String host, BrickletTemperatureIR brickletTemperatureIR) {
+	public void publishTempIrState(String stackName, BrickletTemperatureIR brickletTemperatureIR) {
 
-		String baseTopic = new BrickletToMqttConverter().getBaseTopic(brickletTemperatureIR, host) + "/state";
+		String baseTopic = new BrickletToMqttConverter().getBaseTopic(brickletTemperatureIR, stackName) + "/state";
 
 		try {
 			pubState(baseTopic + "/AmbientTemperatureCallbackPeriod", Long.toString(brickletTemperatureIR.getAmbientTemperatureCallbackPeriod()));
@@ -98,7 +102,12 @@ public class MqttPublisher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	}
+	
+	public void publishAction(String stackname, BrickletTemperatureIR brickletTemperatureIR) {
+		String baseTopic = new BrickletToMqttConverter().getBaseTopic(brickletTemperatureIR, stackname) + "/actions";
+//		pubEvent(baseTopic + "/setAmbientTemperatureCallbackPeriod", null);
+//		pubEvent(baseTopic + "/setObjectTemperatureCallbackPeriod", null);
 	}
 	
 	public void publishJoystickState(String stack, BrickletJoystick brickletJoystick) {
@@ -125,6 +134,10 @@ public class MqttPublisher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	public MqttClient getMqttClient() {
+		return mqttClient;
 	}
 
 }

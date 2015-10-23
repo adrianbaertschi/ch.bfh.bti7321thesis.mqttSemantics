@@ -30,9 +30,8 @@ public class BrickletToMqttConverter {
 //			.append("IOTGW")
 			.append(hostName)
 			.append(stackName)
-//			.append(BrickletTemperatureIR.DEVICE_DISPLAY_NAME)
 			.append(TinkerforgeBrickletDB.getDisplayName(device.getIdentity().deviceIdentifier))
-			.append(device.getIdentity().uid) // TODO ??
+			.append(device.getIdentity().uid) // TODO uid or connectedUid?? 
 			.build();
 			;
 		} catch (TimeoutException | NotConnectedException e) {

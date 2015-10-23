@@ -21,6 +21,9 @@ public class BrickletSetup {
 
 	
 	public static void setUpTempIR(BrickletTemperatureIR brickletTemperatureIR, String stackHost) {
+		
+		MqttPublisher.getInstance().publishTempIrState(stackHost, brickletTemperatureIR);
+		
 		try {
 			brickletTemperatureIR.setObjectTemperatureCallbackPeriod(1000);
 			brickletTemperatureIR.setAmbientTemperatureCallbackPeriod(1000);
@@ -38,7 +41,6 @@ public class BrickletSetup {
 			public void objectTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				System.out.println("Object Temp: " + temp);
-//				MqttPublisher.getInstance().pubEvent(stackHost, brickletTemperatureIR, "ObjectTemp", temp);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletTemperatureIR, "ObjectTemp", temp);
 			}
 		});
@@ -49,11 +51,16 @@ public class BrickletSetup {
 			public void ambientTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				System.out.println("Ambient Temp: " + temp);
-//				MqttPublisher.getInstance().pubEvent(stackHost, brickletTemperatureIR, "AmbientTemp", temp);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletTemperatureIR, "AmbientTemp", temp);
 			}
 		});
 		
+		exposeTemIRActions(brickletTemperatureIR, stackHost);
+		
+	}
+	
+	private static void exposeTemIRActions(BrickletTemperatureIR brickletTemperatureIR, String stackHost) {
+		MqttPublisher.getInstance().publishAction(stackHost, brickletTemperatureIR);
 	}
 
 	public static void setUpDualButton(final BrickletDualButton brickletDualButton, String stackHost) {
@@ -94,8 +101,6 @@ public class BrickletSetup {
 			@Override
 			public void position(short x, short y) {
 				LOG.info("X:" + x + " Y: " + y);
-//				MqttPublisher.getInstance().pubEvent("Joystick/Position/X", x);
-//				MqttPublisher.getInstance().pubEvent("Joystick/Position/Y", y);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletJoystick, "X", x);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletJoystick, "Y", y);
 			}
