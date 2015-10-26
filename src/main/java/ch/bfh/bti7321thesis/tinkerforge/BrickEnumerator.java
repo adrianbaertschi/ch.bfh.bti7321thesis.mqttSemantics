@@ -49,11 +49,11 @@ public class BrickEnumerator extends Thread {
 			public void enumerate(String uid, String connectedUid, char position, short[] hardwareVersion,
 					short[] firmwareVersion, int deviceIdentifier, short enumerationType) {
 
-				System.out.println(
-						String.format("uid %s, connectedUid %s, position %c, deviceIdentifier %d, enumerationType %d",
-								uid, connectedUid, position, deviceIdentifier, enumerationType));
-				
-				if(enumerationType != IPConnectionBase.ENUMERATION_TYPE_AVAILABLE) {
+				String enumInfo = String.format("uid %s, connectedUid %s, position %c, deviceIdentifier %d, enumerationType %d",
+								uid, connectedUid, position, deviceIdentifier, enumerationType);
+				LOG.fine(enumInfo);
+
+				if (enumerationType != IPConnectionBase.ENUMERATION_TYPE_AVAILABLE) {
 					return;
 				}
 
@@ -61,21 +61,21 @@ public class BrickEnumerator extends Thread {
 				case BrickletTemperatureIR.DEVICE_IDENTIFIER:
 					LOG.info(this.getHostname() + " " + BrickletTemperatureIR.DEVICE_DISPLAY_NAME + " found");
 					BrickletTemperatureIR brickletTemperatureIR = new BrickletTemperatureIR(uid, ipcon);
-					TinkerforgeDeviceRegistry.getInstance().add(host, brickletTemperatureIR);
 					BrickletSetup.setUpTempIR(brickletTemperatureIR, host);
-//					MqttPublisher.getInstance().publishTempIrState(host, brickletTemperatureIR);
 					break;
 				case BrickletDualButton.DEVICE_IDENTIFIER:
 					LOG.info(host + " " + BrickletDualButton.DEVICE_DISPLAY_NAME + " found");
 					BrickletDualButton brickletDualButton = new BrickletDualButton(uid, ipcon);
 					BrickletSetup.setUpDualButton(brickletDualButton, host);
-//					MqttPublisher.getInstance().publishDevice(host, brickletDualButton);
+					// MqttPublisher.getInstance().publishDevice(host,
+					// brickletDualButton);
 					break;
 				case BrickletJoystick.DEVICE_IDENTIFIER:
 					LOG.info(host + " " + BrickletJoystick.DEVICE_DISPLAY_NAME + " found");
 					BrickletJoystick brickletJoystick = new BrickletJoystick(uid, ipcon);
 					BrickletSetup.setUpJoystick(brickletJoystick, host);
-//					MqttPublisher.getInstance().publishDevice(host, brickletJoystick);
+					// MqttPublisher.getInstance().publishDevice(host,
+					// brickletJoystick);
 					break;
 				case BrickletMotionDetector.DEVICE_IDENTIFIER:
 					LOG.info(host + " " + BrickletMotionDetector.DEVICE_DISPLAY_NAME + " found");
@@ -83,7 +83,7 @@ public class BrickEnumerator extends Thread {
 					BrickletSetup.setUpMotionDetetor(brickletMotionDetector, host);
 					break;
 				default:
-					System.out.println("Unknown Device");
+					LOG.warning("Unknown Device: " + enumInfo);
 					break;
 				}
 

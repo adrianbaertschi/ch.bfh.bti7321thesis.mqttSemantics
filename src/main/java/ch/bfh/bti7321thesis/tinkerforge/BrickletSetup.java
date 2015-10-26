@@ -22,6 +22,8 @@ public class BrickletSetup {
 	
 	public static void setUpTempIR(BrickletTemperatureIR brickletTemperatureIR, String stackHost) {
 		
+		TinkerforgeDeviceRegistry.getInstance().add(stackHost, brickletTemperatureIR);
+		
 		MqttPublisher.getInstance().publishTempIrState(stackHost, brickletTemperatureIR);
 		
 		try {
@@ -40,7 +42,7 @@ public class BrickletSetup {
 			@Override
 			public void objectTemperature(short temperature) {
 				Double temp = temperature / 10.0;
-				System.out.println("Object Temp: " + temp);
+				LOG.fine("Object Temp: " + temp);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletTemperatureIR, "ObjectTemp", temp);
 			}
 		});
@@ -50,7 +52,7 @@ public class BrickletSetup {
 			@Override
 			public void ambientTemperature(short temperature) {
 				Double temp = temperature / 10.0;
-				System.out.println("Ambient Temp: " + temp);
+				LOG.fine("Ambient Temp: " + temp);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletTemperatureIR, "AmbientTemp", temp);
 			}
 		});
@@ -84,7 +86,7 @@ public class BrickletSetup {
 	
 	public static void setUpJoystick(BrickletJoystick brickletJoystick, String stackHost) {
 		try {
-			LOG.info(brickletJoystick.getPosition().toString());
+			LOG.fine(brickletJoystick.getPosition().toString());
 			brickletJoystick.setPositionCallbackPeriod(100);
 		} catch (TimeoutException e) {
 			// TODO Auto-generated catch block
@@ -100,7 +102,7 @@ public class BrickletSetup {
 			
 			@Override
 			public void position(short x, short y) {
-				LOG.info("X:" + x + " Y: " + y);
+				LOG.fine("X:" + x + " Y: " + y);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletJoystick, "X", x);
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletJoystick, "Y", y);
 			}

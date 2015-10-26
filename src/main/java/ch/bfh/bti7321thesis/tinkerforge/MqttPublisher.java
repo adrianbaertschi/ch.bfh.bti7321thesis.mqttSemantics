@@ -1,5 +1,7 @@
 package ch.bfh.bti7321thesis.tinkerforge;
 
+import java.util.logging.Logger;
+
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
@@ -15,7 +17,7 @@ import com.tinkerforge.TimeoutException;
 
 public class MqttPublisher {
 	
-	// TODO: 
+	private Logger LOG = Logger.getLogger(this.getClass().getName());
 	
 //	static final String broker = "tcp://iot.eclipse.org:1883";
 //	static final String broker = "tcp://test.mosquitto.org:1883";
@@ -42,7 +44,7 @@ public class MqttPublisher {
 	 
 	
 	private void setUpMqtt() {
-		System.out.println("Connecting to broker: " + BROKER);
+		LOG.info("Connecting to broker: " + BROKER);
 		try {
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setCleanSession(true);
@@ -57,12 +59,12 @@ public class MqttPublisher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("MQTT Connected");
+		LOG.info("MQTT Connected");
 
 	}
 	
 	public void disconnect() {
-		System.out.println("Disconnecting MQTT");
+		LOG.info("Disconnecting MQTT");
 		try {
 			mqttClient.disconnect();
 //			mqttClient.disconnectForcibly();
@@ -70,7 +72,7 @@ public class MqttPublisher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("MQTT disconnected");
+		LOG.info("MQTT disconnected");
 	}
 	
 	public void pubEvent(String stackHost, Device device, String eventName, Object payload) {
@@ -82,7 +84,7 @@ public class MqttPublisher {
 
 	private void pubEvent(String topic, Object payload) {
 		
-		System.out.println("Publishing on " + topic + " data: " + payload);
+		LOG.info("Publishing on " + topic + " data: " + payload);
 		try {
 			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
 			mqttClient.publish(topic, message);
@@ -146,7 +148,7 @@ public class MqttPublisher {
 	}
 	
 	private void pubState(String topic, Object payload) {
-		System.out.println("Publishing on " + topic + " data: " + payload);
+		LOG.info("Publishing on " + topic + " data: " + payload);
 		try {
 			MqttMessage message = new MqttMessage(payload.toString().getBytes());
 //			message.setRetained(true); // TODO: activate if stable

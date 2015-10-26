@@ -24,7 +24,7 @@ public class MqttActionReveiver implements MqttCallback {
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken arg0) {
-		LOG.info("MSG ID: " + arg0.getMessageId());
+		LOG.fine("MSG ID: " + arg0.getMessageId());
 	}
 
 	@Override

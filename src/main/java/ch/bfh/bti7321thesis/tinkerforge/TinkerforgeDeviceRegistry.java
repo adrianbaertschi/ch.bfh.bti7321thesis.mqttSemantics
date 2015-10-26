@@ -31,7 +31,6 @@ public class TinkerforgeDeviceRegistry {
 	
 	public void add(String stackHost, Device device) {
 		this.devices.put(stackHost, device);
-		System.out.println("device added");
 	}
 
 	public Device find(MqttTopic topic) throws TimeoutException {
