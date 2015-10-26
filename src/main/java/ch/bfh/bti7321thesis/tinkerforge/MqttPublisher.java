@@ -1,6 +1,7 @@
 package ch.bfh.bti7321thesis.tinkerforge;
 
-import org.eclipse.paho.client.mqttv3.MqttClient;
+import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -18,11 +19,11 @@ public class MqttPublisher {
 	
 //	static final String broker = "tcp://iot.eclipse.org:1883";
 //	static final String broker = "tcp://test.mosquitto.org:1883";
-	static final String broker = "tcp://46.101.165.125:1883";
-	static final String clientId = "barta3Tinker";
+	private static final String BROKER = "tcp://46.101.165.125:1883";
+	private static final String CLIENT_ID = "barta3Tinker";
 	
 	private MemoryPersistence persistence = new MemoryPersistence();
-	private MqttClient mqttClient;
+	private IMqttAsyncClient mqttClient;
 	
 
 	private MqttPublisher() {
@@ -41,15 +42,17 @@ public class MqttPublisher {
 	 
 	
 	private void setUpMqtt() {
-		System.out.println("Connecting to broker: " + broker);
+		System.out.println("Connecting to broker: " + BROKER);
 		try {
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setCleanSession(true);
-			mqttClient = new MqttClient(broker, clientId, persistence);
-			mqttClient.connect(connOpts);
+			mqttClient = new MqttAsyncClient(BROKER, CLIENT_ID, persistence);
+			
+			mqttClient.connect(connOpts).waitForCompletion();
 			mqttClient.setCallback(new MqttActionReveiver());
 							   //"ch.bfh.barta3/X1-Carbon/tfstack1/Temperature IR Bricklet/qC1/actions/setAmbientTemperatureCallbackPeriod"
-			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/actions/#");
+//			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/actions/#");
+			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/actions/#", 2);
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -59,12 +62,15 @@ public class MqttPublisher {
 	}
 	
 	public void disconnect() {
+		System.out.println("Disconnecting MQTT");
 		try {
 			mqttClient.disconnect();
+//			mqttClient.disconnectForcibly();
 		} catch (MqttException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println("MQTT disconnected");
 	}
 	
 	public void pubEvent(String stackHost, Device device, String eventName, Object payload) {
@@ -102,6 +108,21 @@ public class MqttPublisher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	}
+	
+	public void publishTest() {
+		try {
+			mqttClient.publish("ch.bfh.barta3/test", new byte[]{}, 1, false);
+			
+			// OK
+//			MqttClient client = new MqttClient(broker, "test");
+//			client.connect();
+//			client.publish("ch.bfh.barta3/test", new byte[]{}, 1, false);
+		} catch (MqttException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void publishAction(String stackname, BrickletTemperatureIR brickletTemperatureIR) {
@@ -134,10 +155,6 @@ public class MqttPublisher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	public MqttClient getMqttClient() {
-		return mqttClient;
 	}
 
 }

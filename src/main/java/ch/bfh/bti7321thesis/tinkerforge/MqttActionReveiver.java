@@ -20,13 +20,11 @@ public class MqttActionReveiver implements MqttCallback {
 	public void connectionLost(Throwable arg0) {
 		// TODO Auto-generated method stub
 		LOG.log(Level.SEVERE, "MqttActionReveiver connectionLost", arg0);
-
 	}
 
 	@Override
 	public void deliveryComplete(IMqttDeliveryToken arg0) {
-		// TODO Auto-generated method stub
-
+		LOG.info("MSG ID: " + arg0.getMessageId());
 	}
 
 	@Override
@@ -77,8 +75,7 @@ public class MqttActionReveiver implements MqttCallback {
 			default:
 				LOG.warning("Unexpected action");
 			}
-			// TODO: disconnects, if this is run
-//			MqttPublisher.getInstance().publishTempIrState(stackName, brickletTemperatureIR);
+			MqttPublisher.getInstance().publishTempIrState(stackName, brickletTemperatureIR);
 		} else {
 			LOG.warning("Unhandled Device Type");
 		}
