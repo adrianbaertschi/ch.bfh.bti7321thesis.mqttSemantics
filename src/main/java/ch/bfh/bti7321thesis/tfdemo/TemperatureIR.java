@@ -1,7 +1,6 @@
 package ch.bfh.bti7321thesis.tfdemo;
 
 import com.tinkerforge.BrickletTemperatureIR;
-import com.tinkerforge.BrickletTemperatureIR.AmbientTemperatureListener;
 import com.tinkerforge.BrickletTemperatureIR.ObjectTemperatureListener;
 import com.tinkerforge.IPConnection;
 
@@ -32,6 +31,7 @@ public class TemperatureIR {
 		
 		tir.addObjectTemperatureListener(new ObjectTemperatureListener() {
 			
+			@Override
 			public void objectTemperature(short temperature) {
 				System.out.println("Object Temperature: " + temperature / 10.0 + " °C");
 				

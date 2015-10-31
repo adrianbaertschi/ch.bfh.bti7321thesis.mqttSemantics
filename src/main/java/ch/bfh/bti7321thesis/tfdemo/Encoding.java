@@ -14,7 +14,6 @@ public class Encoding {
 		System.out.println(Integer.toBinaryString(i));	
 		System.out.println(Integer.toBinaryString(-22));
 		
-		String s = "10110";
 	}
 
 }

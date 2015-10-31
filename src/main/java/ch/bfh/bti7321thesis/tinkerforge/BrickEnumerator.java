@@ -29,8 +29,8 @@ public class BrickEnumerator extends Thread {
 	
 	public void closeConnection() {
 		try {
-			this.ipcon.close();
-		} catch (IOException e) {
+			this.ipcon.disconnect();
+		} catch (NotConnectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

@@ -1,17 +1,15 @@
 package ch.bfh.bti7321thesis.tinkerforge;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-import com.tinkerforge.Device;
-import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
+
+import ch.bfh.bti7321thesis.tinkerforge.devices.MqttThing;
 
 public class TinkerforgeDeviceRegistry {
 	
-//	private Map<String, List<Device>> devices = new HashMap<String, List<Device>>();
-	ListMultimap<String, Device> devices = ArrayListMultimap.create();
+	private List<MqttThing> things = new ArrayList<MqttThing>();
 //	ListMultimap<String, Device> devices = SynchronizedListMultimap;
 	
 	
@@ -29,31 +27,17 @@ public class TinkerforgeDeviceRegistry {
 	}
 	
 	
-	public void add(String stackHost, Device device) {
-		this.devices.put(stackHost, device);
+	public void add(MqttThing device) {
+		this.things.add(device);
 	}
 
-	public Device find(MqttTopic topic) throws TimeoutException {
-		List<Device> devicesOnStack = devices.get(topic.getTopic(2));
+	public MqttThing find(MqttTopic topic) throws TimeoutException {
 		
-		// TODO: filter on DeviceType
-		
-		// Filter on UID
 		String uid = topic.getTopic(4);
 		
-		for(Device device : devicesOnStack) {
-			try {
-				if(device.getIdentity().uid.equals(uid)) {
-					return device;
-				}
-			} catch (NotConnectedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		
-		
-		return null;
+		return things.stream().filter(t -> t.getUid().equals(uid)).findFirst().get();
 	}
+	
+	
 
 }

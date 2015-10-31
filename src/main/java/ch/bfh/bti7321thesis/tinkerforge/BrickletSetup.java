@@ -15,24 +15,25 @@ import com.tinkerforge.BrickletTemperatureIR.ObjectTemperatureListener;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.JoyStickDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.TempIrDevice;
+
 public class BrickletSetup {
-	
+
 	private static Logger LOG = Logger.getLogger(BrickletSetup.class.getName());
 
-	
 	public static void setUpTempIR(BrickletTemperatureIR brickletTemperatureIR, String stackHost) {
-		
-		TinkerforgeDeviceRegistry.getInstance().add(stackHost, brickletTemperatureIR);
-		
-		MqttPublisher.getInstance().publishTempIrState(stackHost, brickletTemperatureIR);
-		
+
+		TempIrDevice device = new TempIrDevice(brickletTemperatureIR, stackHost);
+		TinkerforgeDeviceRegistry.getInstance().add(device);
+
+		MqttPublisher.getInstance().publishDeviceState(device);
+
 		try {
 			brickletTemperatureIR.setObjectTemperatureCallbackPeriod(1000);
 			brickletTemperatureIR.setAmbientTemperatureCallbackPeriod(1000);
-		} catch (TimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotConnectedException e) {
+		} catch (TimeoutException | NotConnectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -56,50 +57,52 @@ public class BrickletSetup {
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletTemperatureIR, "AmbientTemp", temp);
 			}
 		});
-		
-		exposeTemIRActions(brickletTemperatureIR, stackHost);
-		
-	}
-	
-	private static void exposeTemIRActions(BrickletTemperatureIR brickletTemperatureIR, String stackHost) {
-		MqttPublisher.getInstance().publishAction(stackHost, brickletTemperatureIR);
+
+
 	}
 
+
 	public static void setUpDualButton(final BrickletDualButton brickletDualButton, String stackHost) {
+		
+		DualButtonDevice device = new DualButtonDevice(brickletDualButton, stackHost);
+		TinkerforgeDeviceRegistry.getInstance().add(device);
+
+		MqttPublisher.getInstance().publishDeviceState(device);
+		
 		brickletDualButton.addStateChangedListener(new StateChangedListener() {
 
 			@Override
 			public void stateChanged(short buttonL, short buttonR, short ledL, short ledR) {
-				// String state = "btl: " + buttonL + " btr: " + buttonR + "
-				// ledL: " + ledL + " ledR: " + ledR;
+				 String state = "btl: " + buttonL + " btr: " + buttonR + " ledL: " + ledL + " ledR: " + ledR;
+				
+				LOG.info(state);
+//				MqttPublisher.getInstance().publishDeviceState(device);
 
 				if (buttonL == BrickletDualButton.BUTTON_STATE_PRESSED) {
-					MqttPublisher.getInstance().pubEvent(stackHost, brickletDualButton, "L",  "pressed");
+					MqttPublisher.getInstance().pubEvent(stackHost, brickletDualButton, "L", "pressed");
 				}
 
 				if (buttonR == BrickletDualButton.BUTTON_STATE_PRESSED) {
-					MqttPublisher.getInstance().pubEvent(stackHost, brickletDualButton, "R" ,"pressed");
+					MqttPublisher.getInstance().pubEvent(stackHost, brickletDualButton, "R", "pressed");
 				}
 			}
 		});
 	}
-	
+
 	public static void setUpJoystick(BrickletJoystick brickletJoystick, String stackHost) {
+		TinkerforgeDeviceRegistry.getInstance().add(new JoyStickDevice(brickletJoystick));
 		try {
 			LOG.fine(brickletJoystick.getPosition().toString());
 			brickletJoystick.setPositionCallbackPeriod(100);
-		} catch (TimeoutException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotConnectedException e) {
+		} catch (TimeoutException | NotConnectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		MqttPublisher.getInstance().publishJoystickState(stackHost, brickletJoystick);
-		
+
 		brickletJoystick.addPositionListener(new PositionListener() {
-			
+
 			@Override
 			public void position(short x, short y) {
 				LOG.fine("X:" + x + " Y: " + y);
@@ -110,17 +113,17 @@ public class BrickletSetup {
 	}
 
 	public static void setUpMotionDetetor(BrickletMotionDetector brickletMotionDetector, String stackHost) {
-		
+
 		brickletMotionDetector.addMotionDetectedListener(new MotionDetectedListener() {
-			
+
 			@Override
 			public void motionDetected() {
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletMotionDetector, "MotionDetected", "yes");
 			}
 		});
-		
+
 		brickletMotionDetector.addDetectionCycleEndedListener(new DetectionCycleEndedListener() {
-			
+
 			@Override
 			public void detectionCycleEnded() {
 				MqttPublisher.getInstance().pubEvent(stackHost, brickletMotionDetector, "MotionDetected", "No");
