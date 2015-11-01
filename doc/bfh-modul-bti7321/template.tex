@@ -39,6 +39,8 @@
 \usepackage{booktabs}											% package for nicer tables
 \usepackage{tocvsec2}											% provides means of controlling the sectional numbering
 \usepackage{tabularx}
+\usepackage{minted}
+
 %---------------------------------------------------------------------------
 
 % Load Math Packages
@@ -98,6 +100,9 @@
 	textheight=242mm,
 	footskip=15mm
 }
+
+\newcommand{\code}[1]{\texttt{#1}}
+
 %---------------------------------------------------------------------------
 
 % Makeindex Package
@@ -148,14 +153,14 @@
 % Title Page and Abstract
 %---------------------------------------------------------------------------
 %\include{vorspann/titelseite_ohne_bild}		% activate for Titelseite ohne Bild
-\include{vorspann/titelseite_mit_bild}			% activate for Titelseite mit Bild
-\include{vorspann/versionen}
+\input{vorspann/titelseite_mit_bild}			% activate for Titelseite mit Bild
+\input{vorspann/versionen}
 \cleardoubleemptypage
 \setcounter{page}{1}
 \cleardoublepage
 \phantomsection 
 \addcontentsline{toc}{chapter}{Management Summary}
-\include{vorspann/management_summary}
+\input{vorspann/management_summary}
 \cleardoubleemptypage
 %---------------------------------------------------------------------------
 
@@ -169,11 +174,13 @@
 %---------------------------------------------------------------------------
 \pagenumbering{arabic}
 
-\include{kapitel/einleitung}
+\input{kapitel/einleitung}
 %\include{kapitel/anleitungen}
-\include{kapitel/projectmanagement}
-%\include{kapitel/satzspiegeltest}
-\include{kapitel/schlussfolgerungen}
+\input{kapitel/projectmanagement}
+\input{kapitel/technologie}
+\input{kapitel/konzept}
+\input{kapitel/umsetzung}
+\input{kapitel/schlussfolgerungen}
 %---------------------------------------------------------------------------
 
 % Selbständigkeitserklärung
@@ -181,7 +188,7 @@
 \cleardoublepage
 \phantomsection 
 \addcontentsline{toc}{chapter}{Selbständigkeitserklärung}
-\include{vorspann/selbstaendigkeitserklaerung}
+\input{vorspann/selbstaendigkeitserklaerung}
 %---------------------------------------------------------------------------
 
 % Glossary, Acronyms
@@ -229,7 +236,7 @@
 %---------------------------------------------------------------------------
 \appendix
 \settocdepth{section}
-\include{anhang/beispielanhang}
+\input{anhang/beispielanhang}
 %---------------------------------------------------------------------------
 
 %---------------------------------------------------------------------------

@@ -1,0 +1,90 @@
+\chapter{Technologie}
+\label{chap:technologie}
+
+
+\section{State-of-the-art}
+Die verschiedenen Hersteller von MQTT Anwendungen entwickeln jeweils ihre eigenen Ansätze, um die Daten zu strukturieren. 
+
+\subsection{Tinkerforge MQTT Proxy}
+
+\subsection{IBM Internet of Things Foundation}
+
+IBM stellt den Service 'IBM IoT Foundation' zur Verfügung, mit dem vernetzte Geräte verwaltet werden können. Als Kommunikationsprotokoll wird MQTT eingesetzt. Die Platform verwendet folgende konzeptioneielle Ideen:
+\begin{itemize}
+    \item Organizations: Eindeutige Identifikation der Kunden der Platform
+	\item Devices: Beliebiges vernetztes Gerät. Versendet Events und reagiert auf Commands.
+	\item Applications: Anwendung, welche mit den Daten der Devices interagiert.
+	\item Events: Daten, welche von den Devices an die Platform gesendet werden
+	\item Commands: Applications können mittels Commands mit den Devices kommunizieren.
+\end{itemize}
+
+Events müssen an ein definiertes Topic nach folgendem Schema gesendet werden: \\
+\code{iot-2/evt/\textbf{event\_id}/fmt/\textbf{format\_string}}
+
+Beispiel: \code{iot-2/evt/temperature\_outdoor/fmt/json}
+
+Eine Anwendung, welche Events empfangen möchte, muss sich auf ein Topic in der Form \\
+\code{iot-2/type/\textbf{device\_type}/id/\textbf{device\_id}/evt/\textbf{event\_id}/fmt/\textbf{format\_string}} registrieren.
+Die Teile \code{device\_type}, \code{device\_id}, \code{event\_id} und \code{format\_string} des Topics können auch mit dem Wildcard Charakter '\code{+}' ersetzt werden, um jeweils alle Events der Komponenten zu erhalten. 
+
+Beispiel: \code{iot-2/type/temp/id/+/evt/temperature\_outdoor/fmt/+}
+
+Um einen Command zu erzeugen, sendet eine Anwendung eine MQTT Message mit Topic gemäss folgenden Schema:
+\code{iot-2/type/device\_type/id/device\_id/cmd/command\_id/fmt/format\_string}
+
+Beispiel: \code{iot-2/type/temp/id/sensor1/cmd/setInterval/fmt/json}
+
+Das Device \code{sensor1} würde damit eine Message auf Topic \code{iot-2/cmd/setInterval/fmt/json} erhalten.
+
+
+Grundsätzlich unterstützt IBM IoT Foundation ein beliebiges Payload Format. Es wird jedoch empfohlem, JSON zu verwenden. Um alle Funktionen der Platform zu nutzen, müssen die JSON Dokumente zusätzlich nach den Vorgaben von IBM strukturiert sein.
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+%               linenos=true,
+               xleftmargin=21pt,
+               tabsize=4]{json}
+{
+  "d": {
+    "host": "IBM700-R9E683D",
+    "mem": 54.9,
+    "network": {
+      "up": 1.22,
+      "down": 0.55
+    },
+    "cpu": 1.3,
+  }
+}
+\end{minted}
+\caption{JSON Beispiel im IBM IoTF Payload Format}
+\label{json-example}
+\end{listing}
+\begin{minted}{json}
+\end{minted}
+
+
+
+\section{MQTT}
+Aus Proj2 übernehmen
+
+\section{Tinkerforge}
+Beschreibung,
+%Hinweis auf www.tinkerforge.com/en/doc/Software/Brick_MQTT_Proxy.html
+
+\section{DFDL}
+Aus Proj2 übernehmen
+
+
+
+% \section{CoAP?}
+
+% \section{Eclipse Vorto}
+% https://www.eclipse.org/vorto/index.html
+
+% \section{OMA LWM2M - Leshan}
+% https://eclipse.org/leshan/
+
+\section{Konzept aus der nicht-IoT Welt}
+SOAP-WSDL, REST, etc.
+HATEOAS
