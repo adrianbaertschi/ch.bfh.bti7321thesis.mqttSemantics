@@ -5,38 +5,75 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import com.tinkerforge.BrickletDualButton;
-import com.tinkerforge.Device;
+import com.tinkerforge.BrickletDualButton.StateChangedListener;
+import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-public class DualButtonDevice extends MqttThing {
+import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
 
-	private BrickletDualButton brickletDualButton;
+public class DualButtonDevice extends MqttThing<BrickletDualButton> {
+	
+	private int stateButtonL = -1;
+	private int stateButtonR = -1;
+
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
-	public DualButtonDevice(BrickletDualButton brickletDualButton, String stackName) {
-		this.brickletDualButton = brickletDualButton;
+	public DualButtonDevice(String uid, IPConnection ipcon, String stackName) {
 		this.stackName = stackName;
+		
+		bricklet = new BrickletDualButton(uid, ipcon);
+		
+		bricklet.addStateChangedListener(new StateChangedListener() {
+
+			@Override
+			public void stateChanged(short buttonL, short buttonR, short ledL, short ledR) {
+				 String state = "btl: " + buttonL + " btr: " + buttonR + " ledL: " + ledL + " ledR: " + ledR;
+				
+				LOG.info(state);
+				
+
+//				// Pressed
+//				if (buttonL == BrickletDualButton.BUTTON_STATE_PRESSED) {
+//					MqttPublisher.getInstance().pubEvent(stackName, getDevice(), "L", "pressed");
+//				}
+//
+//				if (buttonR == BrickletDualButton.BUTTON_STATE_PRESSED) {
+//					MqttPublisher.getInstance().pubEvent(stackName, getDevice(), "R", "pressed");
+//				}
+				
+				// n
+				if (buttonL  != stateButtonL && buttonL == BrickletDualButton.BUTTON_STATE_PRESSED) {
+					MqttPublisher.getInstance().pubEvent(stackName, getDevice(), "ButtonL", "press");
+				}
+				if (buttonR  != stateButtonR && buttonR == BrickletDualButton.BUTTON_STATE_PRESSED) {
+					MqttPublisher.getInstance().pubEvent(stackName, getDevice(), "ButtonR", "press");
+				}
+				
+
+				stateButtonL = buttonL;
+				stateButtonR = buttonR;
+				
+				MqttPublisher.getInstance().publishDeviceState(DualButtonDevice.this);
+			}
+		});
+
 	}
 
-	@Override
-	public Device getDevice() {
-		return brickletDualButton;
-	}
 
 	@Override
 	public boolean handleAction(String action, byte[] payload) {
 		LOG.info("Action: " + action);
-
+		
 		short state = Short.parseShort(new String(payload));
 
 		try {
 			switch (action) {
 			case "setLedL":
-				brickletDualButton.setSelectedLEDState(BrickletDualButton.LED_LEFT, state);
+				bricklet.setSelectedLEDState(BrickletDualButton.LED_LEFT, state);
 				return true;
 			case "setLedR":
-				brickletDualButton.setSelectedLEDState(BrickletDualButton.LED_RIGHT, state);
+				bricklet.setSelectedLEDState(BrickletDualButton.LED_RIGHT, state);
 				return true;
 			default:
 				LOG.warning("Unexpected action");
@@ -55,10 +92,10 @@ public class DualButtonDevice extends MqttThing {
 		Map<String, Object> stateEntries = new HashMap<String, Object>();
 
 		try {
-			stateEntries.put("ButtonL", brickletDualButton.getButtonState().buttonL);
-			stateEntries.put("ButtonR", brickletDualButton.getButtonState().buttonR);
-			stateEntries.put("LedL", brickletDualButton.getLEDState().ledL);
-			stateEntries.put("LedR", brickletDualButton.getLEDState().ledR);
+			stateEntries.put("ButtonL", bricklet.getButtonState().buttonL);
+			stateEntries.put("ButtonR", bricklet.getButtonState().buttonR);
+			stateEntries.put("LedL", bricklet.getLEDState().ledL);
+			stateEntries.put("LedR", bricklet.getLEDState().ledR);
 		} catch (TimeoutException | NotConnectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

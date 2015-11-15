@@ -29,6 +29,8 @@ public class MqttPublisher {
 	
 	private MemoryPersistence persistence = new MemoryPersistence();
 	private IMqttAsyncClient mqttClient;
+
+	private boolean addRandomtoEvents = false;
 	
 
 	private MqttPublisher() {
@@ -82,7 +84,12 @@ public class MqttPublisher {
 		
 		String baseTopic = new BrickletToMqttConverter().getBaseTopic(device, stackHost) + "/events/" + eventName;
 		
-		pubEvent(baseTopic, payload.toString());
+		String payloadStr = payload.toString();
+		if(addRandomtoEvents ) {
+			payloadStr += " " + Math.random();
+		}
+		
+		pubEvent(baseTopic, payloadStr);
 	}
 
 //	public void publishTempIrState(String stackName, BrickletTemperatureIR brickletTemperatureIR) {
@@ -103,7 +110,7 @@ public class MqttPublisher {
 //		
 //	}
 	
-	public void publishDeviceState(MqttThing thing) {
+	public void publishDeviceState(MqttThing<? extends Device> thing) {
 		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing) + "/state";
 		LOG.info(thing.getState().entrySet().size() + "entries");
 		for(Entry<String, Object> state : thing.getState().entrySet()) {
@@ -132,11 +139,11 @@ public class MqttPublisher {
 		}
 	}
 	
-	private void pubEvent(String topic, Object payload) {
+	private void pubEvent(String topic, String payload) {
 		
 		LOG.info("Publishing on " + topic + " data: " + payload);
 		try {
-			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
+			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.getBytes());
 			message.setQos(0);
 			mqttClient.publish(topic, message);
 			// TODO Auto-generated catch block

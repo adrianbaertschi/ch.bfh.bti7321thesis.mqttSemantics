@@ -6,11 +6,16 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-public abstract class MqttThing {
+public abstract class MqttThing<T extends Device> {
 	
+	T bricklet;
 	String stackName;
+	
+	// TODO Setupt, init ein eigene Methode gliedern, ähnlich wie TinkerForgeBaseSensor
 
-	public abstract Device getDevice();
+	public T getDevice() {
+		return bricklet;
+	}
 	
 	public String getUid() {
 		try {

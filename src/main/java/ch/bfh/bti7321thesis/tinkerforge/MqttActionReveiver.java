@@ -45,6 +45,7 @@ public class MqttActionReveiver implements MqttCallback {
 			MqttPublisher.getInstance().publishDeviceState(mqttThing);
 		} else {
 			// TODO: error?
+			LOG.severe("unhandled action");
 		}
 		
 		
