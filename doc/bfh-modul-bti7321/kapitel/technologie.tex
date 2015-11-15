@@ -1,48 +1,53 @@
 \chapter{Technologie}
 \label{chap:technologie}
 
+\section{MQTT}
+Aus Proj2 übernehmen
 
-\section{State-of-the-art}
+
+\section{Bestehende Konzepte}
 Die verschiedenen Hersteller von MQTT Anwendungen entwickeln jeweils ihre eigenen Ansätze, um die Daten zu strukturieren. 
 
-\subsection{Tinkerforge MQTT Proxy}
 
 \subsection{IBM Internet of Things Foundation}
 
-IBM stellt den Service 'IBM IoT Foundation' zur Verfügung, mit dem vernetzte Geräte verwaltet werden können. Als Kommunikationsprotokoll wird MQTT eingesetzt. Die Platform verwendet folgende konzeptioneielle Ideen:
+IBM hat unter dem Brand `IBM IoT Foundation' \cite{ibmIotF:home} einen Dienst entwickelt, mit dem vernetzte Geräte verwaltet werden können. Als Kommunikationsprotokoll wird MQTT eingesetzt. Die Plattform verwendet folgende konzeptionelle Ideen:
 \begin{itemize}
-    \item Organizations: Eindeutige Identifikation der Kunden der Platform
+    \item Organizations: Eindeutige Identifikation der Kunden der Plattform
 	\item Devices: Beliebiges vernetztes Gerät. Versendet Events und reagiert auf Commands.
 	\item Applications: Anwendung, welche mit den Daten der Devices interagiert.
-	\item Events: Daten, welche von den Devices an die Platform gesendet werden
+	\item Events: Daten, welche von den Devices an die Plattform gesendet werden
 	\item Commands: Applications können mittels Commands mit den Devices kommunizieren.
 \end{itemize}
 
+\textbf{Events} \\
 Events müssen an ein definiertes Topic nach folgendem Schema gesendet werden: \\
-\code{iot-2/evt/\textbf{event\_id}/fmt/\textbf{format\_string}}
+\code{iot-2/evt/<event\_id>/fmt/<format\_string>}
 
 Beispiel: \code{iot-2/evt/temperature\_outdoor/fmt/json}
 
 Eine Anwendung, welche Events empfangen möchte, muss sich auf ein Topic in der Form \\
-\code{iot-2/type/\textbf{device\_type}/id/\textbf{device\_id}/evt/\textbf{event\_id}/fmt/\textbf{format\_string}} registrieren.
+\code{iot-2/type/<device\_type>/id/<device\_id>/evt/<event\_id>/fmt/<format\_string>} registrieren.
 Die Teile \code{device\_type}, \code{device\_id}, \code{event\_id} und \code{format\_string} des Topics können auch mit dem Wildcard Charakter '\code{+}' ersetzt werden, um jeweils alle Events der Komponenten zu erhalten. 
 
 Beispiel: \code{iot-2/type/temp/id/+/evt/temperature\_outdoor/fmt/+}
 
+\textbf{Commands} \\
 Um einen Command zu erzeugen, sendet eine Anwendung eine MQTT Message mit Topic gemäss folgenden Schema:
-\code{iot-2/type/device\_type/id/device\_id/cmd/command\_id/fmt/format\_string}
+\code{iot-2/type/<device\_type>/id/<device\_id>/cmd/<command\_id>/fmt/<format\_string>}
 
 Beispiel: \code{iot-2/type/temp/id/sensor1/cmd/setInterval/fmt/json}
 
 Das Device \code{sensor1} würde damit eine Message auf Topic \code{iot-2/cmd/setInterval/fmt/json} erhalten.
 
 
-Grundsätzlich unterstützt IBM IoT Foundation ein beliebiges Payload Format. Es wird jedoch empfohlem, JSON zu verwenden. Um alle Funktionen der Platform zu nutzen, müssen die JSON Dokumente zusätzlich nach den Vorgaben von IBM strukturiert sein.
+\textbf{Payload Format} \\
+Grundsätzlich unterstützt IBM IoT Foundation ein beliebiges Payload Format. Es wird jedoch empfohlem, JSON zu verwenden. Um alle Funktionen der Platform nutzen zu können, müssen die JSON Dokumente zusätzlich nach den Vorgaben \cite{ibmIotF:payload} von IBM strukturiert sein.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
                framesep=3mm,
-%               linenos=true,
+               linenos=false,
                xleftmargin=21pt,
                tabsize=4]{json}
 {
@@ -58,22 +63,73 @@ Grundsätzlich unterstützt IBM IoT Foundation ein beliebiges Payload Format. Es
 }
 \end{minted}
 \caption{JSON Beispiel im IBM IoTF Payload Format}
-\label{json-example}
 \end{listing}
 \begin{minted}{json}
 \end{minted}
 
 
+\subsection{Tinkerforge MQTT Proxy}
 
-\section{MQTT}
+Tinkerforge hat ein modulares System von Sensoren und Aktoren (so gennate Bricklets) entwickelt, die u. A. für Prototyping und in der Ausbildung (auch an der BFH) eingesetzt werden. Um die Mudule zu steuern, wird klassischerweise das bereitstellete SDK in der gewünschten Programmiersprache verwendet. 
+Tinkerforge ausserdem eine Anwendung entwickelt und die Bausteine per MQTT ansprechen zu können \cite{tinkerf:mqtt}.
+
+\textbf{Topics} \\
+Die Tinkerforge Devices senden ihre Daten an ein MQTT Topic nach Schema \\ \code{tinkerforge/<prefix>/<uid>/<suffix>}.
+
+Ein Temperatur Bricklet mit \acrfull{uid} \code{xf2} würde also den gemessenen Wert an das Topic \\
+\code{tinkerforge/bricklet/temperature/xf2/temperature} senden.
+
+Die Bricklets reagieren auf Messages die an ein passendes Topic mit Siffix \code{/set} gesendet werden. Sollen beispielsweise die LEDs des Dualbutton Bricklets mit UID \code{mxg} eingeschaltet werden, muss eine Message an das Topic \code{tinkerforge/bricklet/dual\_button/mxg/led\_state/set} gesendet werden mit folgendem Payload:
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{json}
+{
+    "led_l": 2,
+    "led_r": 2
+}
+\end{minted}
+\caption{JSON Beispiel Tinkerforge Format}
+\end{listing}
+\begin{minted}{json}
+\end{minted}
+
+
+\textbf{Payload Format} \\
+Die Tinkerforge MQTT Komponente verwendet JSON als Datenformat für die Messages. Jede Message, die von einem Bricklet gesendet wird, enthält unter dem Key \code{\_timestamp} den Zeitpunkt der Erzeugung als UNIX Timestamp.
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{json}
+{
+  "_timestamp": 1440083842.785104,
+  "temperature": 2343
+}
+\end{minted}
+\caption{JSON Beispiel Tinkerforge Format}
+\end{listing}
+\begin{minted}{json}
+\end{minted}
+
+Die Beschreibung, unter welchen Topics Daten publiziert werden und wie die Bricklets angesprochen werden können, ist in der Dokumentation von Tinkerforge \cite{tinkerf:mqtt} beschrieben.
+
+
+\section{Datenbeschreibung}
+
+\subsection{JSON Schema}
+
+\subsection{Protocol Buffer}
+
+\subsection{DFDL}
 Aus Proj2 übernehmen
 
-\section{Tinkerforge}
-Beschreibung,
-%Hinweis auf www.tinkerforge.com/en/doc/Software/Brick_MQTT_Proxy.html
-
-\section{DFDL}
-Aus Proj2 übernehmen
+\subsection{Vergleich}
 
 
 

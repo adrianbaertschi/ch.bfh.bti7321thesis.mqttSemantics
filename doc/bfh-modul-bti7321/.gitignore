@@ -123,6 +123,9 @@ sympy-plots-for-*.tex/
 # Texpad
 .texpadtmp
 
+# TexMaker Session
+*.tks
+
 # TikZ & PGF
 *.dpth
 *.md5
