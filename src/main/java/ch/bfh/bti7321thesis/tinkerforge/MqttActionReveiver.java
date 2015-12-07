@@ -34,7 +34,6 @@ public class MqttActionReveiver implements MqttCallback {
 
 		MqttTopic topic = new MqttTopic(topicString);
 
-//		Device device = TinkerforgeDeviceRegistry.getInstance().find(topic);
 		MqttThing mqttThing = TinkerforgeDeviceRegistry.getInstance().find(topic);
 		
 		String action = topic.getLast();
@@ -47,49 +46,6 @@ public class MqttActionReveiver implements MqttCallback {
 			// TODO: error?
 			LOG.severe("unhandled action");
 		}
-		
-		
-
-//		if (device == null) {
-//			LOG.severe("No Device found");
-//			return;
-//		}
-//		String stackName = topic.getTopic(2);
-//
-//		if (device instanceof BrickletTemperatureIR) {
-//			BrickletTemperatureIR brickletTemperatureIR = (BrickletTemperatureIR) device;
-//			LOG.info("Action: " + action);
-//			switch (action) {
-//			case "setAmbientTemperatureCallbackPeriod":
-//				Long period = null;
-//				try {
-//					period = Long.parseLong(new String(message.getPayload()));
-//				} catch (NumberFormatException nfe) {
-//					LOG.log(Level.SEVERE, nfe.getMessage(), nfe);
-//					return;
-//				}
-//				brickletTemperatureIR.setAmbientTemperatureCallbackPeriod(period);
-//				LOG.info("setAmbientTemperatureCallbackPeriod to " + period);
-//				break;
-//			case "setObjectTemperatureCallbackPeriod":
-//				try {
-//					period = Long.parseLong(new String(message.getPayload()));
-//				} catch (NumberFormatException nfe) {
-//					LOG.log(Level.SEVERE, nfe.getMessage(), nfe);
-//					return;
-//				}
-//				brickletTemperatureIR.setObjectTemperatureCallbackPeriod(period);
-//				LOG.info("setObjectTemperatureCallbackPeriod to " + period);
-//				break;
-//			default:
-//				LOG.warning("Unexpected action");
-//			}
-//			MqttPublisher.getInstance().publishTempIrState(stackName, brickletTemperatureIR);
-//		} else if (device instanceof BrickletJoystick) {
-//			new JoyStickDevice(device).handleAction(action, new String(message.getPayload()));
-//		} else {
-//			LOG.warning("Unhandled Device Type");
-//		}
 
 	}
 

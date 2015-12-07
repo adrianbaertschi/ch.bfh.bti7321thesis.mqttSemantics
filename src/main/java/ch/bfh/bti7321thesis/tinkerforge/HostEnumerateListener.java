@@ -30,7 +30,7 @@ public class HostEnumerateListener implements EnumerateListener {
 			short[] firmwareVersion, int deviceIdentifier, short enumerationType) {
 		String enumInfo = String.format("uid %s, connectedUid %s, position %c, deviceIdentifier %d, enumerationType %d",
 				uid, connectedUid, position, deviceIdentifier, enumerationType);
-		LOG.fine(enumInfo);
+		LOG.info(enumInfo);
 
 		if (enumerationType != IPConnectionBase.ENUMERATION_TYPE_AVAILABLE) {
 			return;

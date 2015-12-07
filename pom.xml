@@ -31,7 +31,7 @@
 					<finalName>BrickEnum</finalName>
 					<archive>
 						<manifest>
-							<mainClass>ch.bfh.bti7321thesis.tinkerforge.BrickEnumerationEventsStateLinksRemote</mainClass>
+							<mainClass>ch.bfh.bti7321thesis.tinkerforge.TinkerforgeApp</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>
@@ -77,6 +77,11 @@
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
 			<version>18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-module-jsonSchema</artifactId>
+			<version>2.6.0</version>
 		</dependency>
 	</dependencies>
 

@@ -3,20 +3,21 @@ package ch.bfh.bti7321thesis.tinkerforge;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import ch.bfh.bti7321thesis.tinkerforge.log.StdoutConsoleHandler;
 
-public class BrickEnumerationEventsStateLinksRemote {
+public class TinkerforgeApp {
 
-	private static Logger LOG = Logger.getLogger(BrickEnumerationEventsStateLinksRemote.class.getName());
+	private static Logger LOG = Logger.getLogger(TinkerforgeApp.class.getName());
 
 	public static void main(String[] args) throws IOException {
 
 		LogManager.getLogManager().reset();
 
-//		Logger.getLogger("").setLevel(Level.WARNING);
+		Logger.getLogger("").setLevel(Level.ALL);
 		Logger.getLogger("").setUseParentHandlers(false);
 
 		Logger.getLogger("").addHandler(new StdoutConsoleHandler());

@@ -3,12 +3,12 @@ package ch.bfh.bti7321thesis.tinkerforge;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class MqttTopic {
+	private List<String> topics = new ArrayList<String>();
 
-	private List<String> topics;
-
-	public MqttTopic(MqttTopicBuilder builder) {
-		this.topics = builder.topics;
+	public MqttTopic() {
+//		this.topics = builder.topics;
 	}
 
 	public MqttTopic(String encodedTopicString) {
@@ -26,6 +26,10 @@ public class MqttTopic {
 		return topics.get(topics.size() - 1);
 	}
 	
+	public void append(String entry) {
+		this.topics.add(entry);
+	}
+	
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -36,18 +40,22 @@ public class MqttTopic {
 
 		return sb.toString();
 	}
-
-	public static class MqttTopicBuilder {
-		private List<String> topics = new ArrayList<String>();
-
-		public MqttTopicBuilder append(String topic) {
-			this.topics.add(topic);
-			return this;
-		}
-
-		public MqttTopic build() {
-			return new MqttTopic(this);
-		}
+	
+	public int getSize() {
+		return topics.size();
 	}
+
+//	public static class MqttTopicBuilder {
+//		private List<String> topics = new ArrayList<String>();
+//
+//		public MqttTopicBuilder append(String topic) {
+//			this.topics.add(topic);
+//			return this;
+//		}
+//
+//		public MqttTopic build() {
+//			return new MqttTopic(this);
+//		}
+//	}
 
 }

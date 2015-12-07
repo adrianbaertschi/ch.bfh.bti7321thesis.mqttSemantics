@@ -13,6 +13,8 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+
 public class JoyStickDevice extends MqttThing<BrickletJoystick> {
 
 	private Device device;
@@ -90,6 +92,12 @@ public class JoyStickDevice extends MqttThing<BrickletJoystick> {
 
 	@Override
 	public Map<String, Object> getState() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DeviceDescription getDescription() {
 		// TODO Auto-generated method stub
 		return null;
 	}

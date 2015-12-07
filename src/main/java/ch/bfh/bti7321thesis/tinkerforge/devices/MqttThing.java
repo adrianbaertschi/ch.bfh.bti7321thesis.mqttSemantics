@@ -6,6 +6,8 @@ import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+
 public abstract class MqttThing<T extends Device> {
 	
 	T bricklet;
@@ -33,5 +35,7 @@ public abstract class MqttThing<T extends Device> {
 	public String getStackName() {
 		return stackName;
 	}
+	
+	public abstract DeviceDescription getDescription();
 	
 }

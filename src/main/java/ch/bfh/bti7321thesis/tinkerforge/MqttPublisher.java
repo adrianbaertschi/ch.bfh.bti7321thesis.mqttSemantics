@@ -10,6 +10,8 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tinkerforge.BrickletJoystick;
 import com.tinkerforge.Device;
 import com.tinkerforge.NotConnectedException;
@@ -29,6 +31,8 @@ public class MqttPublisher {
 	
 	private MemoryPersistence persistence = new MemoryPersistence();
 	private IMqttAsyncClient mqttClient;
+	
+	static ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 
 	private boolean addRandomtoEvents = false;
 	
@@ -92,23 +96,36 @@ public class MqttPublisher {
 		pubEvent(baseTopic, payloadStr);
 	}
 
-//	public void publishTempIrState(String stackName, BrickletTemperatureIR brickletTemperatureIR) {
+//	public void publishDesc(MqttThing<? extends Device> thing) {
 //
-//		String baseTopic = new BrickletToMqttConverter().getBaseTopic(brickletTemperatureIR, stackName) + "/state";
 //
+//		SchemaFactoryWrapper visitor = new SchemaFactoryWrapper();
+//		String schema = "ERROR";
 //		try {
-//			pubState(baseTopic + "/AmbientTemperatureCallbackPeriod", Long.toString(brickletTemperatureIR.getAmbientTemperatureCallbackPeriod()));
-//			pubState(baseTopic + "/ObjectTemperatureCallbackPeriod", Long.toString(brickletTemperatureIR.getObjectTemperatureCallbackPeriod()));
-//			pubState(baseTopic + "/DebouncePeriod", Long.toString(brickletTemperatureIR.getDebouncePeriod()));
-//			pubState(baseTopic + "/Emissivity", Long.toString(brickletTemperatureIR.getEmissivity()));
-//			pubState(baseTopic + "/AmbientTemperatureCallbackThreshold", brickletTemperatureIR.getAmbientTemperatureCallbackThreshold().toString());
-//			pubState(baseTopic + "/ObjectTemperatureCallbackThreshold", brickletTemperatureIR.getObjectTemperatureCallbackThreshold().toString());
-//		} catch (TimeoutException | NotConnectedException e) {
+//			mapper.acceptJsonFormatVisitor(mapper.constructType(thing.getDescription().getClass()), visitor);
+//			JsonSchema jsonSchema = visitor.finalSchema();
+//			schema =  mapper.writerWithDefaultPrettyPrinter().writeValueAsString(jsonSchema);
+//		} catch (JsonProcessingException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 //		
+//		String baseTopic = new BrickletToMqttConverter().getTopicToThingtype(thing, 3);
+//		pubState(baseTopic, schema);
+//
 //	}
+	
+	public void publishDesc(MqttThing<? extends Device> thing) {
+		String json = "";
+		try {
+			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDescription());
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String baseTopic = new BrickletToMqttConverter().getTopicToThingtype(thing, 3);
+		pubRetained(baseTopic + "/schema/json", json);
+	}
 	
 	public void publishDeviceState(MqttThing<? extends Device> thing) {
 		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing) + "/state";
@@ -164,6 +181,18 @@ public class MqttPublisher {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	private void pubRetained(String topic, Object payload) {
+		LOG.info("Publishing Retained on " + topic + " data: " + payload);
+		try {
+			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
+			message.setRetained(true);
+			mqttClient.publish(topic, message);
+		} catch (MqttException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
 	}
 	
 	private void pubAction(String topic, Object payload) {

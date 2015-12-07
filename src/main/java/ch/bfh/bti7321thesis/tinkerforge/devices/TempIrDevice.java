@@ -1,6 +1,8 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,6 +15,14 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Command;
+import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
+import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
+import ch.bfh.bti7321thesis.tinkerforge.desc.State;
+import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
 public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 
@@ -55,6 +65,7 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		});
 		
 		MqttPublisher.getInstance().publishDeviceState(this);
+		MqttPublisher.getInstance().publishDesc(this);
 	}
 
 
@@ -63,9 +74,9 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 	public boolean handleAction(String action, byte[] payload) {
 
 		LOG.info("Action: " + action);
-		Long period = null;
+		Long value = null;
 		try {
-			period = Long.parseLong(new String(payload));
+			value = Long.parseLong(new String(payload));
 		} catch (NumberFormatException nfe) {
 			LOG.log(Level.SEVERE, nfe.getMessage(), nfe);
 			return false;
@@ -74,13 +85,17 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		try {
 			switch (action) {
 			case "setAmbientTemperatureCallbackPeriod":
-				bricklet.setAmbientTemperatureCallbackPeriod(period);
-				LOG.info("setAmbientTemperatureCallbackPeriod to " + period);
+				bricklet.setAmbientTemperatureCallbackPeriod(value);
+				LOG.info("setAmbientTemperatureCallbackPeriod to " + value);
 				return true;
 			case "setObjectTemperatureCallbackPeriod":
-				bricklet.setObjectTemperatureCallbackPeriod(period);
-				LOG.info("setObjectTemperatureCallbackPeriod to " + period);
+				bricklet.setObjectTemperatureCallbackPeriod(value);
+				LOG.info("setObjectTemperatureCallbackPeriod to " + value);
 				return true;
+			case "setEmissivity":
+				bricklet.setEmissivity(value.intValue());
+				LOG.info("Emissivity set to " + value);
+				break;
 			default:
 				LOG.warning("Unexpected action");
 			}
@@ -93,22 +108,101 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 
 	@Override
 	public Map<String, Object> getState() {
+		
+		List<State> states = getStateDesc();
+		
+		
+//		Map<String, Object> stateEntries = new HashMap<String, Object>();
+//		// TODO: better exception handling, only skip those who fail
+//		try {
+//			stateEntries.put("AmbientTemperatureCallbackPeriod", bricklet.getAmbientTemperatureCallbackPeriod());
+//			stateEntries.put("ObjectTemperatureCallbackPeriod", bricklet.getObjectTemperatureCallbackPeriod());
+//			stateEntries.put("DebouncePeriod",bricklet.getDebouncePeriod());
+//			stateEntries.put("Emissivity", bricklet.getEmissivity());
+//			stateEntries.put("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold());
+//			stateEntries.put("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold());
+		
 		Map<String, Object> stateEntries = new HashMap<String, Object>();
-		// TODO: better exception handling, only skip those who fail
+		for(State state : states) {
+			stateEntries.put(state.getTopic(), state.getValue());
+		}
+		
+		return stateEntries;
+	}
+	
+	private List<State> getStateDesc() {
+		List<State> states = new ArrayList<State>();
+
 		try {
-			stateEntries.put("AmbientTemperatureCallbackPeriod", Long.toString(bricklet.getAmbientTemperatureCallbackPeriod()));
-			stateEntries.put("ObjectTemperatureCallbackPeriod", Long.toString(bricklet.getObjectTemperatureCallbackPeriod()));
-			stateEntries.put("DebouncePeriod", Long.toString(bricklet.getDebouncePeriod()));
-			stateEntries.put("Emissivity", Long.toString(bricklet.getEmissivity()));
-			stateEntries.put("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold().toString());
-			stateEntries.put("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold().toString());
+		states.add(new State("AmbientTemperatureCallbackPeriod", bricklet.getAmbientTemperatureCallbackPeriod(), "Time in ms"));
+		states.add(new State("AmbientTemperatureEnabled", bricklet.getAmbientTemperatureCallbackPeriod() > 0, "Ambient Measurements enabled"));
+		states.add(new State("ObjectTemperatureCallbackPeriod", bricklet.getObjectTemperatureCallbackPeriod()));
+		states.add(new State("DebouncePeriod",bricklet.getDebouncePeriod())); 
+		states.add(new State("Emissivity", bricklet.getEmissivity()));
+		states.add(new State("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold()));
+		states.add(new State("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold()));
 		} catch (TimeoutException | NotConnectedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		LOG.info(stateEntries.size() + " states");
+		return states;
+	}
+
+
+
+	@Override
+	public DeviceDescription getDescription() {
+		DeviceDescription description = new DeviceDescription("tinkerforge.tempIR", "0.0.1");
+		description.setTopic("TODO");
 		
-		return stateEntries;
+		// State
+		StateDescription stateDescription = new StateDescription();
+		
+		for(State state : getStateDesc()) {
+			stateDescription.add(state.getTopic(), state.getValue().getClass(), state.getDesc());
+		}
+		
+		description.setStateDescription(stateDescription);
+		
+		// Events
+		EventDescription eventDescription = new EventDescription();
+		Event event1 = new Event("ObjectTemp", new Range<Double>(-70.0, 380.0));
+		eventDescription.addEvent(event1);
+
+		Event event2 = new Event("AmbientTemp", new Range<Double>(-40.0, 125.0));
+		eventDescription.addEvent(event2);
+		
+		description.setEventDescription(eventDescription);
+		
+		// Commands
+		CommandDescription commandDescription = new CommandDescription();
+		Command cmd1 = new Command();
+		cmd1.setName("setAmbientTemperatureCallbackPeriod");
+		cmd1.addParam("CallbackPeriod", Integer.class);
+		commandDescription.addCommand(cmd1);
+		
+		Command cmd2 = new Command();
+		cmd2.setName("setObjectTemperatureCallbackPeriod");
+		cmd2.addParam("CallbackPeriod", Integer.class);
+		commandDescription.addCommand(cmd2);
+		
+		Command cmd3 = new Command();
+		cmd3.setName("setEmissivity");
+		cmd3.addParam("Emissity", new Range<Integer>(6553, 65535));
+		commandDescription.addCommand(cmd3);
+		
+		Command cmd4 = new Command();
+		cmd4.setName("EnableAmbientTemperature");
+		cmd4.addParam("enabled", Boolean.class);
+		cmd4.addParam("enabledT", Boolean.class);
+		commandDescription.addCommand(cmd4);
+		
+		// TODO: ENUM Command
+		
+		
+		description.setCommandDescription(commandDescription);
+		
+		return description;
 	}
 
 

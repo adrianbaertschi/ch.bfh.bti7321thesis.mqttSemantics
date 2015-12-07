@@ -11,6 +11,7 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 
 public class DualButtonDevice extends MqttThing<BrickletDualButton> {
 	
@@ -102,6 +103,13 @@ public class DualButtonDevice extends MqttThing<BrickletDualButton> {
 		}
 
 		return stateEntries;
+	}
+
+
+	@Override
+	public DeviceDescription getDescription() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
