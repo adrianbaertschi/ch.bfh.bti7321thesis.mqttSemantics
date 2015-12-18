@@ -20,6 +20,7 @@ import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
 import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.PresetValues;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
 import ch.bfh.bti7321thesis.tinkerforge.desc.State;
 import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
@@ -134,15 +135,14 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		List<State> states = new ArrayList<State>();
 
 		try {
-		states.add(new State("AmbientTemperatureCallbackPeriod", bricklet.getAmbientTemperatureCallbackPeriod(), "Time in ms"));
-		states.add(new State("AmbientTemperatureEnabled", bricklet.getAmbientTemperatureCallbackPeriod() > 0, "Ambient Measurements enabled"));
-		states.add(new State("ObjectTemperatureCallbackPeriod", bricklet.getObjectTemperatureCallbackPeriod()));
-		states.add(new State("DebouncePeriod",bricklet.getDebouncePeriod())); 
-		states.add(new State("Emissivity", bricklet.getEmissivity()));
-		states.add(new State("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold()));
-		states.add(new State("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold()));
+		states.add(new State("AmbientTemperatureCallbackPeriod", bricklet.getAmbientTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "Time in ms"));
+		states.add(new State("AmbientTemperatureEnabled", bricklet.getAmbientTemperatureCallbackPeriod() > 0, null, "Ambient Measurements enabled"));
+		states.add(new State("ObjectTemperatureCallbackPeriod", bricklet.getObjectTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
+		states.add(new State("DebouncePeriod", bricklet.getDebouncePeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
+		states.add(new State("Emissivity", bricklet.getEmissivity(), new Range<Integer>(6553, 65535), "TODO"));
+		states.add(new State("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold(), null, "TODO"));
+		states.add(new State("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold(), null, "TODO"));
 		} catch (TimeoutException | NotConnectedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return states;
@@ -159,17 +159,18 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		StateDescription stateDescription = new StateDescription();
 		
 		for(State state : getStateDesc()) {
-			stateDescription.add(state.getTopic(), state.getValue().getClass(), state.getDesc());
+//			stateDescription.add(state.getTopic(), state.getValue().getClass(), state.getDesc());
+			stateDescription.add(state.getTopic(), state.getValue(), state.getRange(), state.getDesc());
 		}
 		
 		description.setStateDescription(stateDescription);
 		
 		// Events
 		EventDescription eventDescription = new EventDescription();
-		Event event1 = new Event("ObjectTemp", new Range<Double>(-70.0, 380.0));
+		Event event1 = new Event("ObjectTemp", new Range<Double>(-70.0, 380.0), "Measured with IR sensor in Celsius");
 		eventDescription.addEvent(event1);
 
-		Event event2 = new Event("AmbientTemp", new Range<Double>(-40.0, 125.0));
+		Event event2 = new Event("AmbientTemp", new Range<Double>(-40.0, 125.0), "Ambient temperature in Celsius");
 		eventDescription.addEvent(event2);
 		
 		description.setEventDescription(eventDescription);
@@ -178,23 +179,26 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		CommandDescription commandDescription = new CommandDescription();
 		Command cmd1 = new Command();
 		cmd1.setName("setAmbientTemperatureCallbackPeriod");
-		cmd1.addParam("CallbackPeriod", Integer.class);
+		cmd1.setLinkedState("AmbientTemperatureCallbackPeriod");
+		cmd1.addParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(cmd1);
 		
 		Command cmd2 = new Command();
 		cmd2.setName("setObjectTemperatureCallbackPeriod");
-		cmd2.addParam("CallbackPeriod", Integer.class);
+		cmd2.setLinkedState("ObjectTemperatureCallbackPeriod");
+		cmd2.addParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(cmd2);
 		
 		Command cmd3 = new Command();
 		cmd3.setName("setEmissivity");
+		cmd3.setLinkedState("Emissivity");
 		cmd3.addParam("Emissity", new Range<Integer>(6553, 65535));
 		commandDescription.addCommand(cmd3);
 		
 		Command cmd4 = new Command();
 		cmd4.setName("EnableAmbientTemperature");
-		cmd4.addParam("enabled", Boolean.class);
-		cmd4.addParam("enabledT", Boolean.class);
+		cmd4.addParam("enabled", new PresetValues<Boolean>(true, false));
+		cmd4.addParam("Reallyenabled", new PresetValues<Boolean>(true, false));
 		commandDescription.addCommand(cmd4);
 		
 		// TODO: ENUM Command
