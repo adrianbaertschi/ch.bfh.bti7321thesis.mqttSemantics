@@ -15,6 +15,7 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.tinkerforge.desc.BooleanPresetValues;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Command;
 import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
@@ -135,9 +136,9 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		List<State> states = new ArrayList<State>();
 
 		try {
-		states.add(new State("AmbientTemperatureCallbackPeriod", bricklet.getAmbientTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "Time in ms"));
+		states.add(new State("AmbientTemperatureInterval", bricklet.getAmbientTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "Time in ms"));
 		states.add(new State("AmbientTemperatureEnabled", bricklet.getAmbientTemperatureCallbackPeriod() > 0, null, "Ambient Measurements enabled"));
-		states.add(new State("ObjectTemperatureCallbackPeriod", bricklet.getObjectTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
+		states.add(new State("ObjectTemperatureInterval", bricklet.getObjectTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
 		states.add(new State("DebouncePeriod", bricklet.getDebouncePeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
 		states.add(new State("Emissivity", bricklet.getEmissivity(), new Range<Integer>(6553, 65535), "TODO"));
 		states.add(new State("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold(), null, "TODO"));
@@ -197,7 +198,7 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		
 		Command cmd4 = new Command();
 		cmd4.setName("EnableAmbientTemperature");
-		cmd4.addParam("enabled", new PresetValues<Boolean>(true, false));
+		cmd4.addParam("enabled", new BooleanPresetValues());
 		cmd4.addParam("Reallyenabled", new PresetValues<Boolean>(true, false));
 		commandDescription.addCommand(cmd4);
 		
