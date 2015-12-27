@@ -2,7 +2,135 @@
 \label{chap:technologie}
 
 \section{MQTT}
-Aus Proj2 übernehmen
+
+\textit{Die folgende Einführung des MQTT Protokolls wurde aus der dem Ergebnis des BFH Modul BTI7302 (Projekt 2) von Adrian Bärtschi übernommen.}
+
+MQTT (Message Queue Telemetry Transport) ist ein Netzwerkprotokoll, das sich dank einfachem und leichtgewichtigen Design sehr gut für Geräte mit stark eingeschränkten Ressourcen und Netzwerke mit geringer Bandbreite eignet. 
+\\
+Die erste Version von MQTT wurde 1999 von Dr. Andy Stanford-Clark (IBM) und Arlen Nipper (Arcom) beschrieben und entwickelt. Inzwischen ist MQTT in der Version 3.1.1 verfügbar  \cite{mqttSpez} und wird von OASIS Konsortium (\url{https://www.oasis-open.org}) standardisiert.
+
+Im OSI Modell ist MQTT auf dem Application Layer eingeordnet, basierend auf dem TCP Stack.
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.6\textwidth]{bilder/osi_mqtt.png}
+	\caption{\label{fig:mqttosi}MQTT im (vereinfachten) OSI Stack}
+\end{figure}
+
+\subsection{Publish/Subscribe}
+MQTT funktioniert nach dem Publish/Subscribe Pattern. Im Gegensatz zum klassichen Client/Server Prinzip registrieren sich die Clients (Subscriber) bei einem Broker für bestimmte Bereiche (Topics), zu denen sie Nachrichten erhalten möchten.
+\\ \\
+
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.8\textwidth]{bilder/pub_sub.png}
+	\caption{\label{fig:pub_sub}Publish/Subscribe Prinzip}
+\end{figure}
+
+
+\par
+Ein Publisher, (z. Bsp. ein Sensor) sendet seine Nachrichten an den Broker. Alle Subscriber, die sich für das entsprechende Topic eingeschrieben haben, erhalten die Nachricht vom Broker. 
+\\ \\
+Diese Entkopplung der Teilnemhner bringt diverse Vorteile mit sich:
+
+\begin{itemize}
+\item Publisher und Subscriber müssen sich gegenseitig nicht kennen
+\item Clients können sich beliebig an- und abmelden
+\item Beim Ausfall eines Teilnehmers sind die anderen nicht blockiert
+\end{itemize}
+
+\subsection{Topics}
+Jede Nachricht wird an ein bestimmtes Topic gesendet. Grundsätzlich kann jeder Client zu jedem Topic des Brokers Nachristen veröffentlichen. Die Topics sind hierarchisch aufgebaut, die Ebenen werden durch einen Slash (/) getrennt.\\
+Zum Beispiel könnte ein Thermometer seine Temperatur im Topic \texttt{house/livingroom/temperature} veröffentlichen.\\ \\
+Um die Nachrichten zu erhalten, muss sich nun ein anderer Client für dieses Topic einschreiben. Dabei können die Wildcards \texttt{+} und \texttt{\#} verwendet werden.\\
+Das \texttt{+} Symbol steht für eine Ebene in der Topic Hierarchie.\\
+Beispiel: \texttt{house/+/temperature} steht für die Temperaturmeldungen aller Räume des Hauses .
+
+\begin{itemize}
+	\item \texttt{house/livingroom/temperature}
+    \item \texttt{house/kitchen/temperature}
+    \item \texttt{house/bedroom/temperature}
+    \item \texttt{...}
+\end{itemize}
+
+Mit \texttt{\#} werden alle Topics des Unterbaums abonniert.
+Beispiel: Wenn ein Client das Topic \texttt{house/\#} abonniert, erhält dieser alle Meldungen des Hauses.
+
+\begin{itemize}
+	\item \texttt{house/bedroom/temperature}
+    \item \texttt{house/door/status}
+    \item \texttt{...}
+\end{itemize}
+
+\subsection{Messages}
+Messages in MQTT sind sehr einfach aufgebaut. Eine Message hat folgende Attribute:\\
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{ |l|l| }
+	\hline
+	Attribut & Beschreibung \\ 
+	\hline
+	Payload    	& Beliebige Daten im Binärformat. Maximal 256 MB     \\
+	QoS    		& Quality of Service 0, 1 oder 2. Details in Kapitel \ref{qos}    \\ 
+	Retained    & Flag, true oder false, Details in Kapitel \ref{retained}     \\ 
+	\hline
+\end{tabular}
+\caption{Aufbau einer MQTT Message}
+\end{table}
+
+
+\subsection{Quality of Service} \label{qos}
+MQTT bietet drei verschiedene QoS Einstellungen für das versenden von Nachrichten.
+\begin{itemize}
+\item 0: Die Nachricht wird einmal versendet, es gibt keine Bestätigung des Empfängers.
+\item 1: (Standard) Die Nachricht wird mindestens einmal beim Empfänger ankommen. Es wird so lange versucht zu senden, bis eine Bestätigung erhalten wurde.
+\item 2: Mit ein Handhshake Mechanismus wird sichergestellt, dass die Nachricht genau einmal beim Empfänger angekommen ist.
+\end{itemize}
+
+Je höher die QoS Einstellung, desto mehr Resourcen werden beim versenden benötigt und es desto mehr Daten werden über das Netzwerk gesendet.
+
+\subsection{Retaines Messages} \label{retained}
+Bei einer MQTT Message kann das Retained Flag gesetzt werden. Damit wird pro Topic die letzte Nachricht auf dem Broker gespeichert. Verbindet sich ein neuer Client und abonniert das Topic, erhält er die retained Message sofort. Dies kann nützlich sien bei Anwendungen mit Topics, die sehr lange Pausen zwischen den Meldungen haben.
+
+\subsection{Last Will}
+Jeder Client, der sich zum Broker vebindet, kann eine ''Last Will'' Message angeben. Diese Meldung wird an das gewünschte Topic gesendet, sobald die Verbindung beendet wird.
+
+\pagebreak
+
+\subsection{Implementationen}
+Inzwischen sind zahlreiche Implementationen von sowohl MQTT Brokern, als auch Client Libraries verfügbar.
+
+\paragraph{Broker}
+
+\begin{center}
+\begin{tabular}{ | m{5em} | m{25em}| m{12em} | }
+ \hline
+ Name & Beschreibung & URL \\
+ \hline
+ Mosquitto  & Leichtgewichtiger Open Source Broker geschrieben in C. Zurzeit de-facto standard MQTT Broker. & \url{http://mosquitto.org/}  \\
+ \hline
+ ActiveMQ Apollo   & OSS Message Broker, untersützt neben MQTT noch andere Protokolle. Konfiguration und Administration über Web GUI. & \url{http://activemq.apache.org/apollo/}  \\
+  \hline
+ Moquette  & OSS Broker Implementation in Java. Kann auch als Library in eigene Projekte eingebunden werden. & \url{https://github.com/andsel/moquette}  \\
+ \hline
+  HiveMQ  & Proprietärer MQTT Broker, ausgerichtet für Enterprise Anwendungen.  & \url{http://www.hivemq.com/}  \\
+ \hline
+  Mosca  & MQTT Broker für die NodeJS Platform. Kann als Standalone oder Embedded Broker verwendet werden.  & \url{http://www.mosca.io/}  \\
+\hline
+
+\end{tabular}
+\end{center}
+
+
+
+\paragraph{Client Libraries}
+
+Das Eclipse Projekt Paho \cite{paho} stellt Client Libraries für C, Java, Android, Python,
+ Javascript, C/C++ embedded und .Net / WinRT zur verfügung. Die Java Library sich als stabil und gut dokumentiert erwiesen.
+
+Eine Lister mit weiteren Client Libraries ist im MQTT Wiki \cite{clientLibs} zu finden.
+
 
 
 \section{Bestehende Konzepte}
