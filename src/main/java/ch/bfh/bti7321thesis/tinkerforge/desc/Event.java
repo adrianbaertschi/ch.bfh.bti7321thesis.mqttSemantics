@@ -5,11 +5,17 @@ public class Event {
 	// private Class<?> type;
 	private Range<?> range;
 	private String desc;
+	private PresetValues<?> presetValues;
 
 	public Event(String name, Range<?> range, String desc) {
 		this.name = name;
 		this.range = range;
-		this.setDesc(desc);
+		this.desc = desc;
+	}
+	public Event(String name, PresetValues<?> presetValues, String desc) {
+		this.name = name;
+		this.presetValues = presetValues;
+		this.desc = desc;
 	}
 
 	public String getName() {
@@ -34,6 +40,12 @@ public class Event {
 
 	public void setDesc(String desc) {
 		this.desc = desc;
+	}
+	public PresetValues<?> getPresetValues() {
+		return presetValues;
+	}
+	public void setPresetValues(PresetValues<?> presetValues) {
+		this.presetValues = presetValues;
 	}
 
 }

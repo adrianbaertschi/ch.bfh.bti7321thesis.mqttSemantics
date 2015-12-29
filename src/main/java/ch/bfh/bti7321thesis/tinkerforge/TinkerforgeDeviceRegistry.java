@@ -7,6 +7,7 @@ import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.tinkerforge.devices.MqttThing;
 
+// TODO: refactor to HashMap
 public class TinkerforgeDeviceRegistry {
 	
 	private List<MqttThing> things = new ArrayList<MqttThing>();

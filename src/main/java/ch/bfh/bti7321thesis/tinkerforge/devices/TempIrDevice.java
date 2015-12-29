@@ -32,7 +32,6 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 
 
 	public TempIrDevice(String uid, IPConnection ipcon, String stackName) {
-//		this.brickletTemperatureIR = brickletTemperatureIR;
 		super.stackName = stackName;
 		
 		bricklet = new BrickletTemperatureIR(uid, ipcon);
@@ -52,7 +51,7 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 			public void objectTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				LOG.fine("Object Temp: " + temp);
-				MqttPublisher.getInstance().pubEvent(stackName, bricklet, "ObjectTemp", temp);
+				MqttPublisher.getInstance().pubEvent(TempIrDevice.this, "ObjectTemp", temp);
 			}
 		});
 
@@ -62,7 +61,7 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 			public void ambientTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				LOG.fine("Ambient Temp: " + temp);
-				MqttPublisher.getInstance().pubEvent(stackName, bricklet, "AmbientTemp", temp);
+				MqttPublisher.getInstance().pubEvent(TempIrDevice.this, "AmbientTemp", temp);
 			}
 		});
 		
@@ -112,18 +111,6 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 	public Map<String, Object> getState() {
 		
 		List<State> states = getStateDesc();
-		
-		
-//		Map<String, Object> stateEntries = new HashMap<String, Object>();
-//		// TODO: better exception handling, only skip those who fail
-//		try {
-//			stateEntries.put("AmbientTemperatureCallbackPeriod", bricklet.getAmbientTemperatureCallbackPeriod());
-//			stateEntries.put("ObjectTemperatureCallbackPeriod", bricklet.getObjectTemperatureCallbackPeriod());
-//			stateEntries.put("DebouncePeriod",bricklet.getDebouncePeriod());
-//			stateEntries.put("Emissivity", bricklet.getEmissivity());
-//			stateEntries.put("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold());
-//			stateEntries.put("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold());
-		
 		Map<String, Object> stateEntries = new HashMap<String, Object>();
 		for(State state : states) {
 			stateEntries.put(state.getTopic(), state.getValue());
@@ -136,13 +123,13 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 		List<State> states = new ArrayList<State>();
 
 		try {
-		states.add(new State("AmbientTemperatureInterval", bricklet.getAmbientTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "Time in ms"));
-		states.add(new State("AmbientTemperatureEnabled", bricklet.getAmbientTemperatureCallbackPeriod() > 0, null, "Ambient Measurements enabled"));
-		states.add(new State("ObjectTemperatureInterval", bricklet.getObjectTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
-		states.add(new State("DebouncePeriod", bricklet.getDebouncePeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
-		states.add(new State("Emissivity", bricklet.getEmissivity(), new Range<Integer>(6553, 65535), "TODO"));
-		states.add(new State("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold(), null, "TODO"));
-		states.add(new State("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold(), null, "TODO"));
+			states.add(new State("AmbientTemperatureInterval", bricklet.getAmbientTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "Time in ms"));
+			states.add(new State("AmbientTemperatureEnabled", bricklet.getAmbientTemperatureCallbackPeriod() > 0, "Ambient Measurements enabled"));
+			states.add(new State("ObjectTemperatureInterval", bricklet.getObjectTemperatureCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
+			states.add(new State("DebouncePeriod", bricklet.getDebouncePeriod(), new Range<Long>(0L, Long.MAX_VALUE), "TODO"));
+			states.add(new State("Emissivity", bricklet.getEmissivity(), new Range<Integer>(6553, 65535), "TODO"));
+			states.add(new State("AmbientTemperatureCallbackThreshold", bricklet.getAmbientTemperatureCallbackThreshold(), "TODO"));
+			states.add(new State("ObjectTemperatureCallbackThreshold", bricklet.getObjectTemperatureCallbackThreshold(), "TODO"));
 		} catch (TimeoutException | NotConnectedException e) {
 			e.printStackTrace();
 		}
@@ -153,15 +140,14 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 
 	@Override
 	public DeviceDescription getDescription() {
-		DeviceDescription description = new DeviceDescription("tinkerforge.tempIR", "0.0.1");
+		DeviceDescription description = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
 		description.setTopic("TODO");
 		
 		// State
 		StateDescription stateDescription = new StateDescription();
 		
 		for(State state : getStateDesc()) {
-//			stateDescription.add(state.getTopic(), state.getValue().getClass(), state.getDesc());
-			stateDescription.add(state.getTopic(), state.getValue(), state.getRange(), state.getDesc());
+			stateDescription.add(state.getTopic(), state.getValue(), state.getRange(), state.getPresetValues(), state.getDesc());
 		}
 		
 		description.setStateDescription(stateDescription);

@@ -11,6 +11,8 @@ import com.tinkerforge.IPConnection.EnumerateListener;
 import com.tinkerforge.IPConnectionBase;
 
 import ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.JoyStickDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MotionDetectorDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.TempIrDevice;
 
 public class HostEnumerateListener implements EnumerateListener {
@@ -40,39 +42,36 @@ public class HostEnumerateListener implements EnumerateListener {
 		case BrickletTemperatureIR.DEVICE_IDENTIFIER:
 			LOG.info(this.getHostname() + " " + BrickletTemperatureIR.DEVICE_DISPLAY_NAME + " found");
 			
-			// TODO move BrickletTemperatureIR constr to Device
 			TempIrDevice tempIrDevice = new TempIrDevice(uid, ipcon, hostname);
 			TinkerforgeDeviceRegistry.getInstance().add(tempIrDevice);
 			
-//			BrickletSetup.setUpTempIR(brickletTemperatureIR, hostname);
 			break;
 		case BrickletDualButton.DEVICE_IDENTIFIER:
 			LOG.info(hostname + " " + BrickletDualButton.DEVICE_DISPLAY_NAME + " found");
-//			BrickletDualButton brickletDualButton = new BrickletDualButton(uid, ipcon);
-//			BrickletSetup.setUpDualButton(uid, ipcon, hostname);
 			
-			DualButtonDevice device = new DualButtonDevice(uid, ipcon, hostname);
-			TinkerforgeDeviceRegistry.getInstance().add(device);
-			MqttPublisher.getInstance().publishDeviceState(device);
+			DualButtonDevice dualButtonDevice = new DualButtonDevice(uid, ipcon, hostname);
+			TinkerforgeDeviceRegistry.getInstance().add(dualButtonDevice);
+			MqttPublisher.getInstance().publishDeviceState(dualButtonDevice);
 
 			break;
 		case BrickletJoystick.DEVICE_IDENTIFIER:
 			LOG.info(hostname + " " + BrickletJoystick.DEVICE_DISPLAY_NAME + " found");
-			BrickletJoystick brickletJoystick = new BrickletJoystick(uid, ipcon);
-			BrickletSetup.setUpJoystick(brickletJoystick, hostname);
-			// MqttPublisher.getInstance().publishDevice(host,
-			// brickletJoystick);
+			
+			JoyStickDevice joyStickDevice = new JoyStickDevice(uid, ipcon, hostname);
+			TinkerforgeDeviceRegistry.getInstance().add(joyStickDevice);
+			
 			break;
 		case BrickletMotionDetector.DEVICE_IDENTIFIER:
 			LOG.info(hostname + " " + BrickletMotionDetector.DEVICE_DISPLAY_NAME + " found");
-			BrickletMotionDetector brickletMotionDetector = new BrickletMotionDetector(uid, ipcon);
-			BrickletSetup.setUpMotionDetetor(brickletMotionDetector, hostname);
+			
+			MotionDetectorDevice motionDetectorDevice = new MotionDetectorDevice(uid, ipcon, hostname);
+			TinkerforgeDeviceRegistry.getInstance().add(motionDetectorDevice);
+			
 			break;
 		default:
 			LOG.warning("Unknown Device: " + enumInfo);
 			break;
 		}
-
 	}
 
 	public String getHostname() {

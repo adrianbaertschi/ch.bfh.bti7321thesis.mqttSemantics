@@ -4,6 +4,7 @@ public class DeviceDescription {
 	
 	private String id;
 	private String version;
+	private String description;
 	
 	private String topic;
 	
@@ -62,6 +63,14 @@ public class DeviceDescription {
 
 	public void setTopic(String topic) {
 		this.topic = topic;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

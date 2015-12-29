@@ -11,15 +11,17 @@ public class StateDescription {
 		return states;
 	}
 
-//	public boolean add(String key, Class<?> type) {
-//		State state = new State(key, type);
-//		return this.states.add(state);
-//	}
-	
-	public boolean add(String key, Object value, Range<?> range, String desc) {
-		
-		State state = new State(key, value, range, desc);
+	public boolean add(String key, Object value, Range<?> range, PresetValues<?> presetValues, String desc) {
+		State state;
+		if(range == null) {
+			state = new State(key, value, presetValues, desc);
+		} else {
+			state = new State(key, value, range, desc);
+			
+		}
 		return this.states.add(state);
 	}
+	
+	
 
 }

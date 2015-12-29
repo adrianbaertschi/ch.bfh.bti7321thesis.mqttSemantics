@@ -4,15 +4,29 @@ public class State {
 	private String topic;
 	private Object value;
 	private Range<?> range;
+	private PresetValues<?> presetValues;
 	private String desc;
 
 	public State(String topic, Object value, Range<?> range, String desc) {
 		this.topic = topic;
-		this.value = null;
+		this.value = value;
 		this.range = range;
 		this.desc = desc;
 	}
 	
+	public State(String topic, Object value, PresetValues<?> presetValues, String desc) {
+		this.topic = topic;
+		this.value = value;
+		this.presetValues = presetValues;
+		this.desc = desc;
+	}
+
+	public State(String topic, Object value,  String desc) {
+		this.topic = topic;
+		this.value = value;
+		this.desc = desc;
+	}
+
 	public String getTopic() {
 		return topic;
 	}
@@ -43,6 +57,14 @@ public class State {
 
 	public void setRange(Range<?> range) {
 		this.range = range;
+	}
+
+	public PresetValues<?> getPresetValues() {
+		return presetValues;
+	}
+
+	public void setPresetValues(PresetValues<?> presetValues) {
+		this.presetValues = presetValues;
 	}
 
 }

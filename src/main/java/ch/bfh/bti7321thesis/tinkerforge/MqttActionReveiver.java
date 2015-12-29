@@ -35,6 +35,7 @@ public class MqttActionReveiver implements MqttCallback {
 		MqttTopic topic = new MqttTopic(topicString);
 
 		MqttThing mqttThing = TinkerforgeDeviceRegistry.getInstance().find(topic);
+		LOG.info(mqttThing.toString());
 		
 		String action = topic.getLast();
 		
