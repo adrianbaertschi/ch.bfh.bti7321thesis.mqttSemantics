@@ -77,9 +77,6 @@ public class JoyStickDevice extends MqttThing<BrickletJoystick> {
 			case "setAnalogValueCallbackPeriod":
 				bricklet.setAnalogValueCallbackPeriod(period);
 				return true;
-//			case "setAnalogValueCallbackThreshold":
-//				// TODO
-//				break;
 			case "setPositionCallbackPeriod":
 				bricklet.setPositionCallbackPeriod(period);
 				return true;

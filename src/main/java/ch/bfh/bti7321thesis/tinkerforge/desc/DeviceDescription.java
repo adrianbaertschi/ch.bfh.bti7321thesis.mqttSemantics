@@ -6,8 +6,6 @@ public class DeviceDescription {
 	private String version;
 	private String description;
 	
-	private String topic;
-	
 	private StateDescription stateDescription;
 	private EventDescription eventDescription;
 	private CommandDescription commandDescription;
@@ -55,14 +53,6 @@ public class DeviceDescription {
 
 	public void setVersion(String version) {
 		this.version = version;
-	}
-
-	public String getTopic() {
-		return topic;
-	}
-
-	public void setTopic(String topic) {
-		this.topic = topic;
 	}
 
 	public String getDescription() {

@@ -38,11 +38,11 @@ public class MqttActionReveiver implements MqttCallback {
 		LOG.info(mqttThing.toString());
 		
 		String action = topic.getLast();
-		
-		
+		LOG.info(action);
+//		
 		if(mqttThing.handleAction(action, message.getPayload())) {
-			// pub state
-			MqttPublisher.getInstance().publishDeviceState(mqttThing);
+//			// pub state
+//			MqttPublisher.getInstance().publishDeviceState(mqttThing);
 		} else {
 			// TODO: error?
 			LOG.severe("unhandled action");

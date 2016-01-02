@@ -54,18 +54,13 @@ public class MqttPublisher {
 		try {
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setCleanSession(true);
+			
 			mqttClient = new MqttAsyncClient(BROKER, CLIENT_ID, persistence);
-//			mqttClient = new MqttClient(BROKER, CLIENT_ID, persistence);
-			
 			mqttClient.connect(connOpts).waitForCompletion();
-//			mqttClient.connect(connOpts);
-			
 			mqttClient.setCallback(new MqttActionReveiver());
-							   //"ch.bfh.barta3/X1-Carbon/tfstack1/Temperature IR Bricklet/qC1/actions/setAmbientTemperatureCallbackPeriod"
-//			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/actions/#");
+			// TODO: read topic base from config
 			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/commands/#", 2);
 		} catch (MqttException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		LOG.info("MQTT Connected");
@@ -76,25 +71,11 @@ public class MqttPublisher {
 		LOG.info("Disconnecting MQTT");
 		try {
 			mqttClient.disconnect();
-//			mqttClient.disconnectForcibly();
 		} catch (MqttException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		LOG.info("MQTT disconnected");
 	}
-	
-//	@Deprecated
-//	public void pubEvent(String stackHost, Device device, String eventName, Object payload) {
-//		
-//		String baseTopic = new BrickletToMqttConverter().getBaseTopic(device, stackHost) + "/events/" + eventName;
-//		String payloadStr = payload.toString();
-//		if(addRandomtoEvents ) {
-//			payloadStr += " " + Math.random();
-//		}
-//		
-//		pubEvent(baseTopic, payloadStr);
-//	}
 	
 public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
 		
@@ -114,9 +95,7 @@ public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
 		try {
 			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDescription());
 			yaml = yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDescription());
-//			yaml = yamlMapper.writeValueAsString(thing.getDescription());
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing);
@@ -141,9 +120,7 @@ public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
 			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.getBytes());
 			message.setQos(0);
 			mqttClient.publish(topic, message);
-			// TODO Auto-generated catch block
 		} catch (MqttException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -155,11 +132,9 @@ public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
 			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
 			message.setRetained(true); // TODO: activate if stable
 			
-			
 			IMqttDeliveryToken imMqttDeliveryToken = mqttClient.publish(topic, message);
 			imMqttDeliveryToken.waitForCompletion();
 		} catch (MqttException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -171,7 +146,6 @@ public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
 			message.setRetained(true);
 			mqttClient.publish(topic, message);
 		} catch (MqttException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
 	}

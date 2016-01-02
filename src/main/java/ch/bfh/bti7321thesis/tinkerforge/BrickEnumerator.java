@@ -43,16 +43,12 @@ public class BrickEnumerator extends Thread {
 			ipcon.connect(host, PORT);
 			ipcon.enumerate();
 		} catch (UnknownHostException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (AlreadyConnectedException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		} catch (NotConnectedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

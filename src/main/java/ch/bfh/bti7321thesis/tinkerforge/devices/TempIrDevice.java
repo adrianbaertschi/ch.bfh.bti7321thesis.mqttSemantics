@@ -140,8 +140,10 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 
 	@Override
 	public DeviceDescription getDescription() {
+		
+		// TODO: timestamp Last_onl
+		
 		DeviceDescription description = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
-		description.setTopic("TODO");
 		
 		// State
 		StateDescription stateDescription = new StateDescription();
