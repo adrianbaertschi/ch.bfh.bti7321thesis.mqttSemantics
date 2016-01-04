@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+    <script type="text/javascript" src="js/lib/paho/mqttws31.js"></script>
+    <script type="text/javascript" src="js/lib/jquery/jquery-2.1.4.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="js/lib/bootstrap-3.3.6-dist/css/bootstrap.min.css">
+    <script src="js/lib/bootstrap-3.3.6-dist/js/bootstrap.min.js"></script>
+
+    <script src="js/lib/jquery/jquery.md5.js"></script>
+
+
+    <!-- esprima required only for !!js/function -->
+    <!--<script src="https://cdn.rawgit.com/jquery/esprima/2.7.1/esprima.js"></script>-->
+    <script src="js/lib/js-yaml/js-yaml.js"></script>
+
+
+    <script src="config.js" type="text/javascript"></script>
+    <!--<script src="eventSubscription.js" type="text/javascript"></script>-->
+    <script src="js/app/eventSubscription-compiled.js" type="text/javascript"></script>
+    <script src="js/app/commandPublishing-compiled.js" type="text/javascript"></script>
+
+
+</head>
+<body>
+
+<nav class="navbar navbar-default">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">MQTT Schema</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li><a href="index.html">Topic Tree<span class="sr-only">(current)</span></a></li>
+                <li class="active"><a href="descriptions.html">Device Browser</a></li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<div class="row">
+
+    <div id="table" class="col-md-12">
+        <table id="deviceTable" data-role="table" class="table table-hover">
+            <thead>
+            <tr>
+                <th>Application ID</th>
+                <th>Column 2</th>
+                <th>Column 3</th>
+                <th>Device Type</th>
+                <th>Device ID</th>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+<div class="row">
+    <div id="detail" class="col-md-6">
+        <textarea id="txt" readonly rows="40" cols="100"></textarea>
+    </div>
+    <div class="col-md-6">
+
+        <div id="doc"></div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    var schemas = {};
+    var subscriptions = {};
+
+    var client = new Paho.MQTT.Client(host, port, '/', 'descBrowser');
+    client.onMessageArrived = onMessage;
+    client.onconnectionlost = onDisconnect;
+    function onConnect() {
+        client.subscribe('+/+/+/+/+/schema/yaml', onMessage);
+        console.log("MQTT connected");
+    }
+
+    client.connect({onSuccess: onConnect});
+
+    function onMessage(message) {
+//        console.log(message.destinationName + " - " + message.payloadString);
+        var topics = message.destinationName.split("/");
+
+        var fulltopic = message.destinationName;
+
+        var baseInfo = topics[0] + ' - ' + topics[1] + ' - ' + topics[2] + ' - ';
+        console.log(baseInfo);
+        var deviceType = topics[3];
+        var devId = topics[4];
+
+
+         if(fulltopic in schemas) {
+            schemas[fulltopic] = message.payloadString;
+            return;
+        }
+        schemas[fulltopic] = message.payloadString;
+
+        var a = '<a href="#" onclick="deviceClick(\'' + fulltopic + '\')">'+ topics[4] + '</a>';
+
+        var row = '<tr><td>'+ topics[0] + '</td>'+
+                '<td>'+ topics[1] + '</td>'+
+                '<td>'+ topics[2] + '</td>'+
+                '<td>'+ topics[3] + '</td>'+
+                '<td>' + a + '</td>';
+
+        $('#deviceTable > tbody:last-child').append(row);
+
+
+
+    }
+
+    function deviceClick(schemaTopic) {
+        console.log('table click');
+        console.log(schemaTopic);
+        var devId = schemaTopic.split('/')[4];
+
+
+        var deviceTopic = schemaTopic.split('/').slice(0, 5).join('/');
+        console.log(deviceTopic);
+
+        $('#txt').val(schemas[schemaTopic]);
+
+        var json = jsyaml.load(schemas[schemaTopic]);
+////    var json = JSON.parse(schemas[this.id]);
+
+        $('#doc').text('');
+
+        // TODO: meta infos (version , etc).
+        //$('#commands').text(json.id).append(' - ').append(json.version);
+
+        $('#doc').append('<h2>State</h2>');
+        json.stateDescription.states.forEach(function (state) {
+            $('#doc').append(renderState(state));
+        });
+
+        $('#doc').append('<h2>Events</h2>');
+        json.eventDescription.events.forEach(function (event) {
+            $('#doc').append(renderEvent(event, deviceTopic)).append('<br>');
+        });
+
+        $('#doc').append('<h2>Commands</h2>');
+        json.commandDescription.commands.forEach(function (cmd) {
+            $('#doc').append(renderCmd(cmd, deviceTopic)).append('<br>');
+        });
+        evtHandler();
+
+    }
+
+    function renderState(state) {
+        var res = '<strong>' + state.topic + '</strong> <br>';
+        res += state.desc + '<br>';
+        res += renderRange(state.range);
+        return res + '<br>';
+    }
+
+
+    function renderCmd(cmd, deviceTopic) {
+        var cmdTopic = deviceTopic + '/commands/' + cmd.name;
+
+        var res = '<strong>' + cmd.name + '</strong> <br>';
+
+        res += 'Linked state: ' + cmd.linkedState + '<br>';
+
+        $.each(cmd.params, function (key, value) {
+            //console.log(value);
+            res += 'Parameter: ' + key + '<br>';
+            //console.log(value);
+            if (value.hasOwnProperty('min')) {
+                res += renderRange(value);
+            } else {
+                res += renderPresets(value);
+            }
+
+            var cmdId = $.md5(cmdTopic);
+
+            res += 'Topic: ' + cmdTopic;
+            res += '<form class="form-inline">';
+            res += '    <div class="form-group">';
+            res += '        <input id="' + cmdId + '"type="text" class="form-control">';
+            res += '        <button data-id="' + cmdTopic + '" data-topic="' + cmdTopic + '" class="btn btn-default cmd" type="button">Send</button>';
+            res += '    </div>';
+            res += '</form>';
+        });
+
+        return res + '<br>';
+    }
+
+    function renderEvent(event, deviceTopic) {
+        var eventName = event.name;
+        var eventTopic = deviceTopic + '/events/' + event.name;
+        var evtId = $.md5(eventTopic);
+
+        var res = '<strong>' + eventName + '</strong> <br>';
+        res += event.desc + '<br>';
+        res += renderRange(event.range);
+        res += '<form class="form-inline">';
+        res += '    <div class="form-group">';
+        res += 'Topic: ' + eventTopic + '<br>'; // TODO: display in readonly input field
+        res += '        <button data-topic="' + eventTopic + '" class="btn btn-default evt" type="button">Subscribe</button>';
+        res += '        <input id="' + evtId + '"type="text" class="form-control">';
+        res += '    </div>';
+        res += '</form>';
+
+        return res;
+    }
+
+    function renderPresets(presets) {
+        console.log(presets);
+        var res = '';
+        $.each(presets, function (index, value) {
+            res += value + ' ';
+        });
+
+        return res + '<br>';
+    }
+
+    function renderRange(range) {
+
+        if (range == null) {
+            return 'No Range <br>';
+        }
+
+        var res = 'Type: ' + range.type + '<br>';
+        res += 'Min: ' + range.min + '<br>';
+        res += 'Max: ' + range.max + '<br>';
+        return res;
+    }
+
+    function onDisconnect(reason) {
+        console.log("disconnected - " + reason);
+        alert("disconnected - " + reason);
+    }
+
+    function evtHandler() {
+        $('.evt').click(function () {
+            //var eventId = $(this).data('id');
+            var eventTopic = $(this).data('topic');
+
+            var sub;
+            if (!(eventTopic in subscriptions)) {
+                sub = new Subscription();
+                subscriptions[eventTopic] = sub;
+            } else {
+                sub = subscriptions[eventTopic];
+            }
+
+            // TODO: topic übergeben
+
+
+            //console.log($(this).text());
+            $(this).toggleClass("active");
+            if ($(this).text() === 'Subscribe') {
+                sub.subscribe(eventTopic);
+                $(this).text('Unsubscribe');
+            } else {
+                $(this).text('Subscribe');
+                sub.unsubscribe(eventTopic);
+            }
+
+
+        });
+
+        $('.cmd').click(function () {
+
+            var cmdTopic = $(this).data('topic');
+
+            var value = $('#'+ $.md5(cmdTopic)).val();
+            console.log(value);
+            console.log(cmdTopic);
+
+            var pub = new Publisher();
+            pub.publish(value, cmdTopic);
+
+
+
+
+        });
+    }
+</script>
+</body>
+</html>
