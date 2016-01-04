@@ -26,7 +26,7 @@ import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
 import ch.bfh.bti7321thesis.tinkerforge.desc.State;
 import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
-public class JoyStickDevice extends MqttThing<BrickletJoystick> {
+public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
@@ -46,12 +46,12 @@ public class JoyStickDevice extends MqttThing<BrickletJoystick> {
 			@Override
 			public void position(short x, short y) {
 				LOG.fine("X:" + x + " Y: " + y);
-				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this, "PosX", x);
-				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this, "PosY", y);
+				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosX", x);
+				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosY", y);
 			}
 		});
-		MqttPublisher.getInstance().publishDesc(this);
-		MqttPublisher.getInstance().publishDeviceState(this);
+		MqttPublisher.getInstance().publishDesc(this.toThing());
+		MqttPublisher.getInstance().publishDeviceState(this.toThing());
 	}
 
 	public List<String> getActions() {

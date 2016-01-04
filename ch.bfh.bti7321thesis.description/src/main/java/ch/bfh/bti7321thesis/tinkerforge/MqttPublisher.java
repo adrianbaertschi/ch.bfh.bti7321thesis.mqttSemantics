@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
+import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -14,7 +15,6 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import com.tinkerforge.Device;
 
 import ch.bfh.bti7321thesis.tinkerforge.devices.MqttThing;
 
@@ -27,7 +27,9 @@ public class MqttPublisher {
 	
 	private MemoryPersistence persistence = new MemoryPersistence();
 	private IMqttAsyncClient mqttClient;
-//	private MqttClient mqttClient;
+	
+	// TODO: set somewhere
+	private static MqttCallback mqttCallBack;
 	
 	static ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 	ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
@@ -47,7 +49,13 @@ public class MqttPublisher {
 		return Holder.instance;
 	}
 	
-	 
+	public static IMqttAsyncClient getclient() {
+		return null;
+	}
+	
+	public static void setCallback(MqttCallback mqttCallback) {
+		mqttCallBack = mqttCallback;
+	}
 	
 	private void setUpMqtt() {
 		LOG.info("Connecting to broker: " + BROKER);
@@ -57,7 +65,10 @@ public class MqttPublisher {
 			
 			mqttClient = new MqttAsyncClient(BROKER, CLIENT_ID, persistence);
 			mqttClient.connect(connOpts).waitForCompletion();
-			mqttClient.setCallback(new MqttActionReveiver());
+			
+			// TODO
+			mqttClient.setCallback(mqttCallBack);
+			
 			// TODO: read topic base from config
 			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/commands/#", 2);
 		} catch (MqttException e) {
@@ -77,7 +88,7 @@ public class MqttPublisher {
 		LOG.info("MQTT disconnected");
 	}
 	
-public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
+public void pubEvent(MqttThing thing, String eventName, Object payload) {
 		
 		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing) + "/events/" + eventName;
 		String payloadStr = payload.toString();
@@ -89,12 +100,12 @@ public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
 	}
 
 	
-	public void publishDesc(MqttThing<? extends Device> thing) {
+	public void publishDesc(MqttThing thing) {
 		String json = "";
 		String yaml = "";
 		try {
-			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDescription());
-			yaml = yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDescription());
+			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
+			yaml = yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
@@ -104,9 +115,8 @@ public void pubEvent(MqttThing<?> thing, String eventName, Object payload) {
 		
 	}
 	
-	public void publishDeviceState(MqttThing<? extends Device> thing) {
+	public void publishDeviceState(MqttThing thing) {
 		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing) + "/state";
-		LOG.info(thing.getState().entrySet().size() + "entries");
 		for(Entry<String, Object> state : thing.getState().entrySet()) {
 			LOG.info(state.getKey());
 			pubState(baseTopic + "/" + state.getKey(), state.getValue());

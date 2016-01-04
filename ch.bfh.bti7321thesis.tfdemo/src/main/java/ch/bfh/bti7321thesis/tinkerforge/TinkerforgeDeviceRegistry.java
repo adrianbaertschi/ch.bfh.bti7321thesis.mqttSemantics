@@ -5,12 +5,12 @@ import java.util.List;
 
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.devices.MqttThing;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
 
 // TODO: refactor to HashMap
 public class TinkerforgeDeviceRegistry {
 	
-	private List<MqttThing> things = new ArrayList<MqttThing>();
+	private List<MqttDevice> things = new ArrayList<MqttDevice>();
 //	ListMultimap<String, Device> devices = SynchronizedListMultimap;
 	
 	
@@ -28,11 +28,11 @@ public class TinkerforgeDeviceRegistry {
 	}
 	
 	
-	public void add(MqttThing device) {
+	public void add(MqttDevice device) {
 		this.things.add(device);
 	}
 
-	public MqttThing find(MqttTopic topic) throws TimeoutException {
+	public MqttDevice find(MqttTopic topic) throws TimeoutException {
 		
 		String uid = topic.getTopic(4);
 		

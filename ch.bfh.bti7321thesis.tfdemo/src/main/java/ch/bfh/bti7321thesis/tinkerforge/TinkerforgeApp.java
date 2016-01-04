@@ -26,7 +26,9 @@ public class TinkerforgeApp {
 		hosts.add("localhost");
 		hosts.add("tfstack1");
 		hosts.add("tfstack2");
-
+		
+		MqttPublisher.setCallback(new MqttActionReveiver());
+		
 		List<BrickEnumerator> enumerators = new ArrayList<BrickEnumerator>();
 
 		for (String host : hosts) {

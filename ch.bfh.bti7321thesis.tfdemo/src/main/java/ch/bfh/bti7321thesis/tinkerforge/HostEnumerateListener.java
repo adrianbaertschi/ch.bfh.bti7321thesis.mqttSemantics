@@ -51,8 +51,7 @@ public class HostEnumerateListener implements EnumerateListener {
 			
 			DualButtonDevice dualButtonDevice = new DualButtonDevice(uid, ipcon, hostname);
 			TinkerforgeDeviceRegistry.getInstance().add(dualButtonDevice);
-			MqttPublisher.getInstance().publishDeviceState(dualButtonDevice);
-
+			
 			break;
 		case BrickletJoystick.DEVICE_IDENTIFIER:
 			LOG.info(hostname + " " + BrickletJoystick.DEVICE_DISPLAY_NAME + " found");

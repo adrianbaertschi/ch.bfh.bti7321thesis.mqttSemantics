@@ -10,7 +10,7 @@ import com.tinkerforge.IPConnection;
 import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 
-public class MotionDetectorDevice extends MqttThing<BrickletMotionDetector>{
+public class MotionDetectorDevice extends MqttDevice<BrickletMotionDetector>{
 	
 	public MotionDetectorDevice (String uid, IPConnection ipcon, String stackName) {
 		this.stackName = stackName;
@@ -21,7 +21,7 @@ public class MotionDetectorDevice extends MqttThing<BrickletMotionDetector>{
 
 			@Override
 			public void motionDetected() {
-				MqttPublisher.getInstance().pubEvent(MotionDetectorDevice.this, "MotionDetected", "yes");
+				MqttPublisher.getInstance().pubEvent(MotionDetectorDevice.this.toThing(), "MotionDetected", "yes");
 			}
 		});
 
@@ -29,7 +29,7 @@ public class MotionDetectorDevice extends MqttThing<BrickletMotionDetector>{
 
 			@Override
 			public void detectionCycleEnded() {
-				MqttPublisher.getInstance().pubEvent(MotionDetectorDevice.this, "MotionDetected", "No");
+				MqttPublisher.getInstance().pubEvent(MotionDetectorDevice.this.toThing(), "MotionDetected", "No");
 				
 			}
 		});

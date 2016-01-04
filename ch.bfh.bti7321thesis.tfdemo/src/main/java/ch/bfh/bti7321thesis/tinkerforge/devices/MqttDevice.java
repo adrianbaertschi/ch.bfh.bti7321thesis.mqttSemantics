@@ -7,11 +7,13 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.tinkerforge.util.TinkerforgeBrickletDB;
 
-public abstract class MqttThing<T extends Device> {
+public abstract class MqttDevice<T extends Device> {
 	
 	T bricklet;
 	String stackName;
+	
 	
 	// TODO Setupt, init ein eigene Methode gliedern, ähnlich wie TinkerForgeBaseSensor
 
@@ -28,6 +30,7 @@ public abstract class MqttThing<T extends Device> {
 		return null;
 	}
 
+	// TODO: Rename to handleCommand
 	public abstract boolean handleAction(String action, byte[] payload);
 	
 	public abstract Map<String, Object> getState();
@@ -38,4 +41,22 @@ public abstract class MqttThing<T extends Device> {
 	
 	public abstract DeviceDescription getDescription();
 	
+	protected MqttThing toThing() {
+		MqttThing mqttThing = new MqttThing();
+		mqttThing.setStackName(this.getStackName());
+		try {
+			mqttThing.setDeviceType(TinkerforgeBrickletDB.getDisplayName(this.getDevice().getIdentity().deviceIdentifier));
+		} catch (TimeoutException | NotConnectedException e) {
+			e.printStackTrace();
+		}
+		mqttThing.setDeviceInstance(this.getUid());
+		
+		mqttThing.setState(this.getState());
+		
+		mqttThing.setDeviceDescription(this.getDescription());
+		
+		return mqttThing;
+		
+	}
+		
 }

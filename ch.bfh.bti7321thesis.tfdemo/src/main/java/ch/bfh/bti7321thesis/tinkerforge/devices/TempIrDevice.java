@@ -26,7 +26,7 @@ import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
 import ch.bfh.bti7321thesis.tinkerforge.desc.State;
 import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
-public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
+public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
@@ -51,7 +51,7 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 			public void objectTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				LOG.fine("Object Temp: " + temp);
-				MqttPublisher.getInstance().pubEvent(TempIrDevice.this, "ObjectTemp", temp);
+				MqttPublisher.getInstance().pubEvent(TempIrDevice.this.toThing(), "ObjectTemp", temp);
 			}
 		});
 
@@ -61,16 +61,15 @@ public class TempIrDevice extends MqttThing<BrickletTemperatureIR> {
 			public void ambientTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				LOG.fine("Ambient Temp: " + temp);
-				MqttPublisher.getInstance().pubEvent(TempIrDevice.this, "AmbientTemp", temp);
+				MqttPublisher.getInstance().pubEvent(TempIrDevice.this.toThing(), "AmbientTemp", temp);
 			}
 		});
 		
-		MqttPublisher.getInstance().publishDeviceState(this);
-		MqttPublisher.getInstance().publishDesc(this);
+		MqttPublisher.getInstance().publishDeviceState(this.toThing());
+		MqttPublisher.getInstance().publishDesc(this.toThing());
 	}
-
-
-
+	
+	
 	@Override
 	public boolean handleAction(String action, byte[] payload) {
 

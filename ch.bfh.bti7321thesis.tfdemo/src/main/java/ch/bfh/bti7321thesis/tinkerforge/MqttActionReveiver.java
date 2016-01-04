@@ -7,10 +7,11 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import ch.bfh.bti7321thesis.tinkerforge.devices.MqttThing;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
 
+// TODO: rename to Command...
 public class MqttActionReveiver implements MqttCallback {
-
+	
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	@Override
@@ -34,7 +35,7 @@ public class MqttActionReveiver implements MqttCallback {
 
 		MqttTopic topic = new MqttTopic(topicString);
 
-		MqttThing mqttThing = TinkerforgeDeviceRegistry.getInstance().find(topic);
+		MqttDevice mqttThing = TinkerforgeDeviceRegistry.getInstance().find(topic);
 		LOG.info(mqttThing.toString());
 		
 		String action = topic.getLast();
