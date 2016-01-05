@@ -21,6 +21,7 @@
     <!--<script src="eventSubscription.js" type="text/javascript"></script>-->
     <script src="js/app/eventSubscription-compiled.js" type="text/javascript"></script>
     <script src="js/app/commandPublishing-compiled.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/custom.css">
 
 
 </head>
@@ -75,7 +76,7 @@
     </div>
     <div class="col-md-6">
 
-        <div id="doc"></div>
+        <div class="panel-group" id="doc"></div>
     </div>
 </div>
 
@@ -89,7 +90,7 @@
     client.onMessageArrived = onMessage;
     client.onconnectionlost = onDisconnect;
     function onConnect() {
-        client.subscribe('+/+/+/+/+/schema/yaml', onMessage);
+        client.subscribe('+/+/+/+/+/schema/YAML', onMessage);
         console.log("MQTT connected");
     }
 
@@ -146,44 +147,76 @@
         // TODO: meta infos (version , etc).
         //$('#commands').text(json.id).append(' - ').append(json.version);
 
-        $('#doc').append('<h2>State</h2>');
+        var stateCnt = '';
         json.stateDescription.states.forEach(function (state) {
-            $('#doc').append(renderState(state));
+            stateCnt += renderState(state);
         });
+        $('#doc').append(createSection('State', stateCnt));
 
-        $('#doc').append('<h2>Events</h2>');
+        var eventCnt = '';
         json.eventDescription.events.forEach(function (event) {
-            $('#doc').append(renderEvent(event, deviceTopic)).append('<br>');
+            eventCnt += renderEvent(event, deviceTopic);
         });
+        $('#doc').append(createSection('Events', eventCnt));
 
-        $('#doc').append('<h2>Commands</h2>');
+        var cmdCnt = '';
         json.commandDescription.commands.forEach(function (cmd) {
-            $('#doc').append(renderCmd(cmd, deviceTopic)).append('<br>');
+            cmdCnt += renderCmd(cmd, deviceTopic);
         });
+        $('#doc').append(createSection('Commands', cmdCnt));
 
-        $('#doc').append('<h2>Complex Types</h2>');
+        var typeCnt = '';
         json.complexTypes.forEach(function (type) {
-            $('#doc').append(renderType(type, deviceTopic)).append('<br>');
+            typeCnt += renderType(type, deviceTopic);
         });
+        $('#doc').append(createSection('Complex_Types', typeCnt));
+
 
         evtHandler();
 
     }
 
+    function createSection(title, content) {
+        var res = '';
+        res += '<div class="panel panel-default" id="panel1">';
+
+        res += '  <div class="panel-heading">';
+        res += '    <h2 class="panel-title">';
+        res += '      <a data-toggle="collapse" data-target="#collapse'+title+'" href="#collapse'+ title + '">';
+        res +=          title;
+        res += '      </a>';
+        res += '    </h2>';
+        res += '  </div>';
+
+        res += '  <div id="collapse'+title+'" class="panel-collapse collapse in">';
+        res += '    <div class="panel-body">';
+        res +=          content;
+        res += '    </div>';
+
+        res += '</div>';
+
+        return res;
+    }
+
     function renderState(state) {
         var res = '<strong>' + state.topic + '</strong> <br>';
         res += state.desc + '<br>';
-        res += renderRange(state.range);
+        res += renderRange(state.range, 'Value:');
 
         if(state.complexTypeRef != null) {
-            res += 'Type: ';
-            // TODO: link to type section
-            res += '<a href="#type_' + state.complexTypeRef + '">' + state.complexTypeRef + '</a> <br>';
-
-            //res += state.complexTypeRef;
+            res += renderComplexTypeLink(state.complexTypeRef);
         }
 
         return res + '<br>';
+    }
+
+    function renderComplexTypeLink(typeRef) {
+        var res = '';
+
+        res += 'Type: ';
+        res += '<a href="#type_' + typeRef + '">' + typeRef + '</a> <br>';
+
+        return res;
     }
 
 
@@ -194,22 +227,41 @@
 
         res += 'Linked state: ' + cmd.linkedState + '<br>';
 
-        $.each(cmd.params, function (key, value) {
+//        console.log(cmd.parameter);
+
+
+        $.each(cmd.parameter, function (key, value) {
             //console.log(value);
             res += 'Parameter: ' + key + '<br>';
+            console.log(value);
+            console.log(cmd.parameters);
+
             //console.log(value);
             if (value.hasOwnProperty('min')) {
-                res += renderRange(value);
-            } else {
+                res += renderRange(value, 'Expects:');
+            } else if (value.hasOwnProperty('values')) {
                 res += renderPresets(value);
+            } else if(typeof value === 'string') {
+                // Ref to Complextype
+                res += renderComplexTypeLink(value) + '<br>';
+            } else {
+                console.log('ERROR ' + value);
             }
+
 
             var cmdId = $.md5(cmdTopic);
 
-            res += 'Topic: ' + cmdTopic;
+
+
+            res += '    <div class="input-group">';
+            res += '         <span class="input-group-addon" id="basic-addon3">Topic</span> ';
+            res += '        <input class="form-control" id="disabledInput" type="text" value="'+cmdTopic+'" readonly>';
+            res += '    </div>';
+
             res += '<form class="form-inline">';
             res += '    <div class="form-group">';
-            res += '        <input id="' + cmdId + '"type="text" class="form-control">';
+//            res += '        <input id="' + cmdId + '"type="text" class="form-control">';
+            res += '        <textarea id="' + cmdId + '" rows="2" cols="20" style="font-family:monospace;" class="form-control" ></textarea>';
             res += '        <button data-id="' + cmdTopic + '" data-topic="' + cmdTopic + '" class="btn btn-default cmd" type="button">Send</button>';
             res += '    </div>';
             res += '</form>';
@@ -225,7 +277,7 @@
 
         var res = '<strong>' + eventName + '</strong> <br>';
         res += event.desc + '<br>';
-        res += renderRange(event.range);
+        res += renderRange(event.range, 'Value:');
         res += '<form class="form-inline">';
         res += '    <div class="form-group">';
         res += 'Topic: ' + eventTopic + '<br>'; // TODO: display in readonly input field
@@ -234,7 +286,7 @@
         res += '    </div>';
         res += '</form>';
 
-        return res;
+        return res +'<br>';
     }
 
     function renderType(type, deviceTopic) {
@@ -243,18 +295,16 @@
         res += 'Properties:' + '<br>';
         res += '<ul>';
         $.each(type.properties, function (index, value) {
-//            console.log(value);
             res += '<li>' + value.name + ': ' + value.type  + '</li>';
             res += '</li>'
 
         });
-        res += '</ul>'
+        res += '</ul>';
 
         return res;
     }
 
     function renderPresets(presets) {
-        console.log(presets);
         var res = '';
         $.each(presets, function (index, value) {
             res += value + ' ';
@@ -263,12 +313,12 @@
         return res + '<br>';
     }
 
-    function renderRange(range) {
+    function renderRange(range, label) {
 
         if (range == null) {
             return '';
         }
-        var res = 'Range:';
+        var res = label;
         res += '<ul>';
         res += '<li>Type: ' + range.type + '</li>';
         res += '<li>Min: ' + range.min + '</li>';
@@ -321,11 +371,9 @@
 
             var pub = new Publisher();
             pub.publish(value, cmdTopic);
-
-
-
-
         });
+
+//        $('#collapseComplex_Types').addClass('in');
     }
 </script>
 </body>
