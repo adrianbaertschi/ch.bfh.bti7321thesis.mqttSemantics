@@ -1,7 +1,7 @@
 package ch.bfh.bti7321thesis.tinkerforge.desc;
 
 // TODO?? T extends Comparable oder Number
-public class Range<T> {
+public class Range<T extends Number> {
 	
 //	private Class<?> type;
 	private T min;

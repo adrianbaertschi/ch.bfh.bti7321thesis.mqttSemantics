@@ -2,28 +2,26 @@ package ch.bfh.bti7321thesis.tinkerforge.desc;
 
 public class State {
 	private String topic;
-	private Object value;
 	private Range<?> range;
 	private PresetValues<?> presetValues;
+	private String complexTypeRef;
 	private String desc;
 
-	public State(String topic, Object value, Range<?> range, String desc) {
+	public State(String topic,  Range<?> range, String desc) {
 		this.topic = topic;
-		this.value = value;
 		this.range = range;
 		this.desc = desc;
 	}
 	
-	public State(String topic, Object value, PresetValues<?> presetValues, String desc) {
+	public State(String topic, PresetValues<?> presetValues, String desc) {
 		this.topic = topic;
-		this.value = value;
 		this.presetValues = presetValues;
 		this.desc = desc;
 	}
 
-	public State(String topic, Object value,  String desc) {
+	public State(String topic, String complexTypeRef,  String desc) {
 		this.topic = topic;
-		this.value = value;
+		this.setComplexTypeRef(complexTypeRef);
 		this.desc = desc;
 	}
 
@@ -43,14 +41,6 @@ public class State {
 		this.desc = desc;
 	}
 
-	public Object getValue() {
-		return value;
-	}
-
-	public void setValue(Object value) {
-		this.value = value;
-	}
-
 	public Range<?> getRange() {
 		return range;
 	}
@@ -66,5 +56,14 @@ public class State {
 	public void setPresetValues(PresetValues<?> presetValues) {
 		this.presetValues = presetValues;
 	}
+
+	public String getComplexTypeRef() {
+		return complexTypeRef;
+	}
+
+	public void setComplexTypeRef(String complexTypeRef) {
+		this.complexTypeRef = complexTypeRef;
+	}
+
 
 }

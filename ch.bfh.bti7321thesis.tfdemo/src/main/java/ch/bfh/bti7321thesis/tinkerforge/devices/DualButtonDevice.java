@@ -1,8 +1,6 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
@@ -20,7 +18,6 @@ import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
 import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.PresetValues;
-import ch.bfh.bti7321thesis.tinkerforge.desc.State;
 import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
 public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
@@ -38,7 +35,6 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 		try {
 			bricklet.setLEDState(BrickletDualButton.LED_STATE_AUTO_TOGGLE_OFF, BrickletDualButton.LED_STATE_AUTO_TOGGLE_OFF);
 		} catch (TimeoutException | NotConnectedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -96,7 +92,6 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 				break;
 			}
 		} catch (TimeoutException | NotConnectedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -105,42 +100,32 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 
 	@Override
 	public Map<String, Object> getState() {
-		List<State> states = getStateDesc();
 		Map<String, Object> stateEntries = new HashMap<String, Object>();
-		for(State state : states) {
-			stateEntries.put(state.getTopic(), state.getValue());
-		}
 		
-		return stateEntries;
-	}
-	
-	private List<State> getStateDesc() {
-
-		List<State> states = new ArrayList<State>();
-
 		try {
-			states.add(new State("ButonLeftPressed", bricklet.getButtonState().buttonL == BrickletDualButton.BUTTON_STATE_PRESSED, new BooleanPresetValues(), "Left Button presses (true) or releases (false)"));
-			states.add(new State("ButonRightPressed", bricklet.getButtonState().buttonR == BrickletDualButton.BUTTON_STATE_PRESSED, new BooleanPresetValues(), "Right Button presses (true) or releases (false)"));
-			states.add(new State("LedLeft", bricklet.getLEDState().ledL == BrickletDualButton.LED_STATE_ON, new BooleanPresetValues(), "Left LED on (true) or off (false)"));
-			states.add(new State("LedRight", bricklet.getLEDState().ledR == BrickletDualButton.LED_STATE_ON, new BooleanPresetValues(), "Right LED on (true) or off (false)"));
+			stateEntries.put("ButonLeftPressed", bricklet.getButtonState().buttonL == BrickletDualButton.BUTTON_STATE_PRESSED);
+			stateEntries.put("ButonRightPressed", bricklet.getButtonState().buttonR == BrickletDualButton.BUTTON_STATE_PRESSED);
+			stateEntries.put("LedLeft", bricklet.getLEDState().ledL == BrickletDualButton.LED_STATE_ON);
+			stateEntries.put("LedRight", bricklet.getLEDState().ledR == BrickletDualButton.LED_STATE_ON);
 
 		} catch (TimeoutException | NotConnectedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return states;
+		return stateEntries;
 	}
-
+	
 
 	@Override
 	public DeviceDescription getDescription() {
 		DeviceDescription deviceDescription = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
 		
 		StateDescription stateDescription = new StateDescription();
-		for(State state : getStateDesc()) {
-			stateDescription.add(state.getTopic(), state.getValue(), state.getRange(), state.getPresetValues(), state.getDesc());
-		}
+		stateDescription.add("ButonLeftPressed", new BooleanPresetValues(), "Left Button presses (true) or releases (false)");
+		stateDescription.add("ButonRightPressed", new BooleanPresetValues(), "Right Button presses (true) or releases (false)");
+		stateDescription.add("LedLeft", new BooleanPresetValues(), "Left LED on (true) or off (false)");
+		stateDescription.add("LedRight", new BooleanPresetValues(), "Right LED on (true) or off (false)");
+		
 		deviceDescription.setStateDescription(stateDescription);
 		
 		EventDescription eventDescription = new EventDescription();

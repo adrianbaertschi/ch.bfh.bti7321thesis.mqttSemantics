@@ -1,5 +1,8 @@
 package ch.bfh.bti7321thesis.tinkerforge.desc;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class DeviceDescription {
 	
 	private String id;
@@ -9,6 +12,7 @@ public class DeviceDescription {
 	private StateDescription stateDescription;
 	private EventDescription eventDescription;
 	private CommandDescription commandDescription;
+	private final Set<ComplexType> types = new HashSet<ComplexType>();
 	
 	public DeviceDescription(String id, String version) {
 		this.id = id;
@@ -21,6 +25,7 @@ public class DeviceDescription {
 
 	public void setStateDescription(StateDescription stateDescription) {
 		this.stateDescription = stateDescription;
+		this.types.addAll(stateDescription.getTypes());
 	}
 
 	public EventDescription getEventDescription() {
@@ -61,6 +66,10 @@ public class DeviceDescription {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public Set<ComplexType> getComplexTypes() {
+		return types;
 	}
 
 }

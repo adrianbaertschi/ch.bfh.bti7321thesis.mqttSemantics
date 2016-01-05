@@ -1,7 +1,6 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +22,6 @@ import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
 import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
-import ch.bfh.bti7321thesis.tinkerforge.desc.State;
 import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
 public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
@@ -93,34 +91,22 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 
 	@Override
 	public Map<String, Object> getState() {
-		List<State> states = getStateDesc();
 		Map<String, Object> stateEntries = new HashMap<String, Object>();
-		for(State state : states) {
-			stateEntries.put(state.getTopic(), state.getValue());
-		}
-		
-		return stateEntries;
-	}
-	
-	private List<State> getStateDesc() {
-		List<State> states = new ArrayList<State>();
-
 		try {
-			states.add(new State("AmbientTemperatureInterval", bricklet.getPositionCallbackPeriod(), new Range<Long>(0L, Long.MAX_VALUE), "Time in ms"));
+			stateEntries.put("AmbientTemperatureInterval", bricklet.getPositionCallbackPeriod());
 		} catch (TimeoutException | NotConnectedException e) {
 			e.printStackTrace();
 		}
-		return states;
-	}
 
+		return stateEntries;
+	}
+	
 	@Override
 	public DeviceDescription getDescription() {
 		DeviceDescription description = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
 		
 		StateDescription stateDescription = new StateDescription();
-		for(State state : getStateDesc()) {
-			stateDescription.add(state.getTopic(), state.getValue(), state.getRange(), state.getPresetValues(), state.getDesc());
-		}
+		stateDescription.add("AmbientTemperatureInterval", new Range<Long>(0L, Long.MAX_VALUE), "Time in ms");
 		description.setStateDescription(stateDescription);
 		
 		EventDescription eventDescription = new EventDescription();

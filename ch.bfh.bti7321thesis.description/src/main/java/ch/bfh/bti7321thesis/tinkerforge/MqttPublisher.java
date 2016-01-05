@@ -12,6 +12,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -31,7 +32,9 @@ public class MqttPublisher {
 	// TODO: set somewhere
 	private static MqttCallback mqttCallBack;
 	
-	static ObjectMapper mapper = new ObjectMapper(); // create once, reuse
+	// TODO: flag prettyprint (true/false)
+	
+	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
 	ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
 	private boolean addRandomtoEvents = false;
@@ -39,6 +42,7 @@ public class MqttPublisher {
 
 	private MqttPublisher() {
 		setUpMqtt();
+		setUpJackson();
 	}
 	
     private static class Holder {
@@ -49,9 +53,9 @@ public class MqttPublisher {
 		return Holder.instance;
 	}
 	
-	public static IMqttAsyncClient getclient() {
-		return null;
-	}
+//	public static IMqttAsyncClient getclient() {
+//		return null;
+//	}
 	
 	public static void setCallback(MqttCallback mqttCallback) {
 		mqttCallBack = mqttCallback;
@@ -76,6 +80,12 @@ public class MqttPublisher {
 		}
 		LOG.info("MQTT Connected");
 
+	}
+	
+	private void setUpJackson() {
+		// Attributes with null values should be skipped
+		mapper.setSerializationInclusion(Include.NON_NULL);
+		yamlMapper.setSerializationInclusion(Include.NON_NULL);
 	}
 	
 	public void disconnect() {
@@ -137,14 +147,17 @@ public void pubEvent(MqttThing thing, String eventName, Object payload) {
 
 
 	private void pubState(String topic, Object payload) {
-		LOG.info("Publishing on " + topic + " data: " + payload);
+		
 		try {
-			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
+			String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(payload);
+			LOG.info("Publishing on " + topic + " data: " + json);
+			
+			MqttMessage message = new MqttMessage(json.getBytes());
 			message.setRetained(true); // TODO: activate if stable
 			
 			IMqttDeliveryToken imMqttDeliveryToken = mqttClient.publish(topic, message);
 			imMqttDeliveryToken.waitForCompletion();
-		} catch (MqttException e) {
+		} catch (MqttException | JsonProcessingException e) {
 			e.printStackTrace();
 		}
 	}
