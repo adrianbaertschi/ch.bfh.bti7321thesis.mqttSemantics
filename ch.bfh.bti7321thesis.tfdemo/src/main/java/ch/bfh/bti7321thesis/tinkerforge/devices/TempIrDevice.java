@@ -1,10 +1,12 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.tinkerforge.BrickletTemperatureIR;
 import com.tinkerforge.BrickletTemperatureIR.AmbientTemperatureListener;
 import com.tinkerforge.BrickletTemperatureIR.ObjectTemperatureListener;
@@ -13,14 +15,12 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
-import ch.bfh.bti7321thesis.tinkerforge.desc.BooleanPresetValues;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Command;
 import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.ComplexType;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
 import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.PresetValues;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
 import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
@@ -28,7 +28,10 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
+//	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
+	private ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
 
+	
 	public TempIrDevice(String uid, IPConnection ipcon, String stackName) {
 		super.stackName = stackName;
 		
@@ -70,34 +73,46 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 	
 	@Override
 	public boolean handleAction(String action, byte[] payload) {
-
+		
 		LOG.info("Action: " + action);
-		Long value = null;
-		try {
-			value = Long.parseLong(new String(payload));
-		} catch (NumberFormatException nfe) {
-			LOG.log(Level.SEVERE, nfe.getMessage(), nfe);
-			return false;
-		}
+//		Long value = null;
+//		try {
+//			value = Long.parseLong(new String(payload));
+//		} catch (NumberFormatException nfe) {
+//			LOG.log(Level.SEVERE, nfe.getMessage(), nfe);
+////			return false;
+//		}
+		Long value = 0L;
 
 		try {
 			switch (action) {
 			case "setAmbientTemperatureCallbackPeriod":
+				value = mapper.readValue(new String(payload), Long.class);
 				bricklet.setAmbientTemperatureCallbackPeriod(value);
 				LOG.info("setAmbientTemperatureCallbackPeriod to " + value);
 				return true;
+				
 			case "setObjectTemperatureCallbackPeriod":
+				value = mapper.readValue(new String(payload), Long.class);
 				bricklet.setObjectTemperatureCallbackPeriod(value);
 				LOG.info("setObjectTemperatureCallbackPeriod to " + value);
 				return true;
+				
 			case "setEmissivity":
+				value = mapper.readValue(new String(payload), Long.class);
 				bricklet.setEmissivity(value.intValue());
 				LOG.info("Emissivity set to " + value);
-				break;
+				return true;
+				
+			case"setAmbientTemperatureCallbackThreshold":
+				TemperatureCallbackThreshold threshold = mapper.readValue(new String(payload), TemperatureCallbackThreshold.class);
+				bricklet.setAmbientTemperatureCallbackThreshold(threshold.getOption(), threshold.getMin(), threshold.getMax());
+				return true;
 			default:
 				LOG.warning("Unexpected action");
+				return false;
 			}
-		} catch (TimeoutException | NotConnectedException e) {
+		} catch (TimeoutException | NotConnectedException | IOException e) {
 			e.printStackTrace();
 		}
 		return false;
@@ -138,13 +153,13 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 		stateDescription.add("DebouncePeriod", new Range<Long>(0L, Long.MAX_VALUE), "TODO");
 		stateDescription.add("Emissivity", new Range<Integer>(6553, 65535), "TODO");
 		
-		ComplexType callbackThreshold = new ComplexType("TemperatureCallbackThreshold");
-		callbackThreshold.addStringProperty("option");
-		callbackThreshold.addNumberProperty("min", Short.class);
-		callbackThreshold.addNumberProperty("max", Short.class);
+		ComplexType tempThreshold = new ComplexType("TemperatureCallbackThreshold");
+		tempThreshold.addStringProperty("option");
+		tempThreshold.addNumberProperty("min", Short.class);
+		tempThreshold.addNumberProperty("max", Short.class);
 		
-		stateDescription.add("AmbientTemperatureCallbackThreshold", callbackThreshold, "TODO"); // TODO
-		stateDescription.add("ObjectTemperatureCallbackThreshold",  callbackThreshold, "TODO"); // TODO
+		stateDescription.add("AmbientTemperatureCallbackThreshold", tempThreshold, "TODO"); // TODO
+		stateDescription.add("ObjectTemperatureCallbackThreshold",  tempThreshold, "TODO"); // TODO
 		description.setStateDescription(stateDescription);
 
 		// Events
@@ -162,25 +177,24 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 		Command cmd1 = new Command();
 		cmd1.setName("setAmbientTemperatureCallbackPeriod");
 		cmd1.setLinkedState("AmbientTemperatureCallbackPeriod");
-		cmd1.addParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
+		cmd1.setParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(cmd1);
 		
 		Command cmd2 = new Command();
 		cmd2.setName("setObjectTemperatureCallbackPeriod");
 		cmd2.setLinkedState("ObjectTemperatureCallbackPeriod");
-		cmd2.addParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
+		cmd2.setParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(cmd2);
 		
 		Command cmd3 = new Command();
 		cmd3.setName("setEmissivity");
 		cmd3.setLinkedState("Emissivity");
-		cmd3.addParam("Emissity", new Range<Integer>(6553, 65535));
+		cmd3.setParam("Emissity", new Range<Integer>(6553, 65535));
 		commandDescription.addCommand(cmd3);
 		
 		Command cmd4 = new Command();
-		cmd4.setName("EnableAmbientTemperature");
-		cmd4.addParam("enabled", new BooleanPresetValues());
-		cmd4.addParam("Reallyenabled", new PresetValues<Boolean>(true, false));
+		cmd4.setName("setAmbientTemperatureCallbackThreshold");
+		cmd4.setParam("Threshold", tempThreshold);
 		commandDescription.addCommand(cmd4);
 		
 		// TODO: ENUM Command

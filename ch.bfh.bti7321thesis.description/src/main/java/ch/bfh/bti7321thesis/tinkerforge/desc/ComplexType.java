@@ -4,25 +4,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ComplexType {
-	
+
 	private String name;
 	private final List<Property> properties = new ArrayList<Property>();
 	private String summary;
-//	private final Map<String, Object> properties = new HashMap<String, Object>();
-	
+
 	public ComplexType(String name) {
 		this.setName(name);
 	}
-	
+
 	public void addNumberProperty(String name, Class<? extends Number> clazz) {
 		this.properties.add(new Property(name, clazz, null));
-//		this.properties.put(name, clazz.getSimpleName());
 	}
-	
+
 	public void addNumberProperty(String name, Class<? extends Number> clazz, String desc) {
 		this.properties.add(new Property(name, clazz, desc));
 	}
-	
+
 	public void addStringProperty(String name) {
 		this.properties.add(new Property(name, String.class, null));
 	}
@@ -31,7 +29,6 @@ public class ComplexType {
 		this.properties.add(new Property(name, String.class, desc));
 	}
 
-
 	public String getName() {
 		return name;
 	}
@@ -39,10 +36,6 @@ public class ComplexType {
 	public void setName(String name) {
 		this.name = name;
 	}
-//	
-//	public Map<String, Object> getProperties() {
-//	return properties;
-//}
 
 	public List<Property> getProperties() {
 		return properties;
@@ -62,13 +55,8 @@ public class ComplexType {
 		private Class<?> clazz;
 		private String description;
 
-//		public Property(String name, Class<?> clazz) {
-//			this.name= name;
-//			this.clazz = clazz;
-//		}
-		
 		public Property(String name, Class<?> clazz, String desc) {
-			this.name= name;
+			this.name = name;
 			this.clazz = clazz;
 			this.description = desc;
 		}

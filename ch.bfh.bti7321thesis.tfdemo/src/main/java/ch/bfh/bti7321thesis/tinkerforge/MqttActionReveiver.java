@@ -35,15 +35,15 @@ public class MqttActionReveiver implements MqttCallback {
 
 		MqttTopic topic = new MqttTopic(topicString);
 
-		MqttDevice mqttThing = TinkerforgeDeviceRegistry.getInstance().find(topic);
-		LOG.info(mqttThing.toString());
+		MqttDevice<?> mqttDevice = TinkerforgeDeviceRegistry.getInstance().find(topic);
+		LOG.info(mqttDevice.toString());
 		
 		String action = topic.getLast();
 		LOG.info(action);
 //		
-		if(mqttThing.handleAction(action, message.getPayload())) {
+		if(mqttDevice.handleAction(action, message.getPayload())) {
 //			// pub state
-//			MqttPublisher.getInstance().publishDeviceState(mqttThing);
+//			MqttPublisher.getInstance().publishDeviceState(mqttDevice.toThing());
 		} else {
 			// TODO: error?
 			LOG.severe("unhandled action");

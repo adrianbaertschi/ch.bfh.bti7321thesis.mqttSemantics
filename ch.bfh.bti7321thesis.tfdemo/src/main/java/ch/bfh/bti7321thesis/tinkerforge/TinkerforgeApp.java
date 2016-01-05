@@ -27,7 +27,13 @@ public class TinkerforgeApp {
 		hosts.add("tfstack1");
 		hosts.add("tfstack2");
 		
-		MqttPublisher.setCallback(new MqttActionReveiver());
+		Options options = new Options();
+		options.setMqttBrokerUri("tcp://46.101.165.125:1883");
+		options.setMqttClientId("TfDemoApp");
+		options.setAppId("thesis");
+		options.setMqttCallback(new MqttActionReveiver());
+		MqttPublisher.setOptions(options);
+		
 		
 		List<BrickEnumerator> enumerators = new ArrayList<BrickEnumerator>();
 

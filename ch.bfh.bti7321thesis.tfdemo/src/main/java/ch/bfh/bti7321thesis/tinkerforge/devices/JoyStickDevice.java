@@ -83,7 +83,6 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 			}
 
 		} catch (TimeoutException | NotConnectedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -116,11 +115,10 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 		eventDescription.addEvent(eventy);
 		description.setEventDescription(eventDescription);
 		
-		
 		CommandDescription commandDescription = new CommandDescription();
 		Command command = new Command();
 		command.setName("setPositionCallbackPeriod");
-		command.addParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
+		command.setParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(command);
 		description.setCommandDescription(commandDescription);
 		

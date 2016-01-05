@@ -17,16 +17,20 @@ public class Command {
 		this.name = name;
 	}
 
-	public Map<String, Object> getParams() {
+	public Map<String, Object> getParameter() {
 		return params;
 	}
 
-	public void addParam(String name, Range<?> range) {
+	public void setParam(String name, Range<?> range) {
 		this.params.put(name, range);
 	}
 
-	public void addParam(String name, PresetValues<?> presetValues) {
+	public void setParam(String name, PresetValues<?> presetValues) {
 		params.put(name, presetValues);
+	}
+	
+	public void setParam(String name, ComplexType type) {
+		params.put(name, type.getName());
 	}
 
 	public String getLinkedState() {

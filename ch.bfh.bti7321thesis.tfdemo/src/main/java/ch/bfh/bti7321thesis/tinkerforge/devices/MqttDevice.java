@@ -41,7 +41,7 @@ public abstract class MqttDevice<T extends Device> {
 	
 	public abstract DeviceDescription getDescription();
 	
-	protected MqttThing toThing() {
+	public MqttThing toThing() {
 		MqttThing mqttThing = new MqttThing();
 		mqttThing.setStackName(this.getStackName());
 		try {

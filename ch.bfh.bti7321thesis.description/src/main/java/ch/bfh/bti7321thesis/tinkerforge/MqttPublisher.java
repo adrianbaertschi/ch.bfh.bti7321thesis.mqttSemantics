@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttAsyncClient;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
@@ -17,35 +16,49 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
+import ch.bfh.bti7321thesis.tinkerforge.Options.SchemaFormat;
 import ch.bfh.bti7321thesis.tinkerforge.devices.MqttThing;
 
 public class MqttPublisher {
 	
+	// TODO: Subscribe in own class / connection
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 	
-	private static final String BROKER = "tcp://46.101.165.125:1883";
-	private static final String CLIENT_ID = "barta3Tinker";
 	
-	private MemoryPersistence persistence = new MemoryPersistence();
 	private IMqttAsyncClient mqttClient;
 	
-	// TODO: set somewhere
-	private static MqttCallback mqttCallBack;
+	private static Options options;
 	
-	// TODO: flag prettyprint (true/false)
-	
-	ObjectMapper mapper = new ObjectMapper(); // create once, reuse
-	ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
+	private ObjectMapper objectmapper;
 
 	private boolean addRandomtoEvents = false;
 	
 
 	private MqttPublisher() {
+		validateSetting();
 		setUpMqtt();
 		setUpJackson();
 	}
 	
-    private static class Holder {
+    private void validateSetting() {
+		if(options.getMqttCallback() == null) {
+			throw new IllegalStateException("MQTT callback handler is not defined, set with setCallback(...)");
+		}
+		
+		if(options.getAppId() == null) {
+			throw new IllegalStateException("AppId not set");
+		}
+		if(options.getMqttBrokerUri() == null) {
+			throw new IllegalStateException("Broker URL not set");
+		}
+		if(options.getMqttClientId()== null) {
+			throw new IllegalStateException("MQTT ClientId not set");
+		}
+		
+		
+	}
+
+	private static class Holder {
     	private static MqttPublisher instance = new MqttPublisher();
     }
 	
@@ -53,39 +66,42 @@ public class MqttPublisher {
 		return Holder.instance;
 	}
 	
-//	public static IMqttAsyncClient getclient() {
-//		return null;
-//	}
-	
-	public static void setCallback(MqttCallback mqttCallback) {
-		mqttCallBack = mqttCallback;
+	public static void setOptions(Options options) {
+		MqttPublisher.options = options;
+		
 	}
 	
 	private void setUpMqtt() {
-		LOG.info("Connecting to broker: " + BROKER);
+		LOG.info("Connecting to broker: " + options.getMqttBrokerUri());
 		try {
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setCleanSession(true);
 			
-			mqttClient = new MqttAsyncClient(BROKER, CLIENT_ID, persistence);
+			MemoryPersistence persistence = new MemoryPersistence();
+			mqttClient = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientId(), persistence);
 			mqttClient.connect(connOpts).waitForCompletion();
 			
-			// TODO
-			mqttClient.setCallback(mqttCallBack);
-			
-			// TODO: read topic base from config
-			mqttClient.subscribe("ch.bfh.barta3/+/+/+/+/commands/#", 2);
+			mqttClient.setCallback(options.getMqttCallback());
+			mqttClient.subscribe(options.getAppId() +"/+/+/+/+/commands/#", 2);
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
 		LOG.info("MQTT Connected");
-
 	}
 	
 	private void setUpJackson() {
-		// Attributes with null values should be skipped
-		mapper.setSerializationInclusion(Include.NON_NULL);
-		yamlMapper.setSerializationInclusion(Include.NON_NULL);
+		if(options.getSchemaFormat() == SchemaFormat.YAML) {
+			objectmapper = new ObjectMapper(new YAMLFactory());
+			
+			// Attributes with null values should be skipped
+			objectmapper.setSerializationInclusion(Include.NON_NULL);
+			
+		} else if(options.getSchemaFormat() == SchemaFormat.JSON) {
+			objectmapper = new ObjectMapper();
+			
+			// Attributes with null values should be skipped
+			objectmapper.setSerializationInclusion(Include.NON_NULL);
+		}
 	}
 	
 	public void disconnect() {
@@ -98,40 +114,40 @@ public class MqttPublisher {
 		LOG.info("MQTT disconnected");
 	}
 	
-public void pubEvent(MqttThing thing, String eventName, Object payload) {
-		
-		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing) + "/events/" + eventName;
+	public void pubEvent(MqttThing thing, String eventName, Object payload) {
+
+		String baseTopic = new BrickletToMqttConverter().getBaseTopic(options.getAppId(), thing) + "/events/" + eventName;
 		String payloadStr = payload.toString();
-		if(addRandomtoEvents ) {
+		if (addRandomtoEvents) {
 			payloadStr += " " + Math.random();
 		}
-		
+
 		pubEvent(baseTopic, payloadStr);
 	}
 
 	
 	public void publishDesc(MqttThing thing) {
-		String json = "";
-		String yaml = "";
+		String desc = "";
 		try {
-			json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
-			yaml = yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
+			desc = objectmapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
 		}
-		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing);
-//		pubRetained(baseTopic + "/schema/json", json);
-		pubRetained(baseTopic + "/schema/yaml", yaml);
+		String baseTopic = new BrickletToMqttConverter().getBaseTopic(options.getAppId(), thing);
+		pubRetained(baseTopic + "/schema/"+ options.getSchemaFormat(), desc);
 		
 	}
 	
+	// TODO: rename
 	public void publishDeviceState(MqttThing thing) {
-		String baseTopic = new BrickletToMqttConverter().getBaseTopic(thing) + "/state";
+		String baseTopic = new BrickletToMqttConverter().getBaseTopic(options.getAppId(), thing) + "/state";
 		for(Entry<String, Object> state : thing.getState().entrySet()) {
 			LOG.info(state.getKey());
 			pubState(baseTopic + "/" + state.getKey(), state.getValue());
 		}
 	}
+	
+	// TODO: refactor the 3 private pub... Methods to one
 	
 	private void pubEvent(String topic, String payload) {
 		
@@ -149,11 +165,11 @@ public void pubEvent(MqttThing thing, String eventName, Object payload) {
 	private void pubState(String topic, Object payload) {
 		
 		try {
-			String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(payload);
-			LOG.info("Publishing on " + topic + " data: " + json);
+			String state = objectmapper.writerWithDefaultPrettyPrinter().writeValueAsString(payload);
+			LOG.info("Publishing on " + topic + " data: " + state);
 			
-			MqttMessage message = new MqttMessage(json.getBytes());
-			message.setRetained(true); // TODO: activate if stable
+			MqttMessage message = new MqttMessage(state.getBytes());
+			message.setRetained(true);
 			
 			IMqttDeliveryToken imMqttDeliveryToken = mqttClient.publish(topic, message);
 			imMqttDeliveryToken.waitForCompletion();
