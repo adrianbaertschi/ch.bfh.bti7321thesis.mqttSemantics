@@ -52,6 +52,7 @@
 
 <div class="row">
 
+    <!--TODO: css highlight selected row-->
     <div id="table" class="col-md-12">
         <table id="deviceTable" data-role="table" class="table table-hover">
             <thead>
@@ -69,7 +70,8 @@
 </div>
 <div class="row">
     <div id="detail" class="col-md-6">
-        <textarea id="txt" readonly rows="40" cols="100"></textarea>
+        <!--TODO: Set font to mono-space in textarea-->
+        <textarea id="txt" readonly rows="40" cols="70" style="font-family:monospace;" ></textarea>
     </div>
     <div class="col-md-6">
 
@@ -158,6 +160,12 @@
         json.commandDescription.commands.forEach(function (cmd) {
             $('#doc').append(renderCmd(cmd, deviceTopic)).append('<br>');
         });
+
+        $('#doc').append('<h2>Complex Types</h2>');
+        json.complexTypes.forEach(function (type) {
+            $('#doc').append(renderType(type, deviceTopic)).append('<br>');
+        });
+
         evtHandler();
 
     }
@@ -166,6 +174,15 @@
         var res = '<strong>' + state.topic + '</strong> <br>';
         res += state.desc + '<br>';
         res += renderRange(state.range);
+
+        if(state.complexTypeRef != null) {
+            res += 'Type: ';
+            // TODO: link to type section
+            res += '<a href="#type_' + state.complexTypeRef + '">' + state.complexTypeRef + '</a> <br>';
+
+            //res += state.complexTypeRef;
+        }
+
         return res + '<br>';
     }
 
@@ -220,6 +237,22 @@
         return res;
     }
 
+    function renderType(type, deviceTopic) {
+        var res = '<strong> <p id="type_'+ type.name +'">' + type.name + '</p></strong>';
+
+        res += 'Properties:' + '<br>';
+        res += '<ul>';
+        $.each(type.properties, function (index, value) {
+//            console.log(value);
+            res += '<li>' + value.name + ': ' + value.type  + '</li>';
+            res += '</li>'
+
+        });
+        res += '</ul>'
+
+        return res;
+    }
+
     function renderPresets(presets) {
         console.log(presets);
         var res = '';
@@ -233,12 +266,14 @@
     function renderRange(range) {
 
         if (range == null) {
-            return 'No Range <br>';
+            return '';
         }
-
-        var res = 'Type: ' + range.type + '<br>';
-        res += 'Min: ' + range.min + '<br>';
-        res += 'Max: ' + range.max + '<br>';
+        var res = 'Range:';
+        res += '<ul>';
+        res += '<li>Type: ' + range.type + '</li>';
+        res += '<li>Min: ' + range.min + '</li>';
+        res += '<li>Max: ' + range.max + '</li>';
+        res += '</ul>';
         return res;
     }
 
