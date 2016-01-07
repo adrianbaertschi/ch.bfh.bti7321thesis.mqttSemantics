@@ -39,15 +39,11 @@ public class MqttCommandReveiver implements MqttCallback {
 		
 		String commandName = topic.getLast();
 		LOG.info(commandName);
-//		
-		if(mqttDevice.handleCommand(commandName, message.getPayload())) {
-//			// pub state
-//			MqttPublisher.getInstance().publishDeviceState(mqttDevice.toThing());
-		} else {
-			// TODO: error?
-			LOG.severe("unhandled command");
-		}
 
+		if(mqttDevice.handleCommand(commandName, message.getPayload())) {
+			// Re-publish State
+			MqttPublisher.getInstance().publishDeviceState(mqttDevice.toThing());
+		}
 	}
 
 }

@@ -24,7 +24,8 @@ public class MqttPublisher {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 	
 	
-	private IMqttAsyncClient mqttClient;
+	private IMqttAsyncClient mqttClientPub;
+	private IMqttAsyncClient mqttClientSub;
 	
 	private static Options options;
 	
@@ -50,7 +51,7 @@ public class MqttPublisher {
 		if(options.getMqttBrokerUri() == null) {
 			throw new IllegalStateException("Broker URL not set");
 		}
-		if(options.getMqttClientId()== null) {
+		if(options.getMqttClientId() == null) {
 			throw new IllegalStateException("MQTT ClientId not set");
 		}
 		
@@ -73,15 +74,22 @@ public class MqttPublisher {
 	private void setUpMqtt() {
 		LOG.info("Connecting to broker: " + options.getMqttBrokerUri());
 		try {
+			// PUB
 			MqttConnectOptions connOpts = new MqttConnectOptions();
 			connOpts.setCleanSession(true);
 			
 			MemoryPersistence persistence = new MemoryPersistence();
-			mqttClient = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientId(), persistence);
-			mqttClient.connect(connOpts).waitForCompletion();
+			mqttClientPub = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientId() + "_pub", persistence);
+			mqttClientPub.connect(connOpts).waitForCompletion();
 			
-			mqttClient.setCallback(options.getMqttCallback());
-			mqttClient.subscribe(options.getAppId() +"/+/+/+/+/commands/#", 2);
+			
+			// SUB
+			MemoryPersistence subPersistence = new MemoryPersistence();
+			mqttClientSub = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientId() + "_sub", subPersistence);
+			mqttClientSub.connect(connOpts).waitForCompletion();
+			mqttClientSub.setCallback(options.getMqttCallback());
+			mqttClientSub.subscribe(options.getAppId() +"/+/+/+/+/commands/#", 2);
+			
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -106,7 +114,7 @@ public class MqttPublisher {
 	public void disconnect() {
 		LOG.info("Disconnecting MQTT");
 		try {
-			mqttClient.disconnect();
+			mqttClientPub.disconnect();
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -154,7 +162,7 @@ public class MqttPublisher {
 		try {
 			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.getBytes());
 			message.setQos(0);
-			mqttClient.publish(topic, message);
+			mqttClientPub.publish(topic, message);
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}
@@ -170,7 +178,7 @@ public class MqttPublisher {
 			MqttMessage message = new MqttMessage(state.getBytes());
 			message.setRetained(true);
 			
-			IMqttDeliveryToken imMqttDeliveryToken = mqttClient.publish(topic, message);
+			IMqttDeliveryToken imMqttDeliveryToken = mqttClientPub.publish(topic, message);
 			imMqttDeliveryToken.waitForCompletion();
 		} catch (MqttException | JsonProcessingException e) {
 			e.printStackTrace();
@@ -182,7 +190,7 @@ public class MqttPublisher {
 		try {
 			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
 			message.setRetained(true);
-			mqttClient.publish(topic, message);
+			mqttClientPub.publish(topic, message);
 		} catch (MqttException e) {
 			e.printStackTrace();
 		}		
