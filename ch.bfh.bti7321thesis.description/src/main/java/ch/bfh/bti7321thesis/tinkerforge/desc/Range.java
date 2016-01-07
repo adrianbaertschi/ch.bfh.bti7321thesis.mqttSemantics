@@ -1,11 +1,15 @@
 package ch.bfh.bti7321thesis.tinkerforge.desc;
 
 // TODO?? T extends Comparable oder Number
-public class Range<T extends Number> {
+public class Range<T> {
 	
 //	private Class<?> type;
 	private T min;
 	private T max;
+	
+//	public Range() {
+////		this.min = 
+//	}
 	
 	public Range(T min, T max) {
 //		this.setType(min.getClass());

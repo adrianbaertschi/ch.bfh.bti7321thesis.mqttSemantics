@@ -11,7 +11,6 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -94,13 +93,13 @@ public class MqttPublisher {
 			objectmapper = new ObjectMapper(new YAMLFactory());
 			
 			// Attributes with null values should be skipped
-			objectmapper.setSerializationInclusion(Include.NON_NULL);
+//			objectmapper.setSerializationInclusion(Include.NON_NULL);
 			
 		} else if(options.getSchemaFormat() == SchemaFormat.JSON) {
 			objectmapper = new ObjectMapper();
 			
 			// Attributes with null values should be skipped
-			objectmapper.setSerializationInclusion(Include.NON_NULL);
+//			objectmapper.setSerializationInclusion(Include.NON_NULL);
 		}
 	}
 	

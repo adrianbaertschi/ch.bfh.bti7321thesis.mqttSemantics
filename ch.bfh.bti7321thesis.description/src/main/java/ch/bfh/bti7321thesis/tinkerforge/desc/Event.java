@@ -1,20 +1,31 @@
 package ch.bfh.bti7321thesis.tinkerforge.desc;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Event {
 	private String name;
-	// private Class<?> type;
 	private Range<?> range;
 	private String desc;
-	private PresetValues<?> presetValues;
+	private Options<?> options;
+	
+	@JsonIgnore
+	private ComplexType complexType;
+	//TODO: complextyperef
 
 	public Event(String name, Range<?> range, String desc) {
 		this.name = name;
 		this.range = range;
 		this.desc = desc;
 	}
-	public Event(String name, PresetValues<?> presetValues, String desc) {
+	public Event(String name, Options<?> options, String desc) {
 		this.name = name;
-		this.presetValues = presetValues;
+		this.options = options;
+		this.desc = desc;
+	}
+	
+	public Event(String name, ComplexType complexType, String desc) {
+		this.name = name;
+		this.complexType = complexType;
 		this.desc = desc;
 	}
 
@@ -34,18 +45,28 @@ public class Event {
 		this.range = range;
 	}
 
-	public String getDesc() {
+	public String getDescription() {
 		return desc;
 	}
 
-	public void setDesc(String desc) {
+	public void setDescription(String desc) {
 		this.desc = desc;
 	}
-	public PresetValues<?> getPresetValues() {
-		return presetValues;
+	public Options<?> getOptions() {
+		return options;
 	}
-	public void setPresetValues(PresetValues<?> presetValues) {
-		this.presetValues = presetValues;
+	public void setOptions(Options<?> options) {
+		this.options = options;
+	}
+	
+	public ComplexType getComplexType() {
+		return complexType;
+	}
+	public void setComplexType(ComplexType complexType) {
+		this.complexType = complexType;
+	}
+	public String getComplexTypeRef() {
+		return this.complexType == null ? null : this.complexType.getName();
 	}
 
 }

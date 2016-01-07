@@ -34,6 +34,7 @@ public class DeviceDescription {
 
 	public void setEventDescription(EventDescription eventDescription) {
 		this.eventDescription = eventDescription;
+		this.types.addAll(eventDescription.getTypes());
 	}
 
 	public CommandDescription getCommandDescription() {

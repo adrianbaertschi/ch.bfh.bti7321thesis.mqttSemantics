@@ -19,8 +19,8 @@ public class StateDescription {
 		return this.states.add(state);
 	}
 
-	public boolean add(String key, PresetValues<?> presetValues, String desc) {
-		State state = new State(key, presetValues, desc);
+	public boolean add(String key, Options<?> options, String desc) {
+		State state = new State(key, options, desc);
 		return this.states.add(state);
 	}
 

@@ -7,7 +7,12 @@ import java.util.Map;
 public class Command {
 	private String name;
 	private final Map<String, Object> params = new HashMap<String, Object>();
-	private String linkedState; 
+	private String linkedState;
+	// TODO: desc;
+	
+	public Command(String name) {
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;
@@ -25,8 +30,8 @@ public class Command {
 		this.params.put(name, range);
 	}
 
-	public void setParam(String name, PresetValues<?> presetValues) {
-		params.put(name, presetValues);
+	public void setParam(String name, Options<?> options) {
+		params.put(name, options);
 	}
 	
 	public void setParam(String name, ComplexType type) {
@@ -37,6 +42,7 @@ public class Command {
 		return linkedState;
 	}
 
+	// TODO: change to vararg
 	public void setLinkedState(String linkedState) {
 		this.linkedState = linkedState;
 	}

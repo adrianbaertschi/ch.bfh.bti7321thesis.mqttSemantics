@@ -116,8 +116,7 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 		description.setEventDescription(eventDescription);
 		
 		CommandDescription commandDescription = new CommandDescription();
-		Command command = new Command();
-		command.setName("setPositionCallbackPeriod");
+		Command command = new Command("setPositionCallbackPeriod");
 		command.setParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(command);
 		description.setCommandDescription(commandDescription);

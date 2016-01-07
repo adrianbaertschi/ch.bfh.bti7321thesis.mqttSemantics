@@ -12,6 +12,7 @@ import com.tinkerforge.IPConnectionBase;
 
 import ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.JoyStickDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MockDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.MotionDetectorDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.TempIrDevice;
 
@@ -37,6 +38,9 @@ public class HostEnumerateListener implements EnumerateListener {
 		if (enumerationType != IPConnectionBase.ENUMERATION_TYPE_AVAILABLE) {
 			return;
 		}
+		
+		MockDevice mockDevice = new MockDevice();
+		TinkerforgeDeviceRegistry.getInstance().add(mockDevice);
 
 		switch (deviceIdentifier) {
 		case BrickletTemperatureIR.DEVICE_IDENTIFIER:

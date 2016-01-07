@@ -1,43 +1,43 @@
 package ch.bfh.bti7321thesis.tinkerforge.desc;
 
 public class State {
-	private String topic;
+	private String name;
 	private Range<?> range;
-	private PresetValues<?> presetValues;
+	private Options<?> options;
 	private String complexTypeRef;
 	private String desc;
 
-	public State(String topic,  Range<?> range, String desc) {
-		this.topic = topic;
+	public State(String name,  Range<?> range, String desc) {
+		this.name = name;
 		this.range = range;
 		this.desc = desc;
 	}
 	
-	public State(String topic, PresetValues<?> presetValues, String desc) {
-		this.topic = topic;
-		this.presetValues = presetValues;
+	public State(String name, Options<?> options, String desc) {
+		this.name = name;
+		this.options =  options;
 		this.desc = desc;
 	}
 
-	public State(String topic, String complexTypeRef,  String desc) {
-		this.topic = topic;
-		this.setComplexTypeRef(complexTypeRef);
+	public State(String name, String complexTypeRef,  String desc) {
+		this.name = name;
+		this.complexTypeRef = complexTypeRef;
 		this.desc = desc;
 	}
 
-	public String getTopic() {
-		return topic;
+	public String getName() {
+		return name;
 	}
 
-	public void setTopic(String topic) {
-		this.topic = topic;
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	public String getDesc() {
+	public String getDescription() {
 		return desc;
 	}
 
-	public void setDesc(String desc) {
+	public void getDescription(String desc) {
 		this.desc = desc;
 	}
 
@@ -49,13 +49,7 @@ public class State {
 		this.range = range;
 	}
 
-	public PresetValues<?> getPresetValues() {
-		return presetValues;
-	}
 
-	public void setPresetValues(PresetValues<?> presetValues) {
-		this.presetValues = presetValues;
-	}
 
 	public String getComplexTypeRef() {
 		return complexTypeRef;
@@ -63,6 +57,14 @@ public class State {
 
 	public void setComplexTypeRef(String complexTypeRef) {
 		this.complexTypeRef = complexTypeRef;
+	}
+
+	public Options<?> getOptions() {
+		return options;
+	}
+
+	public void setOptions(Options<?> options) {
+		this.options = options;
 	}
 
 

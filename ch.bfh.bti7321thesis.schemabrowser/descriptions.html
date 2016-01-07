@@ -199,13 +199,29 @@
     }
 
     function renderState(state) {
-        var res = '<strong>' + state.topic + '</strong> <br>';
-        res += state.desc + '<br>';
-        res += renderRange(state.range, 'Value:');
+        var res = '<strong>' + state.name + '</strong> <br>';
 
-        if(state.complexTypeRef != null) {
-            res += renderComplexTypeLink(state.complexTypeRef);
+        if(state.description) {
+            res += state.description + '<br>';
         }
+
+
+//        console.log(state.range);
+        if (state.range !== null && state.range.hasOwnProperty('type')) {
+            res += renderRange(state.range, 'Value:');
+        } else if (state.options !== null && state.options.hasOwnProperty('values')) {
+            res += renderPresets(state.options);
+        } else if(state.complexTypeRef !== null) {
+            // Ref to Complextype
+            res += renderComplexTypeLink(state.complexTypeRef) + '<br>';
+        } else {
+            console.log('ERROR ' + state);
+        }
+//        res += renderRange(state.range, 'Value:');
+//
+//        if(state.complexTypeRef != null) {
+//            res += renderComplexTypeLink(state.complexTypeRef);
+//        }
 
         return res + '<br>';
     }
@@ -260,7 +276,6 @@
 
             res += '<form class="form-inline">';
             res += '    <div class="form-group">';
-//            res += '        <input id="' + cmdId + '"type="text" class="form-control">';
             res += '        <textarea id="' + cmdId + '" rows="2" cols="20" style="font-family:monospace;" class="form-control" ></textarea>';
             res += '        <button data-id="' + cmdTopic + '" data-topic="' + cmdTopic + '" class="btn btn-default cmd" type="button">Send</button>';
             res += '    </div>';
@@ -276,8 +291,21 @@
         var evtId = $.md5(eventTopic);
 
         var res = '<strong>' + eventName + '</strong> <br>';
-        res += event.desc + '<br>';
-        res += renderRange(event.range, 'Value:');
+        res += event.description + '<br>';
+
+
+//        res += renderRange(event.range, 'Value:');
+        if (event.range !== null && event.range.hasOwnProperty('type')) {
+            res += renderRange(event.range, 'Value:');
+        } else if (event.options !== null && event.options.hasOwnProperty('values')) {
+            res += renderPresets(event.options);
+        } else if(event.complexTypeRef !== null) {
+            // Ref to Complextype
+            res += renderComplexTypeLink(event.complexTypeRef) + '<br>';
+        } else {
+            console.log('ERROR ' + event);
+        }
+
         res += '<form class="form-inline">';
         res += '    <div class="form-group">';
         res += 'Topic: ' + eventTopic + '<br>'; // TODO: display in readonly input field
@@ -321,8 +349,14 @@
         var res = label;
         res += '<ul>';
         res += '<li>Type: ' + range.type + '</li>';
-        res += '<li>Min: ' + range.min + '</li>';
-        res += '<li>Max: ' + range.max + '</li>';
+//        console.log(range.min);
+        if(range.min !== '' && !isNaN(range.min)) {
+            res += '<li>Min: ' + range.min + '</li>';
+        }
+        if(range.max !== '' && !isNaN(range.max)) {
+            res += '<li>Max: ' + range.max + '</li>';
+        }
+
         res += '</ul>';
         return res;
     }

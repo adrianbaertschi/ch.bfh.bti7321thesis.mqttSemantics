@@ -143,11 +143,11 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 		
 		// TODO: timestamp Last_onl
 		
-		DeviceDescription description = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
+		DeviceDescription description = new DeviceDescription("IoT - " + BrickletTemperatureIR.DEVICE_DISPLAY_NAME, "0.0.1");
 		
 		// State
 		StateDescription stateDescription = new StateDescription();
-
+		
 		stateDescription.add("AmbientTemperatureInterval", new Range<Long>(0L, Long.MAX_VALUE), "Time in ms");
 		stateDescription.add("ObjectTemperatureInterval", new Range<Long>(0L, Long.MAX_VALUE), "TODO");
 		stateDescription.add("DebouncePeriod", new Range<Long>(0L, Long.MAX_VALUE), "TODO");
@@ -174,31 +174,24 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 		
 		// Commands
 		CommandDescription commandDescription = new CommandDescription();
-		Command cmd1 = new Command();
-		cmd1.setName("setAmbientTemperatureCallbackPeriod");
+		Command cmd1 = new Command("setAmbientTemperatureCallbackPeriod");
 		cmd1.setLinkedState("AmbientTemperatureCallbackPeriod");
 		cmd1.setParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(cmd1);
 		
-		Command cmd2 = new Command();
-		cmd2.setName("setObjectTemperatureCallbackPeriod");
+		Command cmd2 = new Command("setObjectTemperatureCallbackPeriod");
 		cmd2.setLinkedState("ObjectTemperatureCallbackPeriod");
 		cmd2.setParam("CallbackPeriod", new Range<Long>(0L, Long.MAX_VALUE));
 		commandDescription.addCommand(cmd2);
 		
-		Command cmd3 = new Command();
-		cmd3.setName("setEmissivity");
+		Command cmd3 = new Command("setEmissivity");
 		cmd3.setLinkedState("Emissivity");
 		cmd3.setParam("Emissity", new Range<Integer>(6553, 65535));
 		commandDescription.addCommand(cmd3);
 		
-		Command cmd4 = new Command();
-		cmd4.setName("setAmbientTemperatureCallbackThreshold");
+		Command cmd4 = new Command("setAmbientTemperatureCallbackThreshold");
 		cmd4.setParam("Threshold", tempThreshold);
 		commandDescription.addCommand(cmd4);
-		
-		// TODO: ENUM Command
-		
 		
 		description.setCommandDescription(commandDescription);
 		

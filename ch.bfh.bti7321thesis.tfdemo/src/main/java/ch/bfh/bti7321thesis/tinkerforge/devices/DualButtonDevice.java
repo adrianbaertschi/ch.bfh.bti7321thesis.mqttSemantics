@@ -11,13 +11,13 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
-import ch.bfh.bti7321thesis.tinkerforge.desc.BooleanPresetValues;
+import ch.bfh.bti7321thesis.tinkerforge.desc.BooleanOptions;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Command;
 import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
 import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.PresetValues;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
 import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
 public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
@@ -121,25 +121,24 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 		DeviceDescription deviceDescription = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
 		
 		StateDescription stateDescription = new StateDescription();
-		stateDescription.add("ButonLeftPressed", new BooleanPresetValues(), "Left Button presses (true) or releases (false)");
-		stateDescription.add("ButonRightPressed", new BooleanPresetValues(), "Right Button presses (true) or releases (false)");
-		stateDescription.add("LedLeft", new BooleanPresetValues(), "Left LED on (true) or off (false)");
-		stateDescription.add("LedRight", new BooleanPresetValues(), "Right LED on (true) or off (false)");
+		stateDescription.add("ButonLeftPressed", new BooleanOptions(), "Left Button presses (true) or releases (false)");
+		stateDescription.add("ButonRightPressed", new BooleanOptions(), "Right Button presses (true) or releases (false)");
+		stateDescription.add("LedLeft", new BooleanOptions(), "Left LED on (true) or off (false)");
+		stateDescription.add("LedRight", new BooleanOptions(), "Right LED on (true) or off (false)");
 		
 		deviceDescription.setStateDescription(stateDescription);
 		
 		EventDescription eventDescription = new EventDescription();
-		Event eventL = new Event("ButtonL", new PresetValues<String>("Pressed", "Released"), "TODO");
-		Event eventR = new Event("ButtonR", new PresetValues<String>("Pressed", "Released"), "TODO");
+		Event eventL = new Event("ButtonL", new Options<String>("Pressed", "Released"), "TODO");
+		Event eventR = new Event("ButtonR", new Options<String>("Pressed", "Released"), "TODO");
 		eventDescription.addEvent(eventL);
 		eventDescription.addEvent(eventR);
 		deviceDescription.setEventDescription(eventDescription);
 		
 		CommandDescription commandDescription = new CommandDescription();
-		Command cmd1 = new Command();
-		cmd1.setName("setLeds");
-		cmd1.setParam("setLedL", new PresetValues<Short>((short)2, (short)3));
-		cmd1.setParam("setLedR", new PresetValues<Short>((short)2, (short)3));
+		Command cmd1 = new Command("setLeds");
+		cmd1.setParam("setLedL", new Options<Short>((short)2, (short)3));
+		cmd1.setParam("setLedR", new Options<Short>((short)2, (short)3));
 		
 		commandDescription.addCommand(cmd1);
 		deviceDescription.setCommandDescription(commandDescription);
