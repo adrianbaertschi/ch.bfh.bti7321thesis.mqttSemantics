@@ -192,8 +192,7 @@ Grundsätzlich unterstützt IBM IoT Foundation ein beliebiges Payload Format. Es
 \end{minted}
 \caption{JSON Beispiel im IBM IoTF Payload Format}
 \end{listing}
-\begin{minted}{json}
-\end{minted}
+
 
 
 \subsection{Tinkerforge MQTT Proxy}
@@ -222,8 +221,7 @@ Die Bricklets reagieren auf Messages die an ein passendes Topic mit Siffix \code
 \end{minted}
 \caption{JSON Beispiel Tinkerforge Format}
 \end{listing}
-\begin{minted}{json}
-\end{minted}
+
 
 
 \textbf{Payload Format} \\
@@ -242,32 +240,159 @@ Die Tinkerforge MQTT Komponente verwendet JSON als Datenformat für die Messages
 \end{minted}
 \caption{JSON Beispiel Tinkerforge Format}
 \end{listing}
-\begin{minted}{json}
-\end{minted}
+
 
 Die Beschreibung, unter welchen Topics Daten publiziert werden und wie die Bricklets angesprochen werden können, ist in der Dokumentation von Tinkerforge \cite{tinkerf:mqtt} beschrieben.
 
 
-\section{Datenbeschreibung}
+\section{Datenformate}
 
-\subsection{JSON Schema}
+In diesem Kapitel werden verschiedene Datenformate kurz beschrieben, welche für die Beschreibung der Devices in Frage kommen könnten. Grundsätzlich muss zwischen textbasierten und binären Formaten unterschieden werden.
 
-\subsection{Protocol Buffer}
+Textbasierte Formate bieten den Vorteil, dass sie von Menschen ohne weitere Hilfsmittel gelesen und meistens auch interpretiert werden können. Die textuellen Formate haben jedoch Schwächen, mit binären Daten (Bilder, Video, Audio etc.) umzugehen. Zwar ist es möglich, die binären Daten in ein textbasiertes Format zu integrieren (beispielsweise mittels Kovertierung zu Base64), dies führt aber zur Aufblähung der Datenmenge.
 
-\subsection{DFDL}
-Aus Proj2 übernehmen
+Binäre Formaten haben den Vorteil, dass die Daten dichter codiert wrden können, somit werden die Dateien meistens kleiner als bei textbasierten Formaten. Der grosse Nachteil ist, dass man für die Interpretation von binären Daten auf eine Beschreibung (in Form eines Schemas) angewiesen ist.
+
+TODO: Glossar Einträge
+
+\textbf{JSON} \\
+JSON ist ein textbasiertes Datenformat, welches Key-Value Paare für die Strukturierung nutzt. Dank dem einfachen Aufbau ist es sehr weit verbreitet und Libraries sind für alle populären Platformen verfügbar.
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{json}
+{
+  "firstName": "Max",
+  "lastName": "Muster",
+  "age": 25,
+  "address": {
+    "street": "Bundeshaus",
+    "plz": "3000",
+    "city": "Bern"
+  }
+}
+
+\end{minted}
+\caption{JSON Beispiel, (148 byte)}
+\end{listing}
+
+
+\textbf{YAML} \\ 
+YAML ist dem JSON Format sehr ähnlich, ist aber stärker auf Lesbarkeit ausgerichtet. Für die Strukturierung der Daten kann die kompakte schreibweise mit Leerzeichen verwendet werden. 
+YAML ist ein Superset von JSON, das bedeuted jedes gültige JSON Dokument ist auch ein gültiges YAML Dokument.
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{yaml}
+---
+firstName: Max
+lastName: Muster
+age: 25
+address: 
+  street: Bundeshaus
+  postalCode: 3000
+  city: Bern
+
+
+\end{minted}
+\caption{YAML Beispiel (107 byte)}
+\end{listing}
+
+\textbf{XML} \\
+Mit XML werden die Informationen in hierarchische Elemente (Tags) verschachtelt, welche mit Attributen versehen werden können. XML Dokumente werden dadurch rasch sehr gross und haben viel redundaten Daten. Häufig werden XML Schemas eingesetzt, um di
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{xml}
+<person>
+  <firstName>Max</firstName>
+  <lastName>Muster</lastName>
+  <age>25</age>
+  <address>
+    <street>Bundeshaus</streetAddress>
+    <plz>3000</plz>
+    <city>Bern</city>
+  </address>
+</person>
+
+
+\end{minted}
+\caption{XML Beispiel (200 byte)}
+\end{listing}
+
+
+
+\textbf{Protocol Buffers}
+Protocul Buffer ist ein Mechanismus zur Serialisierung von Daten. Der Entwickler muss ein Schema seiner Datenstruktueren erstellen (.proto Datei).
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{text}
+
+message Person {
+  required string firstName = 1;
+  required string lastName = 2;
+  required int32 age = 3;
+
+  message Address {
+    required string street = 1;
+    required string plz = 2;
+    required string city = 3;
+  }
+  
+  required Address address = 4;
+
+}
+
+\end{minted}
+\caption{Protocol Buffer (v2) Schema Beispiel}
+\end{listing}
+
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{text}
+               
+00000000  0a 03 4d 61 78 12 06 4d  75 73 74 65 72 18 19 22  |..Max..Muster.."|
+00000010  18 0a 0a 42 75 6e 64 65  73 68 61 75 73 12 04 33  |...Bundeshaus..3|
+00000020  30 30 30 1a 04 42 65 72  6e                       |000..Bern|
+00000029
+
+\end{minted}
+\caption{Beispiel Protocol Buffer Daten (Output hexdump, 41 Bytes)}
+\end{listing}
+
+
+Anschliessend werden mit den bereitgestellten Tools (Protocol Buffer Combiler), Klassen für die Objekte der gewünschten Sprache zu generiert. Mit diesen Klassen können nun Daten in ein sehr kompaktes binäres Format Codiert und Decosiert werden.
+
+
+\textbf{DFDL}
+
 
 \subsection{Vergleich}
 
+Lesbarkeit, Filegrösse, Unterstütze Platformen/Libraries, Komplexität/Lernkurve
+
+\subsection{Entscheid}
 
 
-% \section{CoAP?}
 
-% \section{Eclipse Vorto}
-% https://www.eclipse.org/vorto/index.html
 
-% \section{OMA LWM2M - Leshan}
-% https://eclipse.org/leshan/
 
 \section{Konzept aus der nicht-IoT Welt}
 SOAP-WSDL, REST, etc.

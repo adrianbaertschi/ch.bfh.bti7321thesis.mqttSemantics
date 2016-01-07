@@ -1,0 +1,207 @@
+\chapter{Spezifikation Device Description}
+\label{chap:spez}
+
+
+
+\section{Device Description}
+
+d
+% http://swagger.io/specification/
+
+\subsection{Codierung}
+UTF-8
+
+
+\section{Format}
+Json, Yaml
+
+TODO: case sensitiv?
+
+
+\section{Primitive Datentypen}
+
+\begin{table}[h!]
+\begin{tabular}{ |l|l|r|r| }
+
+ \hline
+ {\bf Datentyp } & {\bf Beschreibung } & {\bf Minimun } & {\bf Maximum } \\  \hline
+
+
+ Integer  &   32 Bit ganzzahlig, signed     &  $-2^{31}$ & $2^{31}$-1  \\ \hline
+
+ Long     &   64 Bit ganzzahlig, signed     &  $-2^{63}$ & $2^{63}$-1  \\ \hline
+ 
+ Float    &   32-bit \gls{ieee_754} floating point, single-precision & $1.4×10^{-45}$  & $3.4028235×10^{38}$  \\ \hline
+
+ Double   &   64-bit \gls{ieee_754} floating point, double-precision & $4.9×10^{-324}$  & $7976931348623157×10^{308}$  \\ \hline
+ 
+ String   &   \gls{utf8} String &   &   \\ \hline
+ 
+ Boolean   &  Mögliche Werte: true / false &   &   \\ \hline
+ 
+\end{tabular}
+\caption{Primitive Datentypen}
+\end{table}
+
+
+
+\section{DeviceDescription Objekt}
+
+Hintweis optionale Felder
+
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+
+ id  &   String   & Identifikation des Devices   \\ \hline
+
+ version & String & Version API des Devices \\ \hline
+
+ description & String & Allgemeine Beschreibung des Devices \\ \hline 
+ 
+ stateDescription  &   StateDescription    &     \\ \hline
+ 
+ eventDescription  &   EventDescription    &     \\ \hline
+  
+ commandDescription  &   CommandDescription    &     \\ \hline
+ 
+ complexTypes  &   ComplexTypes    &     \\ \hline
+ 
+\end{tabularx}
+\caption{DeviceDescription Objekt Schema}
+\end{table}
+
+\subsection{StateDescription}
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+
+ states  &   Liste State   & Auflistung von State Objekten   \\ \hline
+
+\end{tabularx}
+\caption{StateDescription Objekt Schema}
+\end{table}
+
+\subsubsection{State}
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+
+ name  &   String   & \textbf{Pflichtfeld.} Bezeichung des State-Eintrages. Wird gleichzeitig als Subtopic für den eigentlichen Wert genutzt.  \\ \hline
+ range  TODO:naming &   Range   &  \textbf{Plichtfeld.} Information zum Wert des State.   \\ \hline
+ options  &   Enum   & Wird verwendet, falls der State Wert eine Auswahl aus einer fixen Menge ist.   \\ \hline
+ complexTypeRef  &   String   & Falls der Wert des State mit einen komplexen Typen abgebildet wird, wird mit diesem Feld der Name des Typs angegeben. siehe TODO   \\ \hline
+ description  &   String   &  Allgemeine Beschreibung des State.  \\ \hline
+
+\end{tabularx}
+\caption{State Objekt Schema}
+\end{table}
+
+
+\subsection{EventDescription}
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+
+ events  &   Liste Event   & Auflistung von Event Objekten   \\ \hline
+
+\end{tabularx}
+\caption{EventDescription Objekt Schema}
+\end{table}
+
+
+\subsubsection{Event}
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+ 
+ name  &   String   &  \textbf{Pflichtfeld.} Name des Events. Wird als Subtopic verwendet, auf dem das Event verschickt wird. \\ \hline
+ range  &   Range   &  \textbf{Pflichtfeld.} Typinformationen und ev. Einschränkungen, welche den Wert des Events beschreiben   \\ \hline
+ options  &   Enum   &  Wird verwendet, falls der Event Wert eine Auswahl aus einer fixen Menge ist.  \\ \hline
+ description  &   String   &  Beschreibung des Events  \\ \hline
+ complexTypeRef  &   String   &  Falls der Wert des Events mit einen komplexen Typen abgebildet wird, wird mit diesem Feld der Name des Typs angegeben. siehe TODO  \\ \hline
+
+\end{tabularx}
+\caption{Event Objekt Schema}
+\end{table}
+
+
+
+\subsection{CommandDescription}
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+ commands  &   Liste Command   & Auflistung von Command Objekten   \\ \hline
+
+\end{tabularx}
+\caption{CommandDescription Objekt Schema}
+\end{table}
+
+
+\subsubsection{Command}
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+ 
+ name  &   String   &  \textbf{Pflichtfeld.} Name des Commands. Subtopic, an welches der Command gesendet werden muss. \\ \hline
+ linkedState  &   String   &  Gibt an, welche States duch das senden des Commands beiinfluss werden können. \\ \hline
+ options  &   Enum   &   Wird verwendet, falls der Command eine fix definierte Menge an Werten beinhalten kann. \\ \hline
+ Fehlt: description  &   String   &  Beschreibung, was mit dem Command ausgelöst werden kann.  \\ \hline
+ complexTypeRef  &   String   &  Falls der Wert des Events mit einen komplexen Typen abgebildet wird, wird mit diesem Feld der Name des Typs angegeben. siehe TODO  \\ \hline
+
+\end{tabularx}
+\caption{Command Objekt Schema}
+\end{table}
+
+
+
+
+
+
+
+%End (Allgemeine objekte)
+\subsection{Range}
+asdf
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+
+ topic  &   String   &    \\ \hline
+
+
+\end{tabularx}
+\caption{State Description Schema}
+\end{table}
+
+\subsection{Enum}
+asdf
+\begin{table}[h!]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+
+ topic  &   String   &    \\ \hline
+
+
+\end{tabularx}
+\caption{State Description Schema}
+\end{table}
+
+Tabelle mit Felder und Beschreibung
