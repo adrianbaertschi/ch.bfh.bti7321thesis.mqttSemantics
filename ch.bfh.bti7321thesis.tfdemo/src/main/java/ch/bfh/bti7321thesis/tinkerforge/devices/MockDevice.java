@@ -39,7 +39,7 @@ public class MockDevice extends MqttDevice {
 	}
 	
 	@Override
-	public boolean handleAction(String action, byte[] payload) {
+	public boolean handleCommand(String commandName, byte[] payload) {
 		// TODO Auto-generated method stub
 		return false;
 	}

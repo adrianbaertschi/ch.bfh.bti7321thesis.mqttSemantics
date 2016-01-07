@@ -72,9 +72,9 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 	
 	
 	@Override
-	public boolean handleAction(String action, byte[] payload) {
+	public boolean handleCommand(String commandName, byte[] payload) {
 		
-		LOG.info("Action: " + action);
+		LOG.info("Command: " + commandName);
 //		Long value = null;
 //		try {
 //			value = Long.parseLong(new String(payload));
@@ -85,7 +85,7 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 		Long value = 0L;
 
 		try {
-			switch (action) {
+			switch (commandName) {
 			case "setAmbientTemperatureCallbackPeriod":
 				value = mapper.readValue(new String(payload), Long.class);
 				bricklet.setAmbientTemperatureCallbackPeriod(value);
@@ -109,7 +109,7 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 				bricklet.setAmbientTemperatureCallbackThreshold(threshold.getOption(), threshold.getMin(), threshold.getMax());
 				return true;
 			default:
-				LOG.warning("Unexpected action");
+				LOG.warning("Unexpected command:" + commandName);
 				return false;
 			}
 		} catch (TimeoutException | NotConnectedException | IOException e) {

@@ -9,14 +9,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
 
-// TODO: rename to Command...
-public class MqttActionReveiver implements MqttCallback {
+public class MqttCommandReveiver implements MqttCallback {
 	
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	@Override
 	public void connectionLost(Throwable arg0) {
-		LOG.log(Level.SEVERE, "MqttActionReveiver connectionLost", arg0);
+		LOG.log(Level.SEVERE, "MqttCommandReveiver connectionLost", arg0);
 	}
 
 	@Override
@@ -38,15 +37,15 @@ public class MqttActionReveiver implements MqttCallback {
 		MqttDevice<?> mqttDevice = TinkerforgeDeviceRegistry.getInstance().find(topic);
 		LOG.info(mqttDevice.toString());
 		
-		String action = topic.getLast();
-		LOG.info(action);
+		String commandName = topic.getLast();
+		LOG.info(commandName);
 //		
-		if(mqttDevice.handleAction(action, message.getPayload())) {
+		if(mqttDevice.handleCommand(commandName, message.getPayload())) {
 //			// pub state
 //			MqttPublisher.getInstance().publishDeviceState(mqttDevice.toThing());
 		} else {
 			// TODO: error?
-			LOG.severe("unhandled action");
+			LOG.severe("unhandled command");
 		}
 
 	}

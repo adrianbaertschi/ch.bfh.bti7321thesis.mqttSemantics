@@ -30,8 +30,7 @@ public abstract class MqttDevice<T extends Device> {
 		return null;
 	}
 
-	// TODO: Rename to handleCommand
-	public abstract boolean handleAction(String action, byte[] payload);
+	public abstract boolean handleCommand(String commandName, byte[] payload);
 	
 	public abstract Map<String, Object> getState();
 

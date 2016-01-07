@@ -15,12 +15,6 @@ public class MqttThing {
 	
 	private DeviceDescription deviceDescription;
 	
-//	// TODO: Rename to handleCommand
-//	public abstract boolean handleAction(String action, byte[] payload);
-//	
-//	public abstract Map<String, Object> getState();
-
-
 	public String getDeviceType() {
 		return deviceType;
 	}

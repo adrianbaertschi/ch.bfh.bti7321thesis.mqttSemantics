@@ -1,13 +1,8 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.tinkerforge.BrickletJoystick;
 import com.tinkerforge.BrickletJoystick.PositionListener;
@@ -52,26 +47,16 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 		MqttPublisher.getInstance().publishDeviceState(this.toThing());
 	}
 
-	public List<String> getActions() {
-		Method[] declaredMethods = BrickletJoystick.class.getDeclaredMethods();
-
-		Stream<String> filter = Arrays.asList(declaredMethods).stream().filter(m -> m.getName().startsWith("set"))
-				.map(action -> action.getName());
-
-		return filter.collect(Collectors.toList());
-	}
-	
-
 	@Override
-	public boolean handleAction(String action, byte[] payload) {
+	public boolean handleCommand(String command, byte[] payload) {
 		
-		LOG.info("Action " + action);
+		LOG.info("Command " + command);
 		
 		try {
 
 			long period = Long.parseLong(new String(payload));
 			
-			switch (action) {
+			switch (command) {
 			case "setAnalogValueCallbackPeriod":
 				bricklet.setAnalogValueCallbackPeriod(period);
 				return true;
@@ -79,7 +64,7 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 				bricklet.setPositionCallbackPeriod(period);
 				return true;
 			default:
-				throw new IllegalArgumentException("Action " + action + " not supported");
+				LOG.warning("Unexpected command: " + command);
 			}
 
 		} catch (TimeoutException | NotConnectedException e) {

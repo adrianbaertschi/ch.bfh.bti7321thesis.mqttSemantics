@@ -74,13 +74,13 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 
 
 	@Override
-	public boolean handleAction(String action, byte[] payload) {
-		LOG.info("Action: " + action);
+	public boolean handleCommand(String commandName, byte[] payload) {
+		LOG.info("Command: " + commandName);
 		
 		short state = Short.parseShort(new String(payload));
 
 		try {
-			switch (action) {
+			switch (commandName) {
 			case "setLedL":
 				bricklet.setSelectedLEDState(BrickletDualButton.LED_LEFT, state);
 				return true;
@@ -88,7 +88,7 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 				bricklet.setSelectedLEDState(BrickletDualButton.LED_RIGHT, state);
 				return true;
 			default:
-				LOG.warning("Unexpected action");
+				LOG.warning("Unexpected command: " + commandName );
 				break;
 			}
 		} catch (TimeoutException | NotConnectedException e) {

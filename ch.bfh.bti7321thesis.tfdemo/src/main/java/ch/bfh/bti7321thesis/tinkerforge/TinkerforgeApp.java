@@ -31,7 +31,7 @@ public class TinkerforgeApp {
 		options.setMqttBrokerUri("tcp://46.101.165.125:1883");
 		options.setMqttClientId("TfDemoApp");
 		options.setAppId("thesis");
-		options.setMqttCallback(new MqttActionReveiver());
+		options.setMqttCallback(new MqttCommandReveiver());
 		MqttPublisher.setOptions(options);
 		
 		
