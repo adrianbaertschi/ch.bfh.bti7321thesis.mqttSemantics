@@ -51,35 +51,37 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div class="row">
+<div class="container">
+    <div class="row">
 
-    <!--TODO: css highlight selected row-->
-    <div id="table" class="col-md-12">
-        <table id="deviceTable" data-role="table" class="table table-hover">
-            <thead>
-            <tr>
-                <th>Application ID</th>
-                <th>Column 2</th>
-                <th>Column 3</th>
-                <th>Device Type</th>
-                <th>Device ID</th>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <!--TODO: css highlight selected row-->
+        <div id="table" class="col-md-12">
+            <table id="deviceTable" data-role="table" class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Application ID</th>
+                    <th>Column 2</th>
+                    <th>Column 3</th>
+                    <th>Device Type</th>
+                    <th>Device ID</th>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
     </div>
+    <div class="row">
+        <div id="detail" class="col-md-6">
+            <div class="form-group">
+                <textarea id="txt" readonly rows="40" class="form-control" style="font-family:monospace;"></textarea>
+            </div>
+        </div>
+        <div class="col-md-6">
 
+            <div class="panel-group" id="doc"></div>
+        </div>
+    </div>
 </div>
-<div class="row">
-    <div id="detail" class="col-md-6">
-        <!--TODO: Set font to mono-space in textarea-->
-        <textarea id="txt" readonly rows="40" cols="70" style="font-family:monospace;" ></textarea>
-    </div>
-    <div class="col-md-6">
-
-        <div class="panel-group" id="doc"></div>
-    </div>
-</div>
-
 
 <script type="text/javascript">
 
