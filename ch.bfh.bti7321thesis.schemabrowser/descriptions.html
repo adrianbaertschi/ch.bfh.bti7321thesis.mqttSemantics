@@ -59,9 +59,9 @@
             <table id="deviceTable" data-role="table" class="table table-hover">
                 <thead>
                 <tr>
-                    <th>Application ID</th>
-                    <th>Column 2</th>
-                    <th>Column 3</th>
+                    <th>Application</th>
+                    <th>Group</th>
+                    <th>Subgroup</th>
                     <th>Device Type</th>
                     <th>Device ID</th>
                 </thead>
@@ -84,6 +84,8 @@
 </div>
 
 <script type="text/javascript">
+
+    // TODO: auslagern in js file
 
     var schemas = {};
     var subscriptions = {};
@@ -151,7 +153,7 @@
 
         var stateCnt = '';
         json.stateDescription.states.forEach(function (state) {
-            stateCnt += renderState(state);
+            stateCnt += renderState(state, deviceTopic);
         });
         $('#doc').append(createSection('State', stateCnt));
 
@@ -200,7 +202,7 @@
         return res;
     }
 
-    function renderState(state) {
+    function renderState(state, deviceTopic) {
         var res = '<strong>' + state.name + '</strong> <br>';
 
         if(state.description) {
@@ -219,11 +221,10 @@
         } else {
             console.log('ERROR ' + state);
         }
-//        res += renderRange(state.range, 'Value:');
-//
-//        if(state.complexTypeRef != null) {
-//            res += renderComplexTypeLink(state.complexTypeRef);
-//        }
+
+        // Topic
+        var stateTopic =  deviceTopic + '/state/' + state.name;
+        res += renderTopic(stateTopic);
 
         return res + '<br>';
     }
@@ -266,15 +267,9 @@
                 console.log('ERROR ' + value);
             }
 
+            res += renderTopic(cmdTopic);
 
             var cmdId = $.md5(cmdTopic);
-
-
-
-            res += '    <div class="input-group">';
-            res += '         <span class="input-group-addon" id="basic-addon3">Topic</span> ';
-            res += '        <input class="form-control" id="disabledInput" type="text" value="'+cmdTopic+'" readonly>';
-            res += '    </div>';
 
             res += '<form class="form-inline">';
             res += '    <div class="form-group">';
@@ -308,9 +303,9 @@
             console.log('ERROR ' + event);
         }
 
+        res += renderTopic(eventTopic)+ '<br>';
         res += '<form class="form-inline">';
         res += '    <div class="form-group">';
-        res += 'Topic: ' + eventTopic + '<br>'; // TODO: display in readonly input field
         res += '        <button data-topic="' + eventTopic + '" class="btn btn-default evt" type="button">Subscribe</button>';
         res += '        <input id="' + evtId + '"type="text" class="form-control">';
         res += '    </div>';
@@ -331,6 +326,14 @@
         });
         res += '</ul>';
 
+        return res;
+    }
+
+    function renderTopic(topic) {
+        var res = ' <div class="input-group">';
+        res += '         <span class="input-group-addon" id="basic-addon3">Topic</span> ';
+        res += '        <input class="form-control" id="disabledInput" type="text" value="'+topic+'" readonly>';
+        res += '    </div>';
         return res;
     }
 
