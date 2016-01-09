@@ -1,92 +1,136 @@
-\chapter{Project Managament}
+\chapter{Projektmanagament}
 \label{chap:projectmanagement}
 
 \section{Organisation}
-TODO: formatieren
 
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
- {\bf Name } & {\bf Rolle } & {\bf Aufgaben} \\ 
- \hline
- Adrian Bärtschi                &   Studierender   &     
- Selbständiges Projektmanagement während der Thesis. Setzt die Aufgaben gemäss Aufgabenstellung und Vorgaben Betreuer um. Organisiert Kommunikation mit Betreuer und Experte.   \\
- \hline
-  \parbox[t]{5cm}{Prof. Dr. Ing. Reto E. König \\ Berner Fachhochschule}  &   Betreuer  &
+ \hline \rowcolor{lightgray}
+ {\bf Name } & {\bf Rolle } & {\bf Aufgaben} \\  \hline
+  \parbox[t]{5cm}{\textbf{Prof. Dr. Ing. Reto E. König} \\ \textit{Berner Fachhochschule}}  &   Betreuer  &
   Hauptansprechsperson für Studierenden, verantwortlich für den Ablauf der Thesis. Beurteilung aufgrund von Aufgabenstellung und abgegebenen Artefakten.   \\
  \hline
-  \parbox[t]{5cm}{Dr. Federico Flueckiger \\ Eidg.  Finanzdepartement} &   Experte     &
+  \parbox[t]{5cm}{\textbf{Dr. Federico Flueckiger} \\ \textit{Eidg.  Finanzdepartement}} &   Experte     &
   Beurteilung aufgrund der Aufgabenstellung und abgelieferten Artefakten sowie mindestends ein bis zwei Sitzungen mit dem Studierenden. \\ 
 \hline
+ \textbf{Adrian Bärtschi}                &   Studierender   &     
+ Selbständiges Projektmanagement während der Thesis. Setzt die Aufgaben gemäss Aufgabenstellung und Vorgaben Betreuer um. Organisiert Kommunikation mit Betreuer und Experte.   \\
+ \hline
+
 
 \end{tabularx}
 \caption{Involvierte Personen und deren Aufgaben}
 \end{table}
 
 
+\section{Ziele}
+Die Arbeit umfasst gemäss Aufgabenstellung folgende Ziele:
+\begin{itemize}
+    \item Definition einer Beschreibungssprache für vernetzte Geräte
+    \item Die Beschreibung muss von Menschen und Computern interpretiert werden können
+    \item Die Beschreibung muss die Eingabe- und Ausgabeparameter der Geräte beeinhalten
+    \item Die Beschreibung muss soll möglichst die aktuelle MQTT Spezifikation (3.1.1) nicht verletzen
+\end{itemize}
 
 \section{Meilensteine}
 
-\begin{table}[h!]
-\begin{tabularx}{\textwidth}{|l|X|l|}
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{|l|X|}
 
- \hline
- {\bf Datum } & {\bf Meilenstein } & {\bf Bemerkungen } \\ 
- \hline
- 25.09.2015  &   Initialisierung, Vorgehen geklärt   &     -   \\ \hline
- 01.10.2015  &   Ziele definiert   &     -   \\ \hline
- 15.10.2015  &   Prototyp erstellt, Konzept der Lösung skizziert   &     -   \\ \hline
- 30.11.2015  &   Implementation System abgeschlossen   &     -   \\ \hline
- 15.12.2015  &   Implementation Demo Applikation abgeschlossen   &     -   \\ \hline
- 18.01.2016  &   Dokumentation inhaltlich abgeschlossen    &     -   \\ \hline
- 21.01.2016  &   Dokumentation fertiggestellt    &     -   \\ \hline
+ \hline \rowcolor{lightgray}
+ {\bf Datum } & {\bf Meilenstein } \\  \hline
+ 
+ 25.09.2015  &   Initialisierung, Vorgehen geklärt      \\ \hline
+ 01.10.2015  &   Ziele definiert      \\ \hline
+ 15.10.2015  &   Einfacher Prototyp erstellt, Konzept der Lösung skizziert     \\ \hline
+ 30.11.2015  &   Spezifikation Device Description festgelegt     \\ \hline
+ 15.12.2015  &   Implementation Demo Applikation abgeschlossen     \\ \hline
+ 18.01.2016  &   Dokumentation inhaltlich abgeschlossen      \\ \hline
+ 21.01.2016  &   Dokumentation fertiggestellt, Präsentation vorbereitet     \\ \hline
  
 \end{tabularx}
 \caption{Meilensteine der Thesis}
 \end{table}
 
 
-\section{Resourcen}
-Kosten, etc.
+\section{Ressourcen}
 
+Die gesamte Thesis umfasst gemäss Modulplan der BFH 360 Stunden. Dies beinhaltet die Konzeption und Umsetzung der Lösung, das Erstellen der Dokumentation und die Vorbereitung der Präsentationen für den Finaltag und die Verteidigung.
 
-\section{Ziele}
-Die zu entwickelnde Lösung soll folgendes beinhalten:
-\begin{itemize}
-    \item asdf
-\end{itemize}
+Es sind keine Kosten für Softwarelizenzen oder andere Ressourcen angefallen.
 
 
 \section{Aufwände}
+Nachfolgend ist der Gesamtaufand von 360 Stunden der Arbeit auf einzelen Tasks aufgeteilt. Ausserdem werden bei Differenzen zwischen geplanten und geleisteten Stunden die Gründe dafür angegeben.
 
-\begin{table}[h!]
-\begin{tabularx}{\textwidth}{|l|l|l|X|}
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{|l|r|r|X|}
 
- \hline
- {\bf Task } & {\bf Soll } & {\bf Ist }  & {\bf Bemerkungen } \\ 
- \hline
- asdf    &   2   &  2     & df  \\
+ \hline \rowcolor{lightgray}
+ {\bf Task } & { \bf Geplant [h] } & {\bf Ist [h] }  & {\bf Bemerkungen } \\  \hline
+ \textbf{Projektmanagement}         &      &       &   \\ \hline
+ Kickoff, Initialisierung           &   8  &   8   &   \\ \hline
+ Ziele definieren                   &   6  &   8   &   \\ \hline
+ Planung Tasks                      &   8  &  10   &   \\ \hline
+ Meetings Betreuer                  &  10  &  12   &   \\ \hline
+ Meetings Experte                   &   4  &   2   &   \\ \hline
+     &      &       &   \\ \hline
+ \textbf{Umsetzung}                 &      &       &   \\ \hline
+ MQTT Device Library Java           &  32  &       &   \\ \hline
+ Tinkerforge Prototyp Java          &  50  &       &   \\ \hline
+ Webapplikation Device Browser      &  40  &       &   \\ \hline
+     &      &       &   \\ \hline
+ \textbf{Dokumentation}             &      &       &   \\ \hline
+ Setup                              &   4  &       &   \\ \hline
+ Projektmanagement                  &  16  &       &   \\ \hline
+ Einleitung und bestehende Konzepte &  32  &       &   \\ \hline
+ Konzept und Anforderungen          &  16  &       &   \\ \hline
+ Spezifikation Device Description   &  16  &       &   \\ \hline
+ Umsetzung                          &  32  &       &   \\ \hline
+ Fazit                              &   8  &       &   \\ \hline
+ Finalisierung                      &  24  &       &   \\ \hline
+     &      &       &   \\ \hline
+ \textbf{Präsentation}              &      &       &   \\ \hline
+ Poster                             &   8  &       &   \\ \hline
+ Book Seite                         &   8  &       &   \\ \hline
+ Präsentation Finaltag              &  24  &       &   \\ \hline
+ Präsentation Verteidigung          &  14  &       &   \\ \hline
+     &      &       &   \\ \hline
+     &      &       &   \\ \hline
+ \textbf{Total}                     & \textbf{360}  &       &   \\ \hline
+     
  \hline
 
 \end{tabularx}
-\caption{Planung der Tasks und Auswetung der Aufwände}
+\caption{Planung der Tasks und Auswertung der geleisteten Stunden}
 \end{table}
 
 
-\section{Deliverables / Termine}
-\begin{table}[h!]
+\section{Termine / Abgabefristen}
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
- \hline
- {\bf Datum } & {\bf Thema } \\ 
- \hline
-              & Abgabe Texte/Grafiken/etc. für das Book  \\ \hline
-              & Abgabe Elektronische Version des Posters  \\ \hline
- 21.01.2016   & Abgabe Projektdokumentation an Betreuer, Experte, Sekretariat  \\ \hline
- 22.01.2016   & Final Day Bern, Präsentation und Ausstellung  \\ \hline
-              & Verteidigung \\ \hline
+ \hline \rowcolor{lightgray}
+ {\bf Datum } & {\bf Beschreibung } \\  \hline
+ 04.01.2016   & Abgabe elektronische Form des Posters  \\ \hline
+ 11.01.2016   & Erfassung und Freigabe der Book Seite  \\ \hline
+ 21.01.2016   & Abgabe Projektdokumentation an Betreuer, Experte und Sekretariat  \\ \hline
+ 22.01.2016   & Finaltag Bern, Präsentation und Ausstellung  \\ \hline
+ 01.02.2016   & Verteidigung \\ \hline
 
 \end{tabularx}
 \caption{Termine und Fristen}
 \end{table}
+
+\section{Reflektion}
+nicht klare ziele, ungewissheit
+Freiheit
+
+
++ Prototyping
++ Frühe Entwicklung
++ Latex dok
+
+
+- Deutsche Doku
