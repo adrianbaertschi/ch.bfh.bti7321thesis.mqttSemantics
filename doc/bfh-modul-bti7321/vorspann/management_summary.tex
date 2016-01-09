@@ -1,8 +1,26 @@
-\chapter{Management Summary}
+\chapter*{Management Summary}
 \label{chap:managementSummary}
 
 \color{black}
 
-- Was ist das Ziel der Thesis \\
-- Kurzbeschrieb des Themas \\
-- Was wurde gemacht, erreicht \\
+Das Netzwerkprotokoll MQTT wird verwendet, um beliebige Geräte mit eingeschränkten Resourcen zu vernetzen (Internet of Things). Der einfache Aufbau des Protokolls macht es jedoch schwierig, die gewünschten Daten eines Gerätes zu erhalten und richtig zu interpretieren. Im Rahmen dieser Arbeit wurde ein Konzept erarbeitet, wie ein einheitliches Format für die Beschreibung von vernetzten Geräten sowie deren Eigenschaften und Fähigkeiten aussehen könnte.
+
+
+Die Vision des Internet of Things beschreibt, dass in Zukunft viel mehr Alltagsgeräte vernetzt sein werden. Damit diese zahlreichen und kompakt gebauten Geräte trotz eingeschränkter Ressourcen (Speicher, Energie, Netzwerkkapazität) mit dem Internet verbunden werden können, sind neue Netzwerkprotokolle mit einfachem und leichtgewichtigem Aufbau nötig. MQTT (Message Queuing Telemetry Transport Protocol) ist ein Protokoll, welches für diesen Anwendungszweck entwickelt wurde.
+
+MQTT funktioniert nach dem Publish/Subscribe Prinzip. Der Nachrichtenaustausch erfolgt über einen zentralen MQTT Broker, welcher die Nachrichten des Senders engegennimmt und an die registrierten Emfpänger weiterleitet.
+
+
+Die Spezifikation des Protokolls macht keine Vorgaben zur Codierung oder Struktur der Nutzdaten einer MQTT Nachricht. Dies und die Entkopplung von Sender und Emfänger durch den Broker führt dazu, dass es für den Empfänger schwer ist, an die gewünschten Nachrichten zu kommen und diese richtig zu interpretieren. 
+Anwendungen, welche bereits auf dem Markt sind, haben jeweils ihre eigenen Datenstrukturen für die Nachrichten definiert, was die verschiedenen Systeme inkompatibel zueinander macht.
+
+
+Das Ziel der Thesis bestand darin, ein allgemeines Konzept für die Beschreibung von vernetzten Geräten mit MQTT zu entwickeln. Pro Gerät sollte ersichtlich sein, wie man damit interagieren kann und welche Nachrichten es erzeugen und versenden wird.
+Die Beschreibungssprache sollte für den Menschen gut lesbar sein und gleichzeitig von einem Programm interpretiert werden können.
+Ausserdem musste das System mit den vorhandenen Funktionen des MQTT Protokolls umgesetzt werden.
+
+
+Es wurde eine einheitliche Beschreibung von vernetzten Geräten entworfen und anhand eines Prototypen mit Sensoren und Aktoren umgesetzt.
+Dabei werden für jedes Gerät Statusinformationen, zu erwartende Events und die Möglichkeiten zur Steuerung (Commands) ausgewiesen.
+
+Zudem wurde eine Webapplikation entwickelt, welche die Beschreibungen interpretiert und dadurch eine leicht zugängliche Interaktion mit den Geräten ermöglicht.
