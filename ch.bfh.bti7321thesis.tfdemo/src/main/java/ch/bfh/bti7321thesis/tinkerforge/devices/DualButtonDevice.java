@@ -103,8 +103,8 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 		Map<String, Object> stateEntries = new HashMap<String, Object>();
 		
 		try {
-			stateEntries.put("ButonLeftPressed", bricklet.getButtonState().buttonL == BrickletDualButton.BUTTON_STATE_PRESSED);
-			stateEntries.put("ButonRightPressed", bricklet.getButtonState().buttonR == BrickletDualButton.BUTTON_STATE_PRESSED);
+			stateEntries.put("ButtonLeftPressed", bricklet.getButtonState().buttonL == BrickletDualButton.BUTTON_STATE_PRESSED);
+			stateEntries.put("ButtonRightPressed", bricklet.getButtonState().buttonR == BrickletDualButton.BUTTON_STATE_PRESSED);
 			stateEntries.put("LedLeft", bricklet.getLEDState().ledL == BrickletDualButton.LED_STATE_ON);
 			stateEntries.put("LedRight", bricklet.getLEDState().ledR == BrickletDualButton.LED_STATE_ON);
 
@@ -121,8 +121,8 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 		DeviceDescription deviceDescription = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
 		
 		StateDescription stateDescription = new StateDescription();
-		stateDescription.add("ButonLeftPressed", new BooleanOptions(), "Left Button presses (true) or releases (false)");
-		stateDescription.add("ButonRightPressed", new BooleanOptions(), "Right Button presses (true) or releases (false)");
+		stateDescription.add("ButtonLeftPressed", new BooleanOptions(), "Left Button presses (true) or releases (false)");
+		stateDescription.add("ButtonRightPressed", new BooleanOptions(), "Right Button presses (true) or releases (false)");
 		stateDescription.add("LedLeft", new BooleanOptions(), "Left LED on (true) or off (false)");
 		stateDescription.add("LedRight", new BooleanOptions(), "Right LED on (true) or off (false)");
 		
