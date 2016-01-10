@@ -247,11 +247,13 @@ Die Beschreibung, unter welchen Topics Daten publiziert werden und wie die Brick
 
 \section{Datenformate}
 
-In diesem Kapitel werden verschiedene Datenformate kurz beschrieben, welche für die Beschreibung der Devices in Frage kommen könnten. Grundsätzlich muss zwischen textbasierten und binären Formaten unterschieden werden.
+In diesem Kapitel werden verschiedene Datenformate kurz beschrieben, welche für die Beschreibung der Devices in Frage kommen könnten. 
+
+Grundsätzlich muss zwischen textbasierten und binären Formaten unterschieden werden.
 
 Textbasierte Formate bieten den Vorteil, dass sie von Menschen ohne weitere Hilfsmittel gelesen und meistens auch interpretiert werden können. Die textuellen Formate haben jedoch Schwächen, mit binären Daten (Bilder, Video, Audio etc.) umzugehen. Zwar ist es möglich, die binären Daten in ein textbasiertes Format zu integrieren (beispielsweise mittels Kovertierung zu Base64), dies führt aber zur Aufblähung der Datenmenge.
 
-Binäre Formaten haben den Vorteil, dass die Daten dichter codiert wrden können, somit werden die Dateien meistens kleiner als bei textbasierten Formaten. Der grosse Nachteil ist, dass man für die Interpretation von binären Daten auf eine Beschreibung (in Form eines Schemas) angewiesen ist.
+Binäre Formaten haben den Vorteil, dass die Daten bei der Serialisierung dichter codiert werden können, somit werden die Dateien meistens kleiner als bei textbasierten Formaten. Der grosse Nachteil ist, dass man für die Interpretation von binären Daten immer auf eine Beschreibung (in Form eines Schemas) angewiesen ist.
 
 TODO: Glossar Einträge
 
@@ -301,7 +303,7 @@ address:
 
 
 \end{minted}
-\caption{YAML Beispiel (107 byte)}
+\caption{YAML Beispiel}
 \end{listing}
 
 \textbf{XML} \\
@@ -326,13 +328,13 @@ Mit XML werden die Informationen in hierarchische Elemente (Tags) verschachtelt,
 
 
 \end{minted}
-\caption{XML Beispiel (200 byte)}
+\caption{XML Beispiel}
 \end{listing}
 
 
 
-\textbf{Protocol Buffers}
-Protocul Buffer ist ein Mechanismus zur Serialisierung von Daten. Der Entwickler muss ein Schema seiner Datenstruktueren erstellen (.proto Datei).
+\textbf{Protocol Buffers} \\
+Protocul Buffers ist ein Mechanismus zur Serialisierung von Daten. Der Entwickler muss ein Schema seiner Datenstruktueren erstellen (.proto Datei).
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -353,7 +355,6 @@ message Person {
   }
   
   required Address address = 4;
-
 }
 
 \end{minted}
@@ -374,26 +375,139 @@ message Person {
 00000029
 
 \end{minted}
-\caption{Beispiel Protocol Buffer Daten (Output hexdump, 41 Bytes)}
+\caption{Beispiel Protocol Buffer Daten (Output hexdump)}
 \end{listing}
 
 
-Anschliessend werden mit den bereitgestellten Tools (Protocol Buffer Combiler), Klassen für die Objekte der gewünschten Sprache zu generiert. Mit diesen Klassen können nun Daten in ein sehr kompaktes binäres Format Codiert und Decosiert werden.
-
-
-\textbf{DFDL}
-
+Anschliessend werden mit den bereitgestellten Tools (Protocol Buffer Compiler) Klassen für den Datenzugriff in der gewünschten Sprache generiert. Mit diesen Klassen können nun Daten in ein sehr kompaktes binäres Format codiert und und wieder decodiert werden.
 
 \subsection{Vergleich}
 
-Lesbarkeit, Filegrösse, Unterstütze Platformen/Libraries, Komplexität/Lernkurve
+Bei der Wahl eines geeigneten Datenformats gibt es viele Faktoren, die eine Rolle spielen.
 
-\subsection{Entscheid}
+Falls die Dateigrösse der encodierten Daten möglichst gering sein soll, empfiehlt sich ein binäres Format. Bei den oben gezeigen Beispielen beinhalten alle Dateien die gleichen Informationen, bei der Dateigrösse gibt es aber gewichtige Unterschiede:
 
+\NumTabs{6}
+Protocol Buffer:  \tab{ 41 Byte} \\
+YAML:             \tab{107 Byte} \\
+JSON:             \tab{148 Byte} \\
+XML:              \tab{200 Byte}
+
+Für Datein, welche für Menschen gut lesbar sein sollen, eignet sich aufgrund der Formatierung YAML am besten. Ein weiterer wichitger Faktor ist, dass auf den eingesetzten Platformen Libraries für das Format zur Verfügung stehen. Für die hier behandelten Formate ist dies auf den gängigen Platformen gewährleistet.
+
+Unterstütze Platformen/Libraries, Komplexität/Lernkurve
 
 
 
 
 \section{Konzept aus der nicht-IoT Welt}
-SOAP-WSDL, REST, etc.
-HATEOAS
+TODO: better Section Title
+
+Es gibt diverse bestehende Sprachen zur Beschreibung von Schnittstellen. Vor allen bei Webservices werden diese häufig eingesetzt.
+
+\subsection{WSDL}
+Für die Beschreibung von SOAP Webservices wird eine WSDL Datei verwendet. WSDL ist eine auf XML basierende Sprache und beschreibt die Methoden und Datentypen des Webservice. Das Schema wird verwendet, um daraus Zugriffsklassen zu generieren und für die Validierung der Requests.
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{xml}
+<definitions name="Demo" 
+          targetNamespace="http://example.com/demo.wsdl"
+          xmlns:tns="http://example.com/demo.wsdl"
+          xmlns:xsd1="http://example.com/demo.xsd"
+          xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+          xmlns="http://schemas.xmlsoap.org/wsdl/">
+ 
+    <types>
+       <schema targetNamespace="http://example.com/demo.xsd"
+              xmlns="http://www.w3.org/2001/XMLSchema">
+           <element name="HelloRequest">
+              <complexType>
+                  <all><element name="user" type="string"/></all>
+              </complexType>
+           </element>
+           <element name="HelloResponse">
+              <complexType>
+                  <all><element name="msg" type="String"/></all>
+              </complexType>
+           </element>
+       </schema>
+    </types>
+ 
+    <message name="SayHelloInput">
+        <part name="body" element="xsd1:HelloRequest"/>
+    </message>
+ 
+    <message name="SayHelloOutput">
+        <part name="body" element="xsd1:HelloResponse"/>
+    </message>
+ 
+    <portType name="DemoPortType">
+        <operation name="SayHello">
+           <input message="tns:SayHelloInput"/>
+           <output message="tns:SayHelloOutput"/>
+        </operation>
+    </portType>
+ 
+    <binding name="DemoSoapBinding" type="tns:DemoPortType">
+        <soap:binding style="document" 
+              transport="http://schemas.xmlsoap.org/soap/http"/>
+        <operation name="SayHello">
+           <soap:operation soapAction="http://example.com/SayHello"/>
+           <input><soap:body use="literal"/></input>
+           <output><soap:body use="literal"/></output>
+        </operation>
+    </binding>
+ 
+    <service name="DemoService">
+        <documentation>My first service</documentation>
+        <port name="DemoPort" binding="tns:DemoSoapBinding">
+           <soap:address location="http://example.com/demo"/>
+        </port>
+    </service>
+ 
+ </definitions>
+
+
+\end{minted}
+\caption{Beispiel WSDL eines SOAP Webservice}
+\end{listing}
+
+
+\subsection{Swagger Spec}
+Webservices, welche nach dem RESTful Architekturstil umgesetzt sind, können u.A. mithilfe eines Schemas von Swagger beschrieben werden. Ein Schema in JSON oder YAML gibt an, welche Funktionalität der Webservice zur Verfügung stellt. Mithilfe eines Code Generators können aus dem Schema Zugriffsklassen für den Webservice generiert werden.
+
+\begin{listing}[H]
+\begin{minted}[frame=single,
+               framesep=3mm,
+               linenos=false,
+               xleftmargin=21pt,
+               tabsize=4]{yaml}
+swagger: "2.0"
+info:
+  version: "1.0"
+  title: "Hello World API"
+paths:
+  /hello/{user}:
+    get:
+      description: My first service
+      parameters:
+        - name: user
+          in: path
+          type: string
+          required: true
+          description: The name of the user to greet.
+      responses:
+        200:
+          description: Returns the greeting.
+          schema:
+            type: string
+        400:
+          description: Invalid characters in "user" were provided.
+          
+\end{minted}
+\caption{Beispiel Swagger Beschreibung eines Webservices}
+\end{listing}
