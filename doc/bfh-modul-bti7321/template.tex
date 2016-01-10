@@ -25,23 +25,24 @@
 %---------------------------------------------------------------------------
 \usepackage[standard-baselineskips]{cmbright}
 
-\usepackage[ngerman]{babel}										% german hyphenation
-\usepackage[utf8x]{inputenc}  									% Unix/Linux - load extended character set
-%\usepackage[ansinew]{inputenc}  								% Windows - load extended character set (ISO 8859-1)
+\usepackage[ngerman]{babel}									% german hyphenation
+\usepackage[utf8x]{inputenc}  								% Unix/Linux - load extended character set
+%\usepackage[ansinew]{inputenc}  							% Windows - load extended character set (ISO 8859-1)
 \usepackage[T1]{fontenc}										% hyphenation of words with ä,ö and ü
-\usepackage{textcomp}											% additional symbols
-\usepackage{ae}													% better resolution of Type1-Fonts 
-\usepackage{fancyhdr}											% simple manipulation of header and footer 
-\usepackage{etoolbox}											% color manipulation of header and footer
-\usepackage{graphicx}                      						% integration of images
-\usepackage{float}												% floating objects
+\usepackage{textcomp}										% additional symbols
+\usepackage{ae}												% better resolution of Type1-Fonts 
+\usepackage{fancyhdr}										% simple manipulation of header and footer 
+\usepackage{etoolbox}										% color manipulation of header and footer
+\usepackage{graphicx}                      					% integration of images
+\usepackage{float}											% floating objects
 \usepackage{caption}											% for captions of figures and tables
-\usepackage{booktabs}											% package for nicer tables
-\usepackage{tocvsec2}											% provides means of controlling the sectional numbering
+\usepackage{booktabs}										% package for nicer tables
+\usepackage{tocvsec2}										% provides means of controlling the sectional numbering
 \usepackage{tabularx}
-\usepackage{minted}
-\usepackage{setspace}\setstretch{1.3} % for custom spacing
-
+\usepackage[table]{xcolor}
+\usepackage{minted}                                          % Sourcecode highlighting
+\usepackage{setspace}\setstretch{1.3}                        % Custom line spacing
+\usepackage{tabto}                                           % Tabs
 
 
 %---------------------------------------------------------------------------
@@ -68,8 +69,8 @@
 \definecolor{linkblue}{rgb}{0,0,0.8}            % Standard
 \definecolor{darkblue}{rgb}{0,0.08,0.45}        % Dark blue
 \definecolor{bfhgrey}{rgb}{0.41,0.49,0.57}      % BFH grey
-%\definecolor{linkcolor}{rgb}{0,0,0.8}     		% Blue for the web- and cd-version!
 \definecolor{linkcolor}{rgb}{0,0,0}        		% Black for the print-version!
+\definecolor{lightgray}{rgb}{0.83,0.83,0.83}     % Table Header
 %---------------------------------------------------------------------------
 
 % Hyperref Package (Create links in a pdf)
@@ -183,6 +184,7 @@
 \input{kapitel/projectmanagement}
 \input{kapitel/technologie}
 \input{kapitel/konzept}
+\input{kapitel/requirements}
 \input{kapitel/spez_schema}
 \input{kapitel/umsetzung}
 \input{kapitel/schlussfolgerungen}
