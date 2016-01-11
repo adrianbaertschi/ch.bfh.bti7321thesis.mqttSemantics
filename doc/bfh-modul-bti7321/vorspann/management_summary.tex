@@ -3,7 +3,7 @@
 
 \color{black}
 
-Das Netzwerkprotokoll MQTT wird verwendet, um beliebige Geräte mit eingeschränkten Resourcen zu vernetzen (Internet of Things). Der einfache Aufbau des Protokolls macht es jedoch schwierig, die gewünschten Daten eines Gerätes zu erhalten und richtig zu interpretieren. Im Rahmen dieser Arbeit wurde ein Konzept erarbeitet, wie ein einheitliches Format für die Beschreibung von vernetzten Geräten sowie deren Eigenschaften und Fähigkeiten aussehen könnte.
+Das Netzwerkprotokoll MQTT wird verwendet, um beliebige Geräte mit eingeschränkten Resourcen zu vernetzen (Internet of Things). Der einfache Aufbau des Protokolls macht es jedoch schwierig, die gewünschten Daten eines Gerätes zu erhalten und richtig zu interpretieren. Im Rahmen dieser Arbeit wurde ein Konzept für ein einheitliches Format für die Beschreibung von vernetzten Geräten sowie deren Eigenschaften und Fähigkeiten erarbeitet.
 
 
 Die Vision des Internet of Things beschreibt, dass in Zukunft viel mehr Alltagsgeräte vernetzt sein werden. Damit diese zahlreichen und kompakt gebauten Geräte trotz eingeschränkter Ressourcen (Speicher, Energie, Netzwerkkapazität) mit dem Internet verbunden werden können, sind neue Netzwerkprotokolle mit einfachem und leichtgewichtigem Aufbau nötig. MQTT (Message Queuing Telemetry Transport Protocol) ist ein Protokoll, welches für diesen Anwendungszweck entwickelt wurde.
@@ -11,7 +11,7 @@ Die Vision des Internet of Things beschreibt, dass in Zukunft viel mehr Alltagsg
 MQTT funktioniert nach dem Publish/Subscribe Prinzip. Der Nachrichtenaustausch erfolgt über einen zentralen MQTT Broker, welcher die Nachrichten des Senders engegennimmt und an die registrierten Emfpänger weiterleitet.
 
 
-Die Spezifikation des Protokolls macht keine Vorgaben zur Codierung oder Struktur der Nutzdaten einer MQTT Nachricht. Dies und die Entkopplung von Sender und Emfänger durch den Broker führt dazu, dass es für den Empfänger schwer ist, an die gewünschten Nachrichten zu kommen und diese richtig zu interpretieren. 
+Die Spezifikation des Protokolls macht keine Vorgaben zur Codierung oder Struktur der Nutzdaten einer MQTT Nachricht. Dies und die Entkopplung von Sender und Empfänger durch den Broker führen dazu, dass es für den Empfänger schwer ist, an die gewünschten Nachrichten zu kommen und diese richtig zu interpretieren. 
 Anwendungen, welche bereits auf dem Markt sind, haben jeweils ihre eigenen Datenstrukturen für die Nachrichten definiert, was die verschiedenen Systeme inkompatibel zueinander macht.
 
 
