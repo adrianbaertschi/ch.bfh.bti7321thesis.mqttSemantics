@@ -1,5 +1,7 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
+import java.net.Inet4Address;
+import java.net.UnknownHostException;
 import java.util.Map;
 
 import com.tinkerforge.Device;
@@ -7,25 +9,25 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.util.TinkerforgeBrickletDB;
 
-public abstract class MqttDevice<T extends Device> {
+public abstract class MqttBricklet<T extends Device> {
 	
 	T bricklet;
 	String stackName;
 	String uid;
 	IPConnection ipcon;
 	
-	public MqttDevice(String uid, IPConnection ipcon, String stackName) {
+	public MqttBricklet(String uid, IPConnection ipcon, String stackName) {
 		
 		this.stackName = stackName;
 		this.uid = uid;
 		this.ipcon = ipcon;
 		setUpDevice();
 		
-		MqttPublisher.getInstance().publishDeviceState(this.toThing());
+		MqttPublisher.getInstance().publishState(this.toThing());
 		MqttPublisher.getInstance().publishDesc(this.toThing());
 	}
 	
@@ -57,9 +59,19 @@ public abstract class MqttDevice<T extends Device> {
 	
 	public abstract DeviceDescription getDescription();
 	
-	public MqttThing toThing() {
-		MqttThing mqttThing = new MqttThing();
-		mqttThing.setStackName(this.getStackName());
+	public MqttDevice toThing() {
+		MqttDevice mqttThing = new MqttDevice();
+		
+		String hostName = "Host";
+		try {
+			hostName = Inet4Address.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			hostName = "ERROR";
+		}
+		mqttThing.setGroup(hostName);
+		
+		mqttThing.setSubGroup(this.getStackName());
 		try {
 			mqttThing.setDeviceType(TinkerforgeBrickletDB.getDisplayName(this.getDevice().getIdentity().deviceIdentifier));
 		} catch (TimeoutException | NotConnectedException e) {

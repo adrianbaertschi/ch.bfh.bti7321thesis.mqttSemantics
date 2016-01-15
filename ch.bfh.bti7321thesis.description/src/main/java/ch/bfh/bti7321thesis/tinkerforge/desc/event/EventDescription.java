@@ -1,9 +1,11 @@
-package ch.bfh.bti7321thesis.tinkerforge.desc;
+package ch.bfh.bti7321thesis.tinkerforge.desc.event;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import ch.bfh.bti7321thesis.tinkerforge.desc.ComplexType;
 
 public class EventDescription {
 	
@@ -24,7 +26,7 @@ public class EventDescription {
 		return this.events.add(event);
 	}
 
-	Set<ComplexType> getTypes() {
+	public Set<ComplexType> getTypes() {
 		return types;
 	}
 

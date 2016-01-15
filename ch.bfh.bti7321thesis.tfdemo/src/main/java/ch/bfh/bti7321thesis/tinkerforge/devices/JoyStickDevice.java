@@ -10,16 +10,16 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Command;
-import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
+import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
-import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
-import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.Command;
+import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.CommandDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.event.Event;
+import ch.bfh.bti7321thesis.tinkerforge.desc.event.EventDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.state.StateDescription;
 
-public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
+public class JoyStickDevice extends MqttBricklet<BrickletJoystick> {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 

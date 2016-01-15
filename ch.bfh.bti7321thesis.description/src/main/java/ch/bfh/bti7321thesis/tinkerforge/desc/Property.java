@@ -3,7 +3,6 @@ package ch.bfh.bti7321thesis.tinkerforge.desc;
 public class Property {
 
 	private String name;
-	private Class<?> clazz;
 	private String description;
 	private String type;
 	
@@ -13,7 +12,7 @@ public class Property {
 
 	public Property(String name, Class<?> clazz, String desc) {
 		this.name = name;
-		this.clazz = clazz;
+		this.type = clazz.getSimpleName();
 		this.description = desc;
 	}
 
@@ -26,13 +25,16 @@ public class Property {
 	}
 
 	public String getType() {
-		return clazz.getSimpleName();
+		return type;
 	}
 
 	public String getDescription() {
 		return description;
 	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
 }
 
 

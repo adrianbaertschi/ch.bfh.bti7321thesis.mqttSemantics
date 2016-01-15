@@ -1,6 +1,5 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -14,10 +13,10 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 
-public class HumidityDevice extends MqttDevice<BrickletHumidity> {
+public class HumidityDevice extends MqttBricklet<BrickletHumidity> {
 
 	public HumidityDevice(String uid, IPConnection ipcon, String stackName) {
 		super(uid, ipcon, stackName);
@@ -58,11 +57,10 @@ public class HumidityDevice extends MqttDevice<BrickletHumidity> {
 		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 		DeviceDescription desc = null;
 		try {
-			URL url = this.getClass().getResource("asdf.yaml");
-//			yamlMapper.setSerializationInclusion(Include.NON_NULL);
-			desc = yamlMapper.readValue(new File("/home/adrian/workspace_tinker/ch.bfh.bti7321thesis/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/devices/humidity.yaml"), DeviceDescription.class);
+			URL url = this.getClass().getResource("/humidity.yaml");
+			
+			desc = yamlMapper.readValue(url, DeviceDescription.class);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return desc;

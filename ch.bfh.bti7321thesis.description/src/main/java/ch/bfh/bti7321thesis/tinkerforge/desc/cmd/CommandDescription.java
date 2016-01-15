@@ -1,4 +1,4 @@
-package ch.bfh.bti7321thesis.tinkerforge.desc;
+package ch.bfh.bti7321thesis.tinkerforge.desc.cmd;
 
 import java.util.ArrayList;
 import java.util.List;

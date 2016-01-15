@@ -3,6 +3,10 @@ package ch.bfh.bti7321thesis.tinkerforge.desc;
 import java.util.HashSet;
 import java.util.Set;
 
+import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.CommandDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.event.EventDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.state.StateDescription;
+
 public class DeviceDescription {
 	
 	private String id;

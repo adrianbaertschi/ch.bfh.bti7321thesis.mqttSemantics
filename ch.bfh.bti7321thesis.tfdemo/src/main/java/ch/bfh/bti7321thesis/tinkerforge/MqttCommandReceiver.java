@@ -7,7 +7,9 @@ import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
-import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
+import ch.bfh.bti7321thesis.app.MqttPublisher;
+import ch.bfh.bti7321thesis.app.MqttTopic;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MqttBricklet;
 
 public class MqttCommandReceiver implements MqttCallback {
 	
@@ -34,7 +36,7 @@ public class MqttCommandReceiver implements MqttCallback {
 
 		MqttTopic topic = new MqttTopic(topicString);
 
-		MqttDevice<?> mqttDevice = TinkerforgeDeviceRegistry.getInstance().find(topic);
+		MqttBricklet<?> mqttDevice = TinkerforgeDeviceRegistry.getInstance().find(topic);
 		LOG.info(mqttDevice.toString());
 		
 		String commandName = topic.getLast();
@@ -42,7 +44,7 @@ public class MqttCommandReceiver implements MqttCallback {
 
 		if(mqttDevice.handleCommand(commandName, message.getPayload())) {
 			// Re-publish State
-			MqttPublisher.getInstance().publishDeviceState(mqttDevice.toThing());
+			MqttPublisher.getInstance().publishState(mqttDevice.toThing());
 		}
 	}
 

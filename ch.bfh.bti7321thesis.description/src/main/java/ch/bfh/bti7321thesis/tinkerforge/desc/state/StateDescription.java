@@ -1,9 +1,13 @@
-package ch.bfh.bti7321thesis.tinkerforge.desc;
+package ch.bfh.bti7321thesis.tinkerforge.desc.state;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import ch.bfh.bti7321thesis.tinkerforge.desc.ComplexType;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
 
 public class StateDescription {
 
@@ -31,7 +35,7 @@ public class StateDescription {
 		return this.states.add(new State(key, complextype.getName(), desc));
 	}
 	
-	Set<ComplexType> getTypes() {
+	public Set<ComplexType> getTypes() {
 		return types;
 	}
 

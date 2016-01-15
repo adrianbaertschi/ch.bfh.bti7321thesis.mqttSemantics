@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.tinkerforge.BrickletTemperatureIR;
@@ -16,10 +15,10 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 
-public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
+public class TempIrDevice extends MqttBricklet<BrickletTemperatureIR> {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
@@ -136,16 +135,30 @@ public class TempIrDevice extends MqttDevice<BrickletTemperatureIR> {
 
 	@Override
 	public DeviceDescription getDescription() {
+		
+		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 		DeviceDescription desc = null;
 		try {
-			URL url = this.getClass().getResource("TempIr.yaml");
-			yamlMapper.setSerializationInclusion(Include.NON_NULL);
+			URL url = this.getClass().getResource("/TempIr.yaml");
+			
 			desc = yamlMapper.readValue(url, DeviceDescription.class);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return desc;
+		
+		//////////////////////////////////
+//		DeviceDescription desc = null;
+//		try {
+//			URL url = this.getClass().getResource("/TempIr.yaml");
+////			yamlMapper.setSerializationInclusion(Include.NON_NULL);
+//			desc = yamlMapper.readValue(url, DeviceDescription.class);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		return desc;
+		///////////////////////////
 		
 //		// TODO: timestamp Last_onl
 //		

@@ -4,10 +4,10 @@ import java.util.Map;
 
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 
-public class MqttThing {
+public class MqttDevice {
 	
-	// TODO: remove?
-	private String stackName;
+	private String group;
+	private String subGroup;
 	private String deviceType;
 	private String deviceInstance;
 	
@@ -31,13 +31,6 @@ public class MqttThing {
 		this.deviceInstance = deviceInstance;
 	}
 
-	public String getStackName() {
-		return stackName;
-	}
-
-	public void setStackName(String stackName) {
-		this.stackName = stackName;
-	}
 
 	public DeviceDescription getDeviceDescription() {
 		return deviceDescription;
@@ -53,6 +46,22 @@ public class MqttThing {
 
 	public void setState(Map<String, Object> state) {
 		this.state = state;
+	}
+
+	public String getSubGroup() {
+		return subGroup;
+	}
+
+	public void setSubGroup(String subGroup) {
+		this.subGroup = subGroup;
+	}
+
+	public String getGroup() {
+		return group;
+	}
+
+	public void setGroup(String group) {
+		this.group = group;
 	}
 
 	

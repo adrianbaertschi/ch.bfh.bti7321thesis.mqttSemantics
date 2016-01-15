@@ -1,7 +1,11 @@
-package ch.bfh.bti7321thesis.tinkerforge.desc;
+package ch.bfh.bti7321thesis.tinkerforge.desc.cmd;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import ch.bfh.bti7321thesis.tinkerforge.desc.ComplexType;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
 
 
 public class Command {

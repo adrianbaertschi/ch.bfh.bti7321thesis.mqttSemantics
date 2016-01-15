@@ -1,4 +1,4 @@
-package ch.bfh.bti7321thesis.tinkerforge;
+package ch.bfh.bti7321thesis.app;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +19,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import ch.bfh.bti7321thesis.tinkerforge.Options.SchemaFormat;
-import ch.bfh.bti7321thesis.tinkerforge.devices.MqttThing;
+import ch.bfh.bti7321thesis.app.Options.SchemaFormat;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
 
 public class MqttPublisher {
 	
-	// TODO: Subscribe in own class / connection
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 	
 	
@@ -130,9 +129,9 @@ public class MqttPublisher {
 		LOG.info("MQTT disconnected");
 	}
 	
-	public void pubEvent(MqttThing thing, String eventName, Object payload) {
+	public void pubEvent(MqttDevice thing, String eventName, Object payload) {
 
-		String baseTopic = new BrickletToMqttConverter().getBaseTopic(options.getAppId(), thing) + "/events/" + eventName;
+		String baseTopic = new TopicUtil().getBaseTopic(options.getAppId(), thing) + "/events/" + eventName;
 		String payloadStr = payload.toString();
 		if (addRandomtoEvents) {
 			payloadStr += " " + Math.random();
@@ -142,24 +141,23 @@ public class MqttPublisher {
 	}
 
 	
-	public void publishDesc(MqttThing thing) {
+	public void publishDesc(MqttDevice thing) {
 		String desc = "";
 		for(Entry<String, ObjectMapper> entry : objectmappers.entrySet()) {
-			
-		
-		try {
-			desc = entry.getValue().writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
-		} catch (JsonProcessingException e) {
-			LOG.log(Level.SEVERE, "", e);
-		}
-		String baseTopic = new BrickletToMqttConverter().getBaseTopic(options.getAppId(), thing);
+
+
+			try {
+				desc = entry.getValue().writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
+			} catch (JsonProcessingException e) {
+				LOG.log(Level.SEVERE, "", e);
+			}
+			String baseTopic = new TopicUtil().getBaseTopic(options.getAppId(), thing);
 			pubRetained(baseTopic + "/schema/" + entry.getKey(), desc);
 		}
 	}
 	
-	// TODO: rename
-	public void publishDeviceState(MqttThing thing) {
-		String baseTopic = new BrickletToMqttConverter().getBaseTopic(options.getAppId(), thing) + "/state";
+	public void publishState(MqttDevice thing) {
+		String baseTopic = new TopicUtil().getBaseTopic(options.getAppId(), thing) + "/state";
 		for(Entry<String, Object> state : thing.getState().entrySet()) {
 			LOG.info(state.getKey());
 			pubState(baseTopic + "/" + state.getKey(), state.getValue());

@@ -1,4 +1,4 @@
-package ch.bfh.bti7321thesis.tinkerforge;
+package ch.bfh.bti7321thesis.app;
 
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 
@@ -9,8 +9,6 @@ public class Options {
 	private String mqttBrokerUri;
 	private String mqttClientId;
 	private String appId;
-	
-	// TODO
 	private boolean logPublishMessages = false;
 
 	public String getMqttBrokerUri() {

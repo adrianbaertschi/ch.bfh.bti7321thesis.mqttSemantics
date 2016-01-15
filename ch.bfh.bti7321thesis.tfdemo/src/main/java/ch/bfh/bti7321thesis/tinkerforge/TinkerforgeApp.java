@@ -13,6 +13,8 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import ch.bfh.bti7321thesis.app.MqttPublisher;
+import ch.bfh.bti7321thesis.app.Options;
 import ch.bfh.bti7321thesis.tinkerforge.log.StdoutConsoleHandler;
 
 public class TinkerforgeApp {

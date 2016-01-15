@@ -1,4 +1,7 @@
-package ch.bfh.bti7321thesis.tinkerforge.desc;
+package ch.bfh.bti7321thesis.tinkerforge.desc.state;
+
+import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
+import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
 
 public class State {
 	private String name;

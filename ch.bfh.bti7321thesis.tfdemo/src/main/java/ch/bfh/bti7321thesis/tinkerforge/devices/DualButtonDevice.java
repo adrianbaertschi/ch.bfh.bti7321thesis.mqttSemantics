@@ -10,17 +10,17 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.BooleanOptions;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Command;
-import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Event;
-import ch.bfh.bti7321thesis.tinkerforge.desc.EventDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
-import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.Command;
+import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.CommandDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.event.Event;
+import ch.bfh.bti7321thesis.tinkerforge.desc.event.EventDescription;
+import ch.bfh.bti7321thesis.tinkerforge.desc.state.StateDescription;
 
-public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
+public class DualButtonDevice extends MqttBricklet<BrickletDualButton> {
 	
 	private int stateButtonL = -1;
 	private int stateButtonR = -1;
@@ -144,7 +144,7 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 				stateButtonL = buttonL;
 				stateButtonR = buttonR;
 				
-				MqttPublisher.getInstance().publishDeviceState(DualButtonDevice.this.toThing());
+				MqttPublisher.getInstance().publishState(DualButtonDevice.this.toThing());
 			}
 		});
 		

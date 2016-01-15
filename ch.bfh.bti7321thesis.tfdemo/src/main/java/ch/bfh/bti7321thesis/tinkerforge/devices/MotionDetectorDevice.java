@@ -8,10 +8,10 @@ import com.tinkerforge.BrickletMotionDetector.DetectionCycleEndedListener;
 import com.tinkerforge.BrickletMotionDetector.MotionDetectedListener;
 import com.tinkerforge.IPConnection;
 
-import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
+import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 
-public class MotionDetectorDevice extends MqttDevice<BrickletMotionDetector>{
+public class MotionDetectorDevice extends MqttBricklet<BrickletMotionDetector>{
 	
 	boolean enabled = true;
 	

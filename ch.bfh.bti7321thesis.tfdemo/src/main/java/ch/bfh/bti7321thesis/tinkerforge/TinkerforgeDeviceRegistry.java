@@ -5,12 +5,13 @@ import java.util.List;
 
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
+import ch.bfh.bti7321thesis.app.MqttTopic;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MqttBricklet;
 
 // TODO: refactor to HashMap
 public class TinkerforgeDeviceRegistry {
 	
-	private List<MqttDevice> things = new ArrayList<MqttDevice>();
+	private List<MqttBricklet> things = new ArrayList<MqttBricklet>();
 //	ListMultimap<String, Device> devices = SynchronizedListMultimap;
 	
 	
@@ -28,11 +29,11 @@ public class TinkerforgeDeviceRegistry {
 	}
 	
 	
-	public void add(MqttDevice device) {
+	public void add(MqttBricklet device) {
 		this.things.add(device);
 	}
 
-	public MqttDevice find(MqttTopic topic) throws TimeoutException {
+	public MqttBricklet find(MqttTopic topic) throws TimeoutException {
 		
 		String uid = topic.getTopic(4);
 		
