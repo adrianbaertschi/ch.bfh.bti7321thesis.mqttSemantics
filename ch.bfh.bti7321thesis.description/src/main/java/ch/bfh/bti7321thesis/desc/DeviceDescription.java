@@ -1,11 +1,11 @@
-package ch.bfh.bti7321thesis.tinkerforge.desc;
+package ch.bfh.bti7321thesis.desc;
 
 import java.util.HashSet;
 import java.util.Set;
 
-import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.CommandDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.event.EventDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.state.StateDescription;
+import ch.bfh.bti7321thesis.desc.cmd.CommandDescription;
+import ch.bfh.bti7321thesis.desc.event.EventDescription;
+import ch.bfh.bti7321thesis.desc.state.StateDescription;
 
 public class DeviceDescription {
 	

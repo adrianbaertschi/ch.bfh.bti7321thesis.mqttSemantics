@@ -16,7 +16,7 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.app.MqttPublisher;
-import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.desc.DeviceDescription;
 
 public class TempIrDevice extends MqttBricklet<BrickletTemperatureIR> {
 

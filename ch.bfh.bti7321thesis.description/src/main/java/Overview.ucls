@@ -52,21 +52,20 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="6" language="java" name="ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription" 
+  <class id="6" language="java" name="ch.bfh.bti7321thesis.desc.DeviceDescription" 
     project="ch.bfh.bti7321thesis.description" 
-    file="/ch.bfh.bti7321thesis.description/src/main/java/ch/bfh/bti7321thesis/tinkerforge/desc/DeviceDescription.java" 
+    file="/ch.bfh.bti7321thesis.description/src/main/java/ch/bfh/bti7321thesis/desc/DeviceDescription.java" 
     binary="false" corner="BOTTOM_RIGHT">    
-    <position height="-1" width="-1" x="545" y="752"/>    
+    <position height="-1" width="-1" x="472" y="654"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
       <attributes public="true" package="true" protected="true" private="true" static="true"/>      
-      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
     </display>  
   </class>  
-  <class id="7" language="java" name="ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice" 
-    project="ch.bfh.bti7321thesis.description" 
-    file="/ch.bfh.bti7321thesis.description/src/main/java/ch/bfh/bti7321thesis/tinkerforge/devices/MqttDevice.java" 
-    binary="false" corner="BOTTOM_RIGHT">    
+  <class id="7" language="java" name="ch.bfh.bti7321thesis.app.MqttDevice" project="ch.bfh.bti7321thesis.description" 
+    file="/ch.bfh.bti7321thesis.description/src/main/java/ch/bfh/bti7321thesis/app/MqttDevice.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
     <position height="-1" width="-1" x="163" y="646"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -93,10 +92,10 @@
   <association id="12">    
     <end type="SOURCE" refId="7" navigable="false">      
       <attribute id="13" name="deviceDescription">        
-        <position height="0" width="0" x="-891" y="268"/>      
+        <position height="0" width="0" x="-964" y="170"/>      
       </attribute>      
       <multiplicity id="14" minimum="0" maximum="1">        
-        <position height="0" width="0" x="-891" y="268"/>      
+        <position height="0" width="0" x="-964" y="170"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="6" navigable="true"/>    

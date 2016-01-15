@@ -1,7 +1,5 @@
 package ch.bfh.bti7321thesis.app;
 
-import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
-
 public class TopicUtil {
 	
 	public String getBaseTopic(String appId, MqttDevice mqttThing) {

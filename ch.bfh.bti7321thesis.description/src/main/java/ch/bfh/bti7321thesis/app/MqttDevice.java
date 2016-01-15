@@ -1,8 +1,8 @@
-package ch.bfh.bti7321thesis.tinkerforge.devices;
+package ch.bfh.bti7321thesis.app;
 
 import java.util.Map;
 
-import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.desc.DeviceDescription;
 
 public class MqttDevice {
 	

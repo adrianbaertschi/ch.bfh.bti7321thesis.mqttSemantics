@@ -11,14 +11,14 @@ import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.app.MqttPublisher;
-import ch.bfh.bti7321thesis.tinkerforge.desc.BooleanOptions;
-import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
-import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.Command;
-import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.CommandDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.event.Event;
-import ch.bfh.bti7321thesis.tinkerforge.desc.event.EventDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.state.StateDescription;
+import ch.bfh.bti7321thesis.desc.BooleanOptions;
+import ch.bfh.bti7321thesis.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.desc.Options;
+import ch.bfh.bti7321thesis.desc.cmd.Command;
+import ch.bfh.bti7321thesis.desc.cmd.CommandDescription;
+import ch.bfh.bti7321thesis.desc.event.Event;
+import ch.bfh.bti7321thesis.desc.event.EventDescription;
+import ch.bfh.bti7321thesis.desc.state.StateDescription;
 
 public class DualButtonDevice extends MqttBricklet<BrickletDualButton> {
 	

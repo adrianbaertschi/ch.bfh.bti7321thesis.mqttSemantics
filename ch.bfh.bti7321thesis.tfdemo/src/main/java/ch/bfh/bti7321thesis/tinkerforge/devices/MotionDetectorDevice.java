@@ -9,7 +9,7 @@ import com.tinkerforge.BrickletMotionDetector.MotionDetectedListener;
 import com.tinkerforge.IPConnection;
 
 import ch.bfh.bti7321thesis.app.MqttPublisher;
-import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.desc.DeviceDescription;
 
 public class MotionDetectorDevice extends MqttBricklet<BrickletMotionDetector>{
 	

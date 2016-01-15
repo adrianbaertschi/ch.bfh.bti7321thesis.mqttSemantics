@@ -7,15 +7,15 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.desc.ComplexType;
-import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
-import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.Command;
-import ch.bfh.bti7321thesis.tinkerforge.desc.cmd.CommandDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.event.Event;
-import ch.bfh.bti7321thesis.tinkerforge.desc.event.EventDescription;
-import ch.bfh.bti7321thesis.tinkerforge.desc.state.StateDescription;
+import ch.bfh.bti7321thesis.desc.ComplexType;
+import ch.bfh.bti7321thesis.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.desc.Options;
+import ch.bfh.bti7321thesis.desc.Range;
+import ch.bfh.bti7321thesis.desc.cmd.Command;
+import ch.bfh.bti7321thesis.desc.cmd.CommandDescription;
+import ch.bfh.bti7321thesis.desc.event.Event;
+import ch.bfh.bti7321thesis.desc.event.EventDescription;
+import ch.bfh.bti7321thesis.desc.state.StateDescription;
 
 public class MockDevice extends MqttBricklet {
 	

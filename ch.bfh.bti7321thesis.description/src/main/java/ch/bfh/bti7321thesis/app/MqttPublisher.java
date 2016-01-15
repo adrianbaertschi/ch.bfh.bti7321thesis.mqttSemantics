@@ -20,7 +20,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import ch.bfh.bti7321thesis.app.Options.SchemaFormat;
-import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
 
 public class MqttPublisher {
 	

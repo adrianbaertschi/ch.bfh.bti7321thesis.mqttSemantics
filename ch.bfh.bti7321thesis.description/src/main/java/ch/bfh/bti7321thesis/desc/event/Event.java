@@ -1,10 +1,10 @@
-package ch.bfh.bti7321thesis.tinkerforge.desc.event;
+package ch.bfh.bti7321thesis.desc.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import ch.bfh.bti7321thesis.tinkerforge.desc.ComplexType;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Options;
-import ch.bfh.bti7321thesis.tinkerforge.desc.Range;
+import ch.bfh.bti7321thesis.desc.ComplexType;
+import ch.bfh.bti7321thesis.desc.Options;
+import ch.bfh.bti7321thesis.desc.Range;
 
 public class Event {
 	private String name;

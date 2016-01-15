@@ -9,8 +9,9 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import ch.bfh.bti7321thesis.app.MqttDevice;
 import ch.bfh.bti7321thesis.app.MqttPublisher;
-import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.util.TinkerforgeBrickletDB;
 
 public abstract class MqttBricklet<T extends Device> {
