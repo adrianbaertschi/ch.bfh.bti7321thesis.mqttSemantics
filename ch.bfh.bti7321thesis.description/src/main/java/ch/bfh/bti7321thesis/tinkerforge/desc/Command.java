@@ -10,6 +10,10 @@ public class Command {
 	private String linkedState;
 	// TODO: desc;
 	
+	public Command() {
+		
+	}
+	
 	public Command(String name) {
 		this.name = name;
 	}

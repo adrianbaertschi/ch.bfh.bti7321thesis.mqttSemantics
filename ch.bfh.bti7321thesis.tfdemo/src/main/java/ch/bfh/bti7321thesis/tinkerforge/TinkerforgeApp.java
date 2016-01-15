@@ -1,8 +1,14 @@
 package ch.bfh.bti7321thesis.tinkerforge;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -22,16 +28,19 @@ public class TinkerforgeApp {
 
 		Logger.getLogger("").addHandler(new StdoutConsoleHandler());
 
-		List<String> hosts = new ArrayList<String>();
+		String[] values = loadConfigValue("hosts").split(",");
+		Set<String> hosts = new HashSet<String>(Arrays.asList(values));
+		// Always include localhost
 		hosts.add("localhost");
-		hosts.add("tfstack1");
-		hosts.add("tfstack2");
+		
+		
 		
 		Options options = new Options();
-		options.setMqttBrokerUri("tcp://46.101.165.125:1883");
+		options.setMqttBrokerUri(loadConfigValue("brokerUri"));
 		options.setMqttClientId("TfDemoApp");
-		options.setAppId("thesis");
-		options.setMqttCallback(new MqttCommandReveiver());
+		options.setAppId(loadConfigValue("appId"));
+		options.setMqttCallback(new MqttCommandReceiver());
+		options.setLogPublishMessages(true);
 		MqttPublisher.setOptions(options);
 		
 		
@@ -51,5 +60,22 @@ public class TinkerforgeApp {
 		}
 		MqttPublisher.getInstance().disconnect();
 
+	}
+	
+	private static String loadConfigValue(String key) {
+		Properties prop = new Properties();
+		try {
+			InputStream input = new FileInputStream("config.properties");
+			prop.load(input);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return prop.getProperty(key);
+		
+//		List<String> hosts = Arrays.asList(prop.getProperty("hosts").split(","));
+//		String appId = prop.getProperty("appId");
+		
 	}
 }

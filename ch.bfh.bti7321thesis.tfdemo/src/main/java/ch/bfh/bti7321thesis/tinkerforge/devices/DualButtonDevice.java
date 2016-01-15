@@ -28,48 +28,7 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	public DualButtonDevice(String uid, IPConnection ipcon, String stackName) {
-		this.stackName = stackName;
-		
-		bricklet = new BrickletDualButton(uid, ipcon);
-		
-		try {
-			bricklet.setLEDState(BrickletDualButton.LED_STATE_AUTO_TOGGLE_OFF, BrickletDualButton.LED_STATE_AUTO_TOGGLE_OFF);
-		} catch (TimeoutException | NotConnectedException e) {
-			e.printStackTrace();
-		}
-		
-		bricklet.addStateChangedListener(new StateChangedListener() {
-
-			@Override
-			public void stateChanged(short buttonL, short buttonR, short ledL, short ledR) {
-				 String state = "btl: " + buttonL + " btr: " + buttonR + " ledL: " + ledL + " ledR: " + ledR;
-				
-				LOG.info(state);
-				
-
-				if (buttonL  != stateButtonL && buttonL == BrickletDualButton.BUTTON_STATE_PRESSED) {
-					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonL", "pressed");
-				}
-				if (buttonR  != stateButtonR && buttonR == BrickletDualButton.BUTTON_STATE_PRESSED) {
-					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonR", "pressed");
-				}
-				
-				if (buttonL  != stateButtonL && buttonL == BrickletDualButton.BUTTON_STATE_RELEASED) {
-					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonL", "released");
-				}
-				if (buttonR  != stateButtonR && buttonR == BrickletDualButton.BUTTON_STATE_RELEASED) {
-					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonR", "released");
-				}
-				
-
-				stateButtonL = buttonL;
-				stateButtonR = buttonR;
-				
-				MqttPublisher.getInstance().publishDeviceState(DualButtonDevice.this.toThing());
-			}
-		});
-		
-		MqttPublisher.getInstance().publishDesc(this.toThing());
+		super(uid, ipcon, stackName);
 	}
 
 
@@ -118,7 +77,7 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 
 	@Override
 	public DeviceDescription getDescription() {
-		DeviceDescription deviceDescription = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
+		DeviceDescription deviceDescription = new DeviceDescription(BrickletDualButton.DEVICE_DISPLAY_NAME, "0.0.1");
 		
 		StateDescription stateDescription = new StateDescription();
 		stateDescription.add("ButtonLeftPressed", new BooleanOptions(), "Left Button presses (true) or releases (false)");
@@ -144,6 +103,50 @@ public class DualButtonDevice extends MqttDevice<BrickletDualButton> {
 		deviceDescription.setCommandDescription(commandDescription);
 		
 		return deviceDescription;
+		
+	}
+
+
+	@Override
+	public void setUpDevice() {
+		bricklet = new BrickletDualButton(uid, ipcon);
+		
+		try {
+			bricklet.setLEDState(BrickletDualButton.LED_STATE_AUTO_TOGGLE_OFF, BrickletDualButton.LED_STATE_AUTO_TOGGLE_OFF);
+		} catch (TimeoutException | NotConnectedException e) {
+			e.printStackTrace();
+		}
+		
+		bricklet.addStateChangedListener(new StateChangedListener() {
+
+			@Override
+			public void stateChanged(short buttonL, short buttonR, short ledL, short ledR) {
+				 String state = "btl: " + buttonL + " btr: " + buttonR + " ledL: " + ledL + " ledR: " + ledR;
+				
+				LOG.info(state);
+				
+
+				if (buttonL  != stateButtonL && buttonL == BrickletDualButton.BUTTON_STATE_PRESSED) {
+					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonL", "pressed");
+				}
+				if (buttonR  != stateButtonR && buttonR == BrickletDualButton.BUTTON_STATE_PRESSED) {
+					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonR", "pressed");
+				}
+				
+				if (buttonL  != stateButtonL && buttonL == BrickletDualButton.BUTTON_STATE_RELEASED) {
+					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonL", "released");
+				}
+				if (buttonR  != stateButtonR && buttonR == BrickletDualButton.BUTTON_STATE_RELEASED) {
+					MqttPublisher.getInstance().pubEvent(DualButtonDevice.this.toThing(), "ButtonR", "released");
+				}
+				
+
+				stateButtonL = buttonL;
+				stateButtonR = buttonR;
+				
+				MqttPublisher.getInstance().publishDeviceState(DualButtonDevice.this.toThing());
+			}
+		});
 		
 	}
 

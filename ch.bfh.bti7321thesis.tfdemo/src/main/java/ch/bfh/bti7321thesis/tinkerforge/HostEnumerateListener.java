@@ -3,6 +3,7 @@ package ch.bfh.bti7321thesis.tinkerforge;
 import java.util.logging.Logger;
 
 import com.tinkerforge.BrickletDualButton;
+import com.tinkerforge.BrickletHumidity;
 import com.tinkerforge.BrickletJoystick;
 import com.tinkerforge.BrickletMotionDetector;
 import com.tinkerforge.BrickletTemperatureIR;
@@ -11,8 +12,8 @@ import com.tinkerforge.IPConnection.EnumerateListener;
 import com.tinkerforge.IPConnectionBase;
 
 import ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.HumidityDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.JoyStickDevice;
-import ch.bfh.bti7321thesis.tinkerforge.devices.MockDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.MotionDetectorDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.TempIrDevice;
 
@@ -26,6 +27,9 @@ public class HostEnumerateListener implements EnumerateListener {
 	public HostEnumerateListener(String hostname, IPConnection ipcon) {
 		this.setHostname(hostname);
 		this.ipcon = ipcon;
+		
+//		MockDevice mockDevice = new MockDevice();
+//		TinkerforgeDeviceRegistry.getInstance().add(mockDevice);
 	}
 
 	@Override
@@ -39,8 +43,6 @@ public class HostEnumerateListener implements EnumerateListener {
 			return;
 		}
 		
-		MockDevice mockDevice = new MockDevice();
-		TinkerforgeDeviceRegistry.getInstance().add(mockDevice);
 
 		switch (deviceIdentifier) {
 		case BrickletTemperatureIR.DEVICE_IDENTIFIER:
@@ -71,6 +73,10 @@ public class HostEnumerateListener implements EnumerateListener {
 			TinkerforgeDeviceRegistry.getInstance().add(motionDetectorDevice);
 			
 			break;
+		case BrickletHumidity.DEVICE_IDENTIFIER:
+			LOG.info(hostname + " " + BrickletHumidity.DEVICE_DISPLAY_NAME + " found");
+			HumidityDevice humidityDevice = new HumidityDevice(uid, ipcon, hostname);
+			TinkerforgeDeviceRegistry.getInstance().add(humidityDevice);
 		default:
 			LOG.warning("Unknown Device: " + enumInfo);
 			break;

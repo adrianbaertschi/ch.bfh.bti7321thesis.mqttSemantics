@@ -3,7 +3,7 @@ package ch.bfh.bti7321thesis.tinkerforge;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 
 public class Options {
-	public enum SchemaFormat  {JSON, YAML};
+	public enum SchemaFormat  {JSON, YAML, JSON_AND_YAML};
 	
 	private SchemaFormat schemaFormat = SchemaFormat.YAML;
 	private String mqttBrokerUri;
@@ -44,6 +44,12 @@ public class Options {
 	}
 	public void setSchemaFormat(SchemaFormat schemaFormat) {
 		this.schemaFormat = schemaFormat;
+	}
+	public boolean isLogPublishMessages() {
+		return logPublishMessages;
+	}
+	public void setLogPublishMessages(boolean logPublishMessages) {
+		this.logPublishMessages = logPublishMessages;
 	}
 	
 	

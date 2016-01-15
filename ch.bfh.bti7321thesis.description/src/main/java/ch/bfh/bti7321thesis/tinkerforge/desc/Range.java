@@ -6,10 +6,10 @@ public class Range<T> {
 //	private Class<?> type;
 	private T min;
 	private T max;
+	private String type;
 	
-//	public Range() {
-////		this.min = 
-//	}
+	public Range() {
+	}
 	
 	public Range(T min, T max) {
 //		this.setType(min.getClass());

@@ -1,0 +1,16 @@
+---
+id: "IoT-Humidity Bricklet"
+version: "0.0.1"
+stateDescription:
+  states: []
+eventDescription:
+  events:
+  - name: "Humidity"
+    range:
+      min: 0.0
+      max: 100.0
+      type: "Double"
+    description: "Relative Humidity in percent"
+commandDescription:
+  commands: []
+complexTypes: []

@@ -7,7 +7,6 @@ import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
-import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.Command;
 import ch.bfh.bti7321thesis.tinkerforge.desc.CommandDescription;
 import ch.bfh.bti7321thesis.tinkerforge.desc.ComplexType;
@@ -20,21 +19,14 @@ import ch.bfh.bti7321thesis.tinkerforge.desc.StateDescription;
 
 public class MockDevice extends MqttDevice {
 	
-	public MockDevice() {
-		this.stackName = "MockStack";
+	public MockDevice(String uid, IPConnection ipcon, String stackName) {
+		super(uid, ipcon, stackName);
 		
-		this.bricklet = new Device("aaa", new IPConnection()) {
-			
-			@Override
-			public Identity getIdentity() throws TimeoutException, NotConnectedException {
-				Identity identity = new Identity();
-				identity.uid = "mock";
-				
-				return identity;
-			}
-		};
+//		this.stackName = "MockStack";
 		
-		MqttPublisher.getInstance().publishDesc(this.toThing());
+
+		
+//		MqttPublisher.getInstance().publishDesc(this.toThing());
 
 	}
 	
@@ -105,6 +97,21 @@ public class MockDevice extends MqttDevice {
 		description.setCommandDescription(commandDescription);
 		
 		return description;
+	}
+
+	@Override
+	public void setUpDevice() {
+		this.bricklet = new Device("aaa", new IPConnection()) {
+			
+			@Override
+			public Identity getIdentity() throws TimeoutException, NotConnectedException {
+				Identity identity = new Identity();
+				identity.uid = "mock";
+				
+				return identity;
+			}
+		};
+		
 	}
 
 }

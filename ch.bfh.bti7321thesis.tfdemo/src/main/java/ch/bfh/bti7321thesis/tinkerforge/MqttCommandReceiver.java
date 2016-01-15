@@ -9,13 +9,13 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import ch.bfh.bti7321thesis.tinkerforge.devices.MqttDevice;
 
-public class MqttCommandReveiver implements MqttCallback {
+public class MqttCommandReceiver implements MqttCallback {
 	
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	@Override
 	public void connectionLost(Throwable arg0) {
-		LOG.log(Level.SEVERE, "MqttCommandReveiver connectionLost", arg0);
+		LOG.log(Level.SEVERE, "MqttCommandReceiver connectionLost", arg0);
 	}
 
 	@Override

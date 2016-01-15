@@ -11,6 +11,10 @@ public class Event {
 	@JsonIgnore
 	private ComplexType complexType;
 	//TODO: complextyperef
+	
+	public Event() {
+		
+	}
 
 	public Event(String name, Range<?> range, String desc) {
 		this.name = name;

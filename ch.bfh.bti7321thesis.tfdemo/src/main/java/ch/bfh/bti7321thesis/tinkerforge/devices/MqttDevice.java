@@ -3,9 +3,11 @@ package ch.bfh.bti7321thesis.tinkerforge.devices;
 import java.util.Map;
 
 import com.tinkerforge.Device;
+import com.tinkerforge.IPConnection;
 import com.tinkerforge.NotConnectedException;
 import com.tinkerforge.TimeoutException;
 
+import ch.bfh.bti7321thesis.tinkerforge.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.desc.DeviceDescription;
 import ch.bfh.bti7321thesis.tinkerforge.util.TinkerforgeBrickletDB;
 
@@ -13,9 +15,24 @@ public abstract class MqttDevice<T extends Device> {
 	
 	T bricklet;
 	String stackName;
+	String uid;
+	IPConnection ipcon;
+	
+	public MqttDevice(String uid, IPConnection ipcon, String stackName) {
+		
+		this.stackName = stackName;
+		this.uid = uid;
+		this.ipcon = ipcon;
+		setUpDevice();
+		
+		MqttPublisher.getInstance().publishDeviceState(this.toThing());
+		MqttPublisher.getInstance().publishDesc(this.toThing());
+	}
 	
 	
 	// TODO Setupt, init ein eigene Methode gliedern, ähnlich wie TinkerForgeBaseSensor
+	
+	public abstract void setUpDevice();
 
 	public T getDevice() {
 		return bricklet;

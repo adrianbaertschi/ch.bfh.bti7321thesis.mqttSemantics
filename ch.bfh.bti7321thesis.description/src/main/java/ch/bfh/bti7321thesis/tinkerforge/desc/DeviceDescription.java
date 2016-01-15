@@ -14,6 +14,10 @@ public class DeviceDescription {
 	private CommandDescription commandDescription;
 	private final Set<ComplexType> types = new HashSet<ComplexType>();
 	
+	public DeviceDescription() {
+		
+	}
+	
 	public DeviceDescription(String id, String version) {
 		this.id = id;
 		this.version = version;
@@ -27,7 +31,7 @@ public class DeviceDescription {
 		this.stateDescription = stateDescription;
 		this.types.addAll(stateDescription.getTypes());
 	}
-
+	
 	public EventDescription getEventDescription() {
 		return eventDescription;
 	}

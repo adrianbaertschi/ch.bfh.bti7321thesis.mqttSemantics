@@ -8,6 +8,10 @@ public class ComplexType {
 	private String name;
 	private final List<Property> properties = new ArrayList<Property>();
 	private String summary;
+	
+	public ComplexType() {
+		
+	}
 
 	public ComplexType(String name) {
 		this.setName(name);
@@ -49,33 +53,5 @@ public class ComplexType {
 		this.summary = summary;
 	}
 
-	class Property {
 
-		private String name;
-		private Class<?> clazz;
-		private String description;
-
-		public Property(String name, Class<?> clazz, String desc) {
-			this.name = name;
-			this.clazz = clazz;
-			this.description = desc;
-		}
-
-		public String getName() {
-			return name;
-		}
-
-		public void setName(String name) {
-			this.name = name;
-		}
-
-		public String getType() {
-			return clazz.getSimpleName();
-		}
-
-		public String getDescription() {
-			return description;
-		}
-
-	}
 }

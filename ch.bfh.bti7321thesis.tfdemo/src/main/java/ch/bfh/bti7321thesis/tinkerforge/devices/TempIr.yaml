@@ -1,0 +1,84 @@
+---
+id: "IoT - Temperature IR Bricklet"
+version: "0.0.1"
+stateDescription:
+  states:
+  - name: "AmbientTemperatureInterval"
+    range:
+      min: 0
+      max: 9223372036854775807
+      type: "Long"
+    description: "Time in ms"
+  - name: "ObjectTemperatureInterval"
+    range:
+      min: 0
+      max: 9223372036854775807
+      type: "Long"
+    description: "TODO"
+  - name: "DebouncePeriod"
+    range:
+      min: 0
+      max: 9223372036854775807
+      type: "Long"
+    description: "TODO"
+  - name: "Emissivity"
+    range:
+      min: 6553
+      max: 65535
+      type: "Integer"
+    description: "TODO"
+  - name: "AmbientTemperatureCallbackThreshold"
+    complexTypeRef: "TemperatureCallbackThreshold"
+    description: "TODO"
+  - name: "ObjectTemperatureCallbackThreshold"
+    complexTypeRef: "TemperatureCallbackThreshold"
+    description: "TODO"
+eventDescription:
+  events:
+  - name: "ObjectTemp"
+    range:
+      min: -70.0
+      max: 380.0
+      type: "Double"
+    description: "Measured with IR sensor in Celsius"
+  - name: "AmbientTemp"
+    range:
+      min: -40.0
+      max: 125.0
+      type: "Double"
+    description: "Ambient temperature in Celsius"
+commandDescription:
+  commands:
+  - name: "setAmbientTemperatureCallbackPeriod"
+    linkedState: "AmbientTemperatureCallbackPeriod"
+    parameter:
+      CallbackPeriod:
+        min: 0
+        max: 9223372036854775807
+        type: "Long"
+  - name: "setObjectTemperatureCallbackPeriod"
+    linkedState: "ObjectTemperatureCallbackPeriod"
+    parameter:
+      CallbackPeriod:
+        min: 0
+        max: 9223372036854775807
+        type: "Long"
+  - name: "setEmissivity"
+    linkedState: "Emissivity"
+    parameter:
+      Emissity:
+        min: 6553
+        max: 65535
+        type: "Integer"
+  - name: "setAmbientTemperatureCallbackThreshold"
+    parameter:
+      Threshold: "TemperatureCallbackThreshold"
+complexTypes:
+- name: "TemperatureCallbackThreshold"
+  properties:
+  - name: "option"
+    type: "String"
+  - name: "min"
+    type: "Short"
+  - name: "max"
+    type: "Short"

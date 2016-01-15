@@ -5,24 +5,28 @@ public class State {
 	private Range<?> range;
 	private Options<?> options;
 	private String complexTypeRef;
-	private String desc;
+	private String description;
+	
+	public State() {
+		
+	}
 
 	public State(String name,  Range<?> range, String desc) {
 		this.name = name;
 		this.range = range;
-		this.desc = desc;
+		this.description = desc;
 	}
 	
 	public State(String name, Options<?> options, String desc) {
 		this.name = name;
 		this.options =  options;
-		this.desc = desc;
+		this.description = desc;
 	}
 
 	public State(String name, String complexTypeRef,  String desc) {
 		this.name = name;
 		this.complexTypeRef = complexTypeRef;
-		this.desc = desc;
+		this.description = desc;
 	}
 
 	public String getName() {
@@ -34,11 +38,11 @@ public class State {
 	}
 
 	public String getDescription() {
-		return desc;
+		return description;
 	}
 
 	public void getDescription(String desc) {
-		this.desc = desc;
+		this.description = desc;
 	}
 
 	public Range<?> getRange() {

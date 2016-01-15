@@ -24,27 +24,7 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
 	public JoyStickDevice(String uid, IPConnection ipcon, String stackName) {
-		this.stackName = stackName;
-		bricklet = new BrickletJoystick(uid, ipcon);
-		
-		try {
-			bricklet.setPositionCallbackPeriod(100);
-		} catch (TimeoutException | NotConnectedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		bricklet.addPositionListener(new PositionListener() {
-
-			@Override
-			public void position(short x, short y) {
-				LOG.fine("X:" + x + " Y: " + y);
-				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosX", x);
-				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosY", y);
-			}
-		});
-		MqttPublisher.getInstance().publishDesc(this.toThing());
-		MqttPublisher.getInstance().publishDeviceState(this.toThing());
+		super(uid, ipcon, stackName);
 	}
 
 	@Override
@@ -87,7 +67,7 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 	
 	@Override
 	public DeviceDescription getDescription() {
-		DeviceDescription description = new DeviceDescription(bricklet.DEVICE_DISPLAY_NAME, "0.0.1");
+		DeviceDescription description = new DeviceDescription(BrickletJoystick.DEVICE_DISPLAY_NAME, "0.0.1");
 		
 		StateDescription stateDescription = new StateDescription();
 		stateDescription.add("AmbientTemperatureInterval", new Range<Long>(0L, Long.MAX_VALUE), "Time in ms");
@@ -108,6 +88,29 @@ public class JoyStickDevice extends MqttDevice<BrickletJoystick> {
 		
 	
 		return description;
+	}
+
+	@Override
+	public void setUpDevice() {
+		bricklet = new BrickletJoystick(uid, ipcon);
+		
+		try {
+			bricklet.setPositionCallbackPeriod(100);
+		} catch (TimeoutException | NotConnectedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		bricklet.addPositionListener(new PositionListener() {
+
+			@Override
+			public void position(short x, short y) {
+				LOG.fine("X:" + x + " Y: " + y);
+				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosX", x);
+				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosY", y);
+			}
+		});
+		
 	}
 
 }

@@ -1,6 +1,9 @@
 package ch.bfh.bti7321thesis.tinkerforge;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.eclipse.paho.client.mqttv3.IMqttAsyncClient;
@@ -11,6 +14,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -29,7 +33,7 @@ public class MqttPublisher {
 	
 	private static Options options;
 	
-	private ObjectMapper objectmapper;
+	private Map<String, ObjectMapper> objectmappers = new HashMap<String, ObjectMapper>();
 
 	private boolean addRandomtoEvents = false;
 	
@@ -91,23 +95,28 @@ public class MqttPublisher {
 			mqttClientSub.subscribe(options.getAppId() +"/+/+/+/+/commands/#", 2);
 			
 		} catch (MqttException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "", e);
 		}
 		LOG.info("MQTT Connected");
 	}
 	
 	private void setUpJackson() {
-		if(options.getSchemaFormat() == SchemaFormat.YAML) {
-			objectmapper = new ObjectMapper(new YAMLFactory());
-			
+		if(options.getSchemaFormat() == SchemaFormat.YAML || options.getSchemaFormat() == SchemaFormat.JSON_AND_YAML) {
+			ObjectMapper objectmapperYaml = new ObjectMapper(new YAMLFactory());
+
 			// Attributes with null values should be skipped
-//			objectmapper.setSerializationInclusion(Include.NON_NULL);
-			
-		} else if(options.getSchemaFormat() == SchemaFormat.JSON) {
-			objectmapper = new ObjectMapper();
-			
+			objectmapperYaml.setSerializationInclusion(Include.NON_NULL);
+
+			this.objectmappers.put("YAML", objectmapperYaml);
+
+		} 
+
+		if(options.getSchemaFormat() == SchemaFormat.JSON || options.getSchemaFormat() == SchemaFormat.JSON_AND_YAML) {
+			ObjectMapper objectmapperJson = new ObjectMapper();
+
 			// Attributes with null values should be skipped
-//			objectmapper.setSerializationInclusion(Include.NON_NULL);
+			objectmapperJson.setSerializationInclusion(Include.NON_NULL);
+			this.objectmappers.put("JSON", objectmapperJson);
 		}
 	}
 	
@@ -116,7 +125,7 @@ public class MqttPublisher {
 		try {
 			mqttClientPub.disconnect();
 		} catch (MqttException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "", e);
 		}
 		LOG.info("MQTT disconnected");
 	}
@@ -135,14 +144,17 @@ public class MqttPublisher {
 	
 	public void publishDesc(MqttThing thing) {
 		String desc = "";
+		for(Entry<String, ObjectMapper> entry : objectmappers.entrySet()) {
+			
+		
 		try {
-			desc = objectmapper.writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
+			desc = entry.getValue().writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "", e);
 		}
 		String baseTopic = new BrickletToMqttConverter().getBaseTopic(options.getAppId(), thing);
-		pubRetained(baseTopic + "/schema/"+ options.getSchemaFormat(), desc);
-		
+			pubRetained(baseTopic + "/schema/" + entry.getKey(), desc);
+		}
 	}
 	
 	// TODO: rename
@@ -164,35 +176,40 @@ public class MqttPublisher {
 			message.setQos(0);
 			mqttClientPub.publish(topic, message);
 		} catch (MqttException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "", e);
 		}
 	}
 
 
 	private void pubState(String topic, Object payload) {
-		
-		try {
-			String state = objectmapper.writerWithDefaultPrettyPrinter().writeValueAsString(payload);
-			LOG.info("Publishing on " + topic + " data: " + state);
-			
-			MqttMessage message = new MqttMessage(state.getBytes());
-			message.setRetained(true);
-			
-			IMqttDeliveryToken imMqttDeliveryToken = mqttClientPub.publish(topic, message);
-			imMqttDeliveryToken.waitForCompletion();
-		} catch (MqttException | JsonProcessingException e) {
-			e.printStackTrace();
+
+		for(Entry<String, ObjectMapper> objectmapper : objectmappers.entrySet()) {
+			try {
+				String state = objectmapper.getValue().writerWithDefaultPrettyPrinter().writeValueAsString(payload);
+				LOG.info("Publishing on " + topic + " data: " + state);
+				
+				MqttMessage message = new MqttMessage(state.getBytes());
+				message.setRetained(true);
+				
+				IMqttDeliveryToken imMqttDeliveryToken = mqttClientPub.publish(topic, message);
+				imMqttDeliveryToken.waitForCompletion();
+			} catch (MqttException | JsonProcessingException e) {
+				LOG.log(Level.SEVERE, "", e);
+			}
 		}
 	}
 	
 	private void pubRetained(String topic, Object payload) {
-		LOG.info("Publishing Retained on " + topic + " data: " + payload);
+		if(options.isLogPublishMessages()) {
+			LOG.info("Publishing Retained on " + topic + " data: " + payload);
+		}
+		
 		try {
 			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
 			message.setRetained(true);
 			mqttClientPub.publish(topic, message);
 		} catch (MqttException e) {
-			e.printStackTrace();
+			LOG.log(Level.SEVERE, "", e);
 		}		
 	}
 
