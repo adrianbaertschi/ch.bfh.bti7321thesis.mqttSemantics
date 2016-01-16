@@ -1,5 +1,6 @@
 package ch.bfh.bti7321thesis.tinkerforge.devices;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.tinkerforge.Device;
@@ -37,9 +38,8 @@ public class MockDevice extends MqttBricklet {
 	}
 
 	@Override
-	public Map getState() {
-		// TODO Auto-generated method stub
-		return null;
+	public Map<String, Object> getState() {
+		return new HashMap<String, Object>();
 	}
 
 	@Override

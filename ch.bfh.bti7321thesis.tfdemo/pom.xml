@@ -62,11 +62,7 @@
 			<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
 			<version>1.0.2</version>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>com.google.guava</groupId> -->
-		<!-- <artifactId>guava</artifactId> -->
-		<!-- <version>18.0</version> -->
-		<!-- </dependency> -->
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.module</groupId>
 			<artifactId>jackson-module-jsonSchema</artifactId>
@@ -79,9 +75,9 @@
 		</dependency>
 
 		<dependency>
-			<groupId>ch.bfh.bti7321thesis.description</groupId>
-			<artifactId>ch.bfh.bti7321thesis.description</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<groupId>ch.bfh.barta3.mqttdevicedescription</groupId>
+			<artifactId>ch.bfh.barta3.mqttdevicedescription</artifactId>
+			<version>1.0.0</version>
 		</dependency>
 	</dependencies>
 

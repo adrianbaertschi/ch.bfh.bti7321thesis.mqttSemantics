@@ -11,7 +11,7 @@ import ch.bfh.bti7321thesis.desc.Range;
 
 public class StateDescription {
 
-	private final List<State> states = new ArrayList<State>();
+	private List<State> states = new ArrayList<State>();
 	private final Set<ComplexType> types = new HashSet<ComplexType>();
 
 	public List<State> getStates() {

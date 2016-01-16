@@ -13,8 +13,9 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import ch.bfh.bti7321thesis.app.Config;
+import ch.bfh.bti7321thesis.app.Config.SchemaFormat;
 import ch.bfh.bti7321thesis.app.MqttPublisher;
-import ch.bfh.bti7321thesis.app.Options;
 import ch.bfh.bti7321thesis.tinkerforge.log.StdoutConsoleHandler;
 
 public class TinkerforgeApp {
@@ -37,13 +38,13 @@ public class TinkerforgeApp {
 		
 		
 		
-		Options options = new Options();
+		Config options = new Config();
 		options.setMqttBrokerUri(loadConfigValue("brokerUri"));
-		options.setMqttClientId("TfDemoApp");
+//		options.setMqttClientId("TfDemoApp");
+		options.setSchemaFormat(SchemaFormat.JSON_AND_YAML);
 		options.setAppId(loadConfigValue("appId"));
 		options.setMqttCallback(new MqttCommandReceiver());
-		options.setLogPublishMessages(true);
-		MqttPublisher.setOptions(options);
+		MqttPublisher.setConfig(options);
 		
 		
 		List<BrickEnumerator> enumerators = new ArrayList<BrickEnumerator>();

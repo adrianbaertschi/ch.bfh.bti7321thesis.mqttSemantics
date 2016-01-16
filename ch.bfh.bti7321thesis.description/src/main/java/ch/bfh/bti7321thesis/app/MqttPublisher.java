@@ -3,6 +3,7 @@ package ch.bfh.bti7321thesis.app;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,8 +20,17 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import ch.bfh.bti7321thesis.app.Options.SchemaFormat;
+import ch.bfh.bti7321thesis.app.Config.SchemaFormat;
 
+/**
+ * Main Class for Publishing the Messages and Device Descriptions.
+ * Realized with Singleton Pattern.
+ * 
+ * Config with {@link #setConfig(Config)} before usage.
+ * 
+ * @author adrian
+ *
+ */
 public class MqttPublisher {
 	
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
@@ -29,7 +39,7 @@ public class MqttPublisher {
 	private IMqttAsyncClient mqttClientPub;
 	private IMqttAsyncClient mqttClientSub;
 	
-	private static Options options;
+	private static Config options;
 	
 	private Map<String, ObjectMapper> objectmappers = new HashMap<String, ObjectMapper>();
 
@@ -53,22 +63,30 @@ public class MqttPublisher {
 		if(options.getMqttBrokerUri() == null) {
 			throw new IllegalStateException("Broker URL not set");
 		}
-		if(options.getMqttClientId() == null) {
-			throw new IllegalStateException("MQTT ClientId not set");
+		
+		if(options.getMqttClientIdPrefix() == null) {
+			String clientprefix = UUID.randomUUID().toString().replaceAll("-", "");
+			LOG.info("ClientId Prefix not specfified, generatin Random: " + clientprefix);
 		}
-		
-		
 	}
 
 	private static class Holder {
     	private static MqttPublisher instance = new MqttPublisher();
     }
 	
+	/**
+	 * Get the only instance of this singleton
+	 * @return instance
+	 */
 	public static MqttPublisher getInstance() {
 		return Holder.instance;
 	}
 	
-	public static void setOptions(Options options) {
+	/**
+	 * Define Configuration before first usage
+	 * @param options
+	 */
+	public static void setConfig(Config options) {
 		MqttPublisher.options = options;
 		
 	}
@@ -81,13 +99,13 @@ public class MqttPublisher {
 			connOpts.setCleanSession(true);
 			
 			MemoryPersistence persistence = new MemoryPersistence();
-			mqttClientPub = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientId() + "_pub", persistence);
+			mqttClientPub = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientIdPrefix() + "_pub", persistence);
 			mqttClientPub.connect(connOpts).waitForCompletion();
 			
 			
 			// SUB
 			MemoryPersistence subPersistence = new MemoryPersistence();
-			mqttClientSub = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientId() + "_sub", subPersistence);
+			mqttClientSub = new MqttAsyncClient(options.getMqttBrokerUri(), options.getMqttClientIdPrefix() + "_sub", subPersistence);
 			mqttClientSub.connect(connOpts).waitForCompletion();
 			mqttClientSub.setCallback(options.getMqttCallback());
 			mqttClientSub.subscribe(options.getAppId() +"/+/+/+/+/commands/#", 2);
@@ -118,19 +136,30 @@ public class MqttPublisher {
 		}
 	}
 	
+	/**
+	 * Disconnects all MQTT Connections
+	 */
 	public void disconnect() {
 		LOG.info("Disconnecting MQTT");
 		try {
 			mqttClientPub.disconnect();
+			mqttClientSub.disconnect();
 		} catch (MqttException e) {
 			LOG.log(Level.SEVERE, "", e);
 		}
 		LOG.info("MQTT disconnected");
 	}
 	
-	public void pubEvent(MqttDevice thing, String eventName, Object payload) {
+	/**
+	 * Publish an event.
+	 * 
+	 * @param device Device from which the event originates
+	 * @param eventName Name of the Event. Used as part of the topic
+	 * @param payload Payload Data of the event
+	 */
+	public void pubEvent(MqttDevice device, String eventName, Object payload) {
 
-		String baseTopic = new TopicUtil().getBaseTopic(options.getAppId(), thing) + "/events/" + eventName;
+		String baseTopic = TopicUtil.getBaseTopic(options.getAppId(), device) + "/events/" + eventName;
 		String payloadStr = payload.toString();
 		if (addRandomtoEvents) {
 			payloadStr += " " + Math.random();
@@ -139,38 +168,57 @@ public class MqttPublisher {
 		pubEvent(baseTopic, payloadStr);
 	}
 
-	
-	public void publishDesc(MqttDevice thing) {
+	/**
+	 * Publish the Description of a Device
+	 * 
+	 * @param device Device with the Description attached
+	 */
+	public void publishDesc(MqttDevice device) {
 		String desc = "";
-		for(Entry<String, ObjectMapper> entry : objectmappers.entrySet()) {
-
+		for (Entry<String, ObjectMapper> entry : objectmappers.entrySet()) {
 
 			try {
-				desc = entry.getValue().writerWithDefaultPrettyPrinter().writeValueAsString(thing.getDeviceDescription());
+				desc = entry.getValue().writerWithDefaultPrettyPrinter()
+						.writeValueAsString(device.getDeviceDescription());
 			} catch (JsonProcessingException e) {
 				LOG.log(Level.SEVERE, "", e);
 			}
-			String baseTopic = new TopicUtil().getBaseTopic(options.getAppId(), thing);
-			pubRetained(baseTopic + "/schema/" + entry.getKey(), desc);
+			String baseTopic = TopicUtil.getBaseTopic(options.getAppId(), device);
+			String topic = baseTopic + "/schema/" + entry.getKey();
+
+			LOG.info("Publishing Description on " + topic + " data: " + desc);
+
+			try {
+				MqttMessage message = new MqttMessage(desc == null ? "".getBytes() : desc.toString().getBytes());
+				message.setRetained(true);
+				message.setQos(options.getDescriptionQoS());
+				mqttClientPub.publish(topic, message);
+			} catch (MqttException e) {
+				LOG.log(Level.SEVERE, "", e);
+			}
 		}
 	}
 	
-	public void publishState(MqttDevice thing) {
-		String baseTopic = new TopicUtil().getBaseTopic(options.getAppId(), thing) + "/state";
-		for(Entry<String, Object> state : thing.getState().entrySet()) {
+	/**
+	 * Publish the State information of the Device
+	 * 
+	 * @param device Device with the state attributes
+	 */
+	public void publishState(MqttDevice device) {
+		String baseTopic = TopicUtil.getBaseTopic(options.getAppId(), device) + "/state";
+		for(Entry<String, Object> state : device.getState().entrySet()) {
 			LOG.info(state.getKey());
 			pubState(baseTopic + "/" + state.getKey(), state.getValue());
 		}
 	}
-	
-	// TODO: refactor the 3 private pub... Methods to one
 	
 	private void pubEvent(String topic, String payload) {
 		
 		LOG.info("Publishing on " + topic + " data: " + payload);
 		try {
 			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.getBytes());
-			message.setQos(0);
+			message.setRetained(options.isEventsRetained());
+			message.setQos(options.getEventsQoS());
 			mqttClientPub.publish(topic, message);
 		} catch (MqttException e) {
 			LOG.log(Level.SEVERE, "", e);
@@ -187,6 +235,7 @@ public class MqttPublisher {
 				
 				MqttMessage message = new MqttMessage(state.getBytes());
 				message.setRetained(true);
+				message.setQos(options.getStateQos());
 				
 				IMqttDeliveryToken imMqttDeliveryToken = mqttClientPub.publish(topic, message);
 				imMqttDeliveryToken.waitForCompletion();
@@ -194,20 +243,6 @@ public class MqttPublisher {
 				LOG.log(Level.SEVERE, "", e);
 			}
 		}
-	}
-	
-	private void pubRetained(String topic, Object payload) {
-		if(options.isLogPublishMessages()) {
-			LOG.info("Publishing Retained on " + topic + " data: " + payload);
-		}
-		
-		try {
-			MqttMessage message = new MqttMessage(payload == null ? "".getBytes() : payload.toString().getBytes());
-			message.setRetained(true);
-			mqttClientPub.publish(topic, message);
-		} catch (MqttException e) {
-			LOG.log(Level.SEVERE, "", e);
-		}		
 	}
 
 }

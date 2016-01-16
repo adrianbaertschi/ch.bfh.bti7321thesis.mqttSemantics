@@ -14,6 +14,7 @@ import com.tinkerforge.IPConnectionBase;
 import ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.HumidityDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.JoyStickDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.MockDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.MotionDetectorDevice;
 import ch.bfh.bti7321thesis.tinkerforge.devices.TempIrDevice;
 
@@ -28,8 +29,8 @@ public class HostEnumerateListener implements EnumerateListener {
 		this.setHostname(hostname);
 		this.ipcon = ipcon;
 		
-//		MockDevice mockDevice = new MockDevice();
-//		TinkerforgeDeviceRegistry.getInstance().add(mockDevice);
+		MockDevice mockDevice = new MockDevice(hostname, ipcon, hostname);
+		TinkerforgeDeviceRegistry.getInstance().add(mockDevice);
 	}
 
 	@Override

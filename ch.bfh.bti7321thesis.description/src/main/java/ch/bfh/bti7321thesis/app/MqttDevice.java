@@ -4,17 +4,33 @@ import java.util.Map;
 
 import ch.bfh.bti7321thesis.desc.DeviceDescription;
 
+/**
+ * Use for the construction of the Devices
+ * 
+ * @author adrian
+ *
+ */
 public class MqttDevice {
-	
+
 	private String group;
 	private String subGroup;
 	private String deviceType;
 	private String deviceInstance;
-	
+
 	private Map<String, Object> state;
-	
+
 	private DeviceDescription deviceDescription;
-	
+
+	public MqttDevice(String group, String subGroup, String deviceType, String deviceInstance) {
+		this.group = group;
+		this.subGroup = subGroup;
+		this.deviceType = deviceType;
+		this.deviceInstance = deviceInstance;
+	}
+
+	public MqttDevice() {
+	}
+
 	public String getDeviceType() {
 		return deviceType;
 	}
@@ -30,7 +46,6 @@ public class MqttDevice {
 	public void setDeviceInstance(String deviceInstance) {
 		this.deviceInstance = deviceInstance;
 	}
-
 
 	public DeviceDescription getDeviceDescription() {
 		return deviceDescription;
@@ -64,5 +79,4 @@ public class MqttDevice {
 		this.group = group;
 	}
 
-	
 }

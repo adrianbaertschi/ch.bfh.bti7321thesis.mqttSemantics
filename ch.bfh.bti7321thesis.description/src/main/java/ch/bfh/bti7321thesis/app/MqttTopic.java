@@ -3,6 +3,11 @@ package ch.bfh.bti7321thesis.app;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Helper class for the easier handling of Topic Strings 
+ * @author adrian
+ *
+ */
 public class MqttTopic {
 	private List<String> topics = new ArrayList<String>();
 
@@ -44,7 +49,7 @@ public class MqttTopic {
 		return sb.toString();
 	}
 
-	public int getSize() {
+	public int getNumberofElements() {
 		return topics.size();
 	}
 

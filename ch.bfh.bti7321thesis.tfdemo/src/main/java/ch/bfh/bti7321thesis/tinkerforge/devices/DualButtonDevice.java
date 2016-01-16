@@ -95,11 +95,15 @@ public class DualButtonDevice extends MqttBricklet<BrickletDualButton> {
 		deviceDescription.setEventDescription(eventDescription);
 		
 		CommandDescription commandDescription = new CommandDescription();
-		Command cmd1 = new Command("setLeds");
-		cmd1.setParam("setLedL", new Options<Short>((short)2, (short)3));
-		cmd1.setParam("setLedR", new Options<Short>((short)2, (short)3));
-		
+		Command cmd1 = new Command("setLedL");
+		cmd1.setParam("state", new Options<Short>((short)2, (short)3));
 		commandDescription.addCommand(cmd1);
+		
+		Command cmd2 = new Command("setLedR");
+		cmd2.setParam("state", new Options<Short>((short)2, (short)3));
+		commandDescription.addCommand(cmd2);
+		
+		
 		deviceDescription.setCommandDescription(commandDescription);
 		
 		return deviceDescription;
