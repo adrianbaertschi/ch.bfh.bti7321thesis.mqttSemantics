@@ -20,12 +20,8 @@ class Publisher {
             // Once a connection has been made, make a subscription and send a message.
             console.log("onConnect");
 
-            var buffer = new ArrayBuffer(16);
-            var int32View = new Int32Array(buffer);
-            int32View[0] = 5200;
 
-            //var message = new Paho.MQTT.Message(buffer);// 170 /  byte
-            var message = new Paho.MQTT.Message(String(value));// 170 / 98byte
+            var message = new Paho.MQTT.Message(String(value));
             message.destinationName = topic;
             client.send(message);
             console.log("sent");

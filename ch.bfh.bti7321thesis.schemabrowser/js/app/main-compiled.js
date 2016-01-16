@@ -1,3 +1,4 @@
+'use strict';
 
 var schemas = {};
 var subscriptions = {};
@@ -10,10 +11,10 @@ function onConnect() {
     console.log("MQTT connected");
 }
 
-client.connect({onSuccess: onConnect});
+client.connect({ onSuccess: onConnect });
 
 function onMessage(message) {
-//        console.log(message.destinationName + " - " + message.payloadString);
+    //        console.log(message.destinationName + " - " + message.payloadString);
     var topics = message.destinationName.split("/");
 
     var fulltopic = message.destinationName;
@@ -23,34 +24,23 @@ function onMessage(message) {
     var deviceType = topics[3];
     var devId = topics[4];
 
-
-    if(fulltopic in schemas) {
+    if (fulltopic in schemas) {
         schemas[fulltopic] = message.payloadString;
         return;
     }
     schemas[fulltopic] = message.payloadString;
 
-    var a = '<a href="#" onclick="deviceClick(\'' + fulltopic + '\')">'+ topics[4] + '</a>';
+    var a = '<a href="#" onclick="deviceClick(\'' + fulltopic + '\')">' + topics[4] + '</a>';
 
-
-    var row = '<tr>' +
-        '<td>'+ topics[0] + '</td>'+
-        '<td>'+ topics[1] + '</td>'+
-        '<td>'+ topics[2] + '</td>'+
-        '<td>'+ topics[3] + '</td>'+
-        '<td>' + a + '</td></tr>';
+    var row = '<tr>' + '<td>' + topics[0] + '</td>' + '<td>' + topics[1] + '</td>' + '<td>' + topics[2] + '</td>' + '<td>' + topics[3] + '</td>' + '<td>' + a + '</td></tr>';
 
     $('#deviceTable > tbody:last-child').append(row);
-
-
-
 }
 
 function deviceClick(schemaTopic) {
     console.log('table click');
     console.log(schemaTopic);
     var devId = schemaTopic.split('/')[4];
-
 
     var deviceTopic = schemaTopic.split('/').slice(0, 5).join('/');
     console.log(deviceTopic);
@@ -91,9 +81,7 @@ function deviceClick(schemaTopic) {
     });
     $('#doc').append(createSection('Complex_Types', typeCnt));
 
-
     evtHandler();
-
 }
 
 function createSection(title, content) {
@@ -102,15 +90,15 @@ function createSection(title, content) {
 
     res += '  <div class="panel-heading">';
     res += '    <h2 class="panel-title">';
-    res += '      <a data-toggle="collapse" data-target="#collapse'+title+'" href="#collapse'+ title + '">';
-    res +=          title;
+    res += '      <a data-toggle="collapse" data-target="#collapse' + title + '" href="#collapse' + title + '">';
+    res += title;
     res += '      </a>';
     res += '    </h2>';
     res += '  </div>';
 
-    res += '  <div id="collapse'+title+'" class="panel-collapse collapse in">';
+    res += '  <div id="collapse' + title + '" class="panel-collapse collapse in">';
     res += '    <div class="panel-body">';
-    res +=          content;
+    res += content;
     res += '    </div>';
 
     res += '</div>';
@@ -121,17 +109,16 @@ function createSection(title, content) {
 function renderState(state, deviceTopic) {
     var res = '<strong>' + state.name + '</strong> <br>';
 
-    if(state.description) {
+    if (state.description) {
         res += state.description + '<br>';
     }
 
-
-//        console.log(state.range);
+    //        console.log(state.range);
     if (state.range && state.range.hasOwnProperty('type')) {
         res += renderRange(state.range, 'Value:');
     } else if (state.options && state.options.hasOwnProperty('values')) {
         res += renderPresets(state.options);
-    } else if(state.complexTypeRef !== null) {
+    } else if (state.complexTypeRef !== null) {
         // Ref to Complextype
         res += renderComplexTypeLink(state.complexTypeRef) + '<br>';
     } else {
@@ -139,7 +126,7 @@ function renderState(state, deviceTopic) {
     }
 
     // Topic
-    var stateTopic =  deviceTopic + '/state/' + state.name;
+    var stateTopic = deviceTopic + '/state/' + state.name;
     res += renderTopic(stateTopic);
 
     return res + '<br>';
@@ -154,7 +141,6 @@ function renderComplexTypeLink(typeRef) {
     return res;
 }
 
-
 function renderCmd(cmd, deviceTopic) {
     var cmdTopic = deviceTopic + '/commands/' + cmd.name;
 
@@ -162,8 +148,7 @@ function renderCmd(cmd, deviceTopic) {
 
     res += 'Linked state: ' + cmd.linkedState + '<br>';
 
-//        console.log(cmd.parameter);
-
+    //        console.log(cmd.parameter);
 
     $.each(cmd.parameter, function (key, value) {
         //console.log(value);
@@ -176,7 +161,7 @@ function renderCmd(cmd, deviceTopic) {
             res += renderRange(value, 'Expects:');
         } else if (value.hasOwnProperty('values')) {
             res += renderPresets(value);
-        } else if(typeof value === 'string') {
+        } else if (typeof value === 'string') {
             // Ref to Complextype
             res += renderComplexTypeLink(value) + '<br>';
         } else {
@@ -206,20 +191,19 @@ function renderEvent(event, deviceTopic) {
     var res = '<strong>' + eventName + '</strong> <br>';
     res += event.description + '<br>';
 
-
-//        res += renderRange(event.range, 'Value:');
+    //        res += renderRange(event.range, 'Value:');
     if (event.range && event.range.hasOwnProperty('type')) {
         res += renderRange(event.range, 'Value:');
     } else if (event.options && event.options.hasOwnProperty('values')) {
         res += renderPresets(event.options);
-    } else if(event.complexTypeRef !== null) {
+    } else if (event.complexTypeRef !== null) {
         // Ref to Complextype
         res += renderComplexTypeLink(event.complexTypeRef) + '<br>';
     } else {
         console.log('ERROR ' + event);
     }
 
-    res += renderTopic(eventTopic)+ '<br>';
+    res += renderTopic(eventTopic) + '<br>';
     res += '<form class="form-inline">';
     res += '    <div class="form-group">';
     res += '        <button data-topic="' + eventTopic + '" class="btn btn-default evt" type="button">Subscribe</button>';
@@ -227,18 +211,17 @@ function renderEvent(event, deviceTopic) {
     res += '    </div>';
     res += '</form>';
 
-    return res +'<br>';
+    return res + '<br>';
 }
 
 function renderType(type, deviceTopic) {
-    var res = '<strong> <p id="type_'+ type.name +'">' + type.name + '</p></strong>';
+    var res = '<strong> <p id="type_' + type.name + '">' + type.name + '</p></strong>';
 
     res += 'Properties:' + '<br>';
     res += '<ul>';
     $.each(type.properties, function (index, value) {
-        res += '<li>' + value.name + ': ' + value.type  + '</li>';
-        res += '</li>'
-
+        res += '<li>' + value.name + ': ' + value.type + '</li>';
+        res += '</li>';
     });
     res += '</ul>';
 
@@ -248,7 +231,7 @@ function renderType(type, deviceTopic) {
 function renderTopic(topic) {
     var res = ' <div class="input-group">';
     res += '         <span class="input-group-addon" id="basic-addon3">Topic</span> ';
-    res += '        <input class="form-control" id="disabledInput" type="text" value="'+topic+'" readonly>';
+    res += '        <input class="form-control" id="disabledInput" type="text" value="' + topic + '" readonly>';
     res += '    </div>';
     return res;
 }
@@ -270,11 +253,11 @@ function renderRange(range, label) {
     var res = label;
     res += '<ul>';
     res += '<li>Type: ' + range.type + '</li>';
-//        console.log(range.min);
-    if(range.min !== '' && !isNaN(range.min)) {
+    //        console.log(range.min);
+    if (range.min !== '' && !isNaN(range.min)) {
         res += '<li>Min: ' + range.min + '</li>';
     }
-    if(range.max !== '' && !isNaN(range.max)) {
+    if (range.max !== '' && !isNaN(range.max)) {
         res += '<li>Max: ' + range.max + '</li>';
     }
 
@@ -302,7 +285,6 @@ function evtHandler() {
 
         // TODO: topic übergeben
 
-
         //console.log($(this).text());
         $(this).toggleClass("active");
         if ($(this).text() === 'Subscribe') {
@@ -312,15 +294,13 @@ function evtHandler() {
             $(this).text('Subscribe');
             sub.unsubscribe(eventTopic);
         }
-
-
     });
 
     $('.cmd').click(function () {
 
         var cmdTopic = $(this).data('topic');
 
-        var value = $('#'+ $.md5(cmdTopic)).val();
+        var value = $('#' + $.md5(cmdTopic)).val();
         console.log(value);
         console.log(cmdTopic);
 
@@ -328,5 +308,7 @@ function evtHandler() {
         pub.publish(value, cmdTopic);
     });
 
-//        $('#collapseComplex_Types').addClass('in');
+    //        $('#collapseComplex_Types').addClass('in');
 }
+
+//# sourceMappingURL=main-compiled.js.map
