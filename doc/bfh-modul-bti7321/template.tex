@@ -118,8 +118,8 @@
 
 % Glossary Package
 %---------------------------------------------------------------------------
-%\usepackage[nonumberlist]{glossaries}
-\usepackage[acronym, toc]{glossaries}
+\usepackage[nonumberlist]{glossaries}
+%\usepackage[acronym, toc]{glossaries}
 \makenoidxglossaries
 \input{datenbanken/glossar.tex}
 %---------------------------------------------------------------------------
@@ -200,10 +200,11 @@
 
 % Glossary, Acronyms
 %---------------------------------------------------------------------------
+% TODO: Titel auf 'Glossar', 'Abkürzungen ändern, auch im ToC, https://www.sharelatex.com/learn/Glossaries#Changing_the_title_of_the_Glossary
 \cleardoublepage
 \phantomsection 
-%\addcontentsline{toc}{chapter}{Glossar}
-%\renewcommand{\glossaryname}{Glossar}
+\addcontentsline{toc}{chapter}{Glossar}
+\renewcommand{\glossaryname}{Glossar}
 \printnoidxglossaries
 \cleardoublepage
 %\printglossary[type=\acronymtype]
