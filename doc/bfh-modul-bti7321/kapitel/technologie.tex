@@ -68,7 +68,7 @@ Messages in MQTT sind sehr einfach aufgebaut. Eine Message hat folgende Attribut
 \begin{table}[h!]
 \centering
 \begin{tabular}{ |l|l| }
-	\hline
+	\hline \rowcolor{lightgray}
 	Attribut & Beschreibung \\ 
 	\hline
 	Payload    	& Beliebige Daten im Binärformat. Maximal 256 MB     \\
@@ -105,7 +105,7 @@ Inzwischen sind zahlreiche Implementationen von sowohl MQTT Brokern, als auch Cl
 
 \begin{center}
 \begin{tabular}{ | m{5em} | m{25em}| m{12em} | }
- \hline
+ \hline \rowcolor{lightgray}
  Name & Beschreibung & URL \\
  \hline
  Mosquitto  & Leichtgewichtiger Open Source Broker geschrieben in C. Zurzeit de-facto standard MQTT Broker. & \url{http://mosquitto.org/}  \\
@@ -133,7 +133,7 @@ Eine Lister mit weiteren Client Libraries ist im MQTT Wiki \cite{clientLibs} zu 
 
 
 
-\section{Bestehende Konzepte}
+\section{Bestehende Systeme}
 Die verschiedenen Hersteller von MQTT Anwendungen entwickeln jeweils ihre eigenen Ansätze, um die Daten zu strukturieren. 
 
 
@@ -251,14 +251,12 @@ In diesem Kapitel werden verschiedene Datenformate kurz beschrieben, welche für
 
 Grundsätzlich muss zwischen textbasierten und binären Formaten unterschieden werden.
 
-Textbasierte Formate bieten den Vorteil, dass sie von Menschen ohne weitere Hilfsmittel gelesen und meistens auch interpretiert werden können. Die textuellen Formate haben jedoch Schwächen, mit binären Daten (Bilder, Video, Audio etc.) umzugehen. Zwar ist es möglich, die binären Daten in ein textbasiertes Format zu integrieren (beispielsweise mittels Kovertierung zu Base64), dies führt aber zur Aufblähung der Datenmenge.
+Textbasierte Formate bieten den Vorteil, dass sie von Menschen ohne weitere Hilfsmittel gelesen und meistens auch interpretiert werden können. Die textuellen Formate haben jedoch Nachteile, wenn binären Daten (Bilder, Video, Audio etc.) codiert werden sollen. Zwar ist es möglich, die binären Daten in ein textbasiertes Format zu integrieren (beispielsweise mittels Kovertierung zu \gls{base64}), dies führt aber zur Aufblähung der Datenmenge.
 
-Binäre Formaten haben den Vorteil, dass die Daten bei der Serialisierung dichter codiert werden können, somit werden die Dateien meistens kleiner als bei textbasierten Formaten. Der grosse Nachteil ist, dass man für die Interpretation von binären Daten immer auf eine Beschreibung (in Form eines Schemas) angewiesen ist.
-
-TODO: Glossar Einträge
+Binäre Formate haben den Vorteil, dass die Daten bei der \gls{serialisierung} dichter codiert werden können, somit werden die Dateien meistens kleiner als bei textbasierten Formaten. Der grosse Nachteil ist, dass man für die Interpretation von binären Daten immer auf eine Beschreibung (in Form eines Schemas) angewiesen ist.
 
 \textbf{JSON} \\
-JSON ist ein textbasiertes Datenformat, welches Key-Value Paare für die Strukturierung nutzt. Dank dem einfachen Aufbau ist es sehr weit verbreitet und Libraries sind für alle populären Platformen verfügbar.
+\gls{json} ist ein textbasiertes Datenformat, welches Key-Value Paare für die Strukturierung nutzt. Dank dem einfachen Aufbau ist es sehr weit verbreitet und Libraries sind für alle populären Platformen verfügbar.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -283,8 +281,8 @@ JSON ist ein textbasiertes Datenformat, welches Key-Value Paare für die Struktu
 
 
 \textbf{YAML} \\ 
-YAML ist dem JSON Format sehr ähnlich, ist aber stärker auf Lesbarkeit ausgerichtet. Für die Strukturierung der Daten kann die kompakte schreibweise mit Leerzeichen verwendet werden. 
-YAML ist ein Superset von JSON, das bedeuted jedes gültige JSON Dokument ist auch ein gültiges YAML Dokument.
+\gls{yaml} ist dem JSON Format sehr ähnlich, ist aber stärker auf Lesbarkeit ausgerichtet. Für die Strukturierung der Daten kann die kompakte schreibweise mit Leerzeichen verwendet werden. 
+YAML ist ein Superset von JSON, das bedeuted jedes gültige \gls{json} Dokument ist auch ein gültiges \gls{yaml} Dokument.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -306,8 +304,10 @@ address:
 \caption{YAML Beispiel}
 \end{listing}
 
+TODO: Glossar Einträge ab hier
+
 \textbf{XML} \\
-Mit XML werden die Informationen in hierarchische Elemente (Tags) verschachtelt, welche mit Attributen versehen werden können. XML Dokumente werden dadurch rasch sehr gross und haben viel redundaten Daten. Häufig werden XML Schemas eingesetzt, um di
+Mit XML werden die Informationen in hierarchische Elemente (Tags) verschachtelt, welche mit Attributen versehen werden können. XML Dokumente werden dadurch rasch sehr gross und haben viel redundante Daten. Häufig werden XML Schemas eingesetzt, um die gewünschte Struuktur eines Dokuments und dessen Datentypen zu beschreiben.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -385,7 +385,7 @@ Anschliessend werden mit den bereitgestellten Tools (Protocol Buffer Compiler) K
 
 Bei der Wahl eines geeigneten Datenformats gibt es viele Faktoren, die eine Rolle spielen.
 
-Falls die Dateigrösse der encodierten Daten möglichst gering sein soll, empfiehlt sich ein binäres Format. Bei den oben gezeigen Beispielen beinhalten alle Dateien die gleichen Informationen, bei der Dateigrösse gibt es aber gewichtige Unterschiede:
+Falls die Dateigrösse der encodierten Daten möglichst gering sein soll, empfiehlt sich ein binäres Format. Bei den oben gezeigten Beispielen beinhalten alle Dateien die gleichen Informationen, bei der Dateigrösse gibt es aber gewichtige Unterschiede:
 
 \NumTabs{6}
 Protocol Buffer:  \tab{ 41 Byte} \\
@@ -393,15 +393,12 @@ YAML:             \tab{107 Byte} \\
 JSON:             \tab{148 Byte} \\
 XML:              \tab{200 Byte}
 
-Für Datein, welche für Menschen gut lesbar sein sollen, eignet sich aufgrund der Formatierung YAML am besten. Ein weiterer wichitger Faktor ist, dass auf den eingesetzten Platformen Libraries für das Format zur Verfügung stehen. Für die hier behandelten Formate ist dies auf den gängigen Platformen gewährleistet.
+Für Dateien, welche für Menschen gut lesbar sein sollen, eignet sich aufgrund der Formatierung YAML am besten. 
 
-Unterstütze Platformen/Libraries, Komplexität/Lernkurve
-
-
+Ein weiterer wichtiger Faktor ist, dass auf den eingesetzten Plattformen Libraries für das Format zur Verfügung stehen. Da JSON und XML am weitesten verbreitet sind, ist für diese beiden Formaten auch die grösste Auswahl an Libraries zu finden. Für alle vier der hier behandelten Formaten sind inzwischen Libaries für alle gängigen Plattformen verfügbar.
 
 
-\section{Konzept aus der nicht-IoT Welt}
-TODO: better Section Title
+\section{Bestehende Beschreibungssprachen}
 
 Es gibt diverse bestehende Sprachen zur Beschreibung von Schnittstellen. Vor allen bei Webservices werden diese häufig eingesetzt.
 

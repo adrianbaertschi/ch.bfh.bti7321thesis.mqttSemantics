@@ -2,25 +2,18 @@
 \label{chap:spez}
 
 
-
-\section{Device Description}
-
-d
-% http://swagger.io/specification/
-
-\subsection{Codierung}
-UTF-8
-
+Dieses Kapitel beschreibt, wie eine Device Description aufgebaut ist.
 
 \section{Format}
-Json, Yaml
-
-TODO: case sensitiv?
+Die Description wird als \gls{utf8} String im Payload der MQTT Message versendet.
+Als Datenformat kann JSON oder YAML verwendet werden. Die Beschreibungen sind Case sensitiv.
 
 
 \section{Primitive Datentypen}
 
-\begin{table}[h!]
+Die Device Description ist als verschachteltes Objekt aufgebaut. Die Werte der Attribute können entweder ein weiteres Objekt oder einen der folgenden primitiven Datentypen enthalten.
+
+\begin{table}[H]
 \begin{tabular}{ |l|l|r|r| }
 
  \hline
@@ -37,19 +30,22 @@ TODO: case sensitiv?
  
  String   &   \gls{utf8} String &   &   \\ \hline
  
- Boolean   &  Mögliche Werte: true / false &   &   \\ \hline
+%  Boolean   &  Mögliche Werte: true / false &   &   \\ \hline
  
 \end{tabular}
 \caption{Primitive Datentypen}
 \end{table}
 
+Die Definition der primitiven Datentypen orientiert sich an den Datentypen von Java.
+%TODO: Source https://docs.oracle.com/javase/specs/jls/se7/html/jls-4.html#jls-4.2
 
+\section{Schema}
 
-\section{DeviceDescription Objekt}
+\subsection{DeviceDescription Objekt}
 
 Hintweis optionale Felder
 
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
@@ -57,7 +53,7 @@ Hintweis optionale Felder
 
  id  &   String   & Identifikation des Devices   \\ \hline
 
- version & String & Version API des Devices \\ \hline
+ version & String & API Version des Devices \\ \hline
 
  description & String & Allgemeine Beschreibung des Devices \\ \hline 
  
@@ -74,7 +70,7 @@ Hintweis optionale Felder
 \end{table}
 
 \subsection{StateDescription}
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
@@ -87,7 +83,7 @@ Hintweis optionale Felder
 \end{table}
 
 \subsubsection{State}
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
@@ -105,7 +101,7 @@ Hintweis optionale Felder
 
 
 \subsection{EventDescription}
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
@@ -119,14 +115,14 @@ Hintweis optionale Felder
 
 
 \subsubsection{Event}
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
  
  name  &   String   &  \textbf{Pflichtfeld.} Name des Events. Wird als Subtopic verwendet, auf dem das Event verschickt wird. \\ \hline
- range  &   Range   &  \textbf{Pflichtfeld.} Typinformationen und ev. Einschränkungen, welche den Wert des Events beschreiben   \\ \hline
+ range  &   Range   &  Typinformationen und ev. Einschränkungen, welche den Wert des Events beschreiben   \\ \hline
  options  &   Enum   &  Wird verwendet, falls der Event Wert eine Auswahl aus einer fixen Menge ist.  \\ \hline
  description  &   String   &  Beschreibung des Events  \\ \hline
  complexTypeRef  &   String   &  Falls der Wert des Events mit einen komplexen Typen abgebildet wird, wird mit diesem Feld der Name des Typs angegeben. siehe TODO  \\ \hline
@@ -138,7 +134,7 @@ Hintweis optionale Felder
 
 
 \subsection{CommandDescription}
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
@@ -151,7 +147,7 @@ Hintweis optionale Felder
 
 
 \subsubsection{Command}
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
@@ -176,7 +172,7 @@ Hintweis optionale Felder
 %End (Allgemeine objekte)
 \subsection{Range}
 asdf
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline
@@ -191,7 +187,7 @@ asdf
 
 \subsection{Enum}
 asdf
-\begin{table}[h!]
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
  \hline

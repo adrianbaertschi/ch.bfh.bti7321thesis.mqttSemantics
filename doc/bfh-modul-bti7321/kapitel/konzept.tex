@@ -1,24 +1,19 @@
 \chapter{Konzept}
 \label{chap:konzept}
 
+TODO: Einletung
 
 \section{Allgemein}
 
-In diesem Abschnitt werden die grundlegenden Begriffe und der grobe Aufbau des Systems erläutert.
+Um ein \gls{iot} Systems zu realisieren, sind viele Komponenten nötig, welche miteinander interagieren müssen. In diesem wird Abschnitt beschrieben, aus welchen Teilen ein solches System besteht und welche Teile die Beschreibung eines Devices enthalten soll.
 
 \textbf{Device} \\
 Sensoren und Aktoren werden unter dem Begriff Device zusammengefasst.
 
-\begin{figure}[H]
-	\centering
-		\includegraphics[width=0.3\textwidth]{bilder/bricklet_temperature_ir.jpg}
-	\caption{Beispiel eines Devices: Tinkerforge Infrarot Temperatur Sensor}
-\end{figure}
 
-
-\textbf{Gateway} \\
-Die einzelnen Devices eines \gls{iot} Systems sind an einen Gateway angeschlossen. Dies kann fix per Kabel oder über eine Drahtlosschnittstelle wie z. Bsp. Bluetooh umgesetzt sein. Typsicherweise werden Kleincomputer (Single Board Computer) wie ein Raspberry Pi oder Intel Galileo eingesetzt. Diese Geräte zeichen sich aus durch sehr kompakte Bauform (Kreditkatenformat) und bieten trotzdem genügend Ressourcen um darauf hardwareunahängige Anwendungen (z. Bsp. Java, Python, Javascript) laufen zu lassen. 
-Ein Gateway führt die Daten der einzlenen Sensoren zusammen und vereinheiltliche die Formate der Daten. Ausserdem übernimmt er die Kommunikation mit der Aussenwelt, indem er eine Verbindung zum zentralen Broker herstellt.
+\textbf{IoT Gateway} \\
+Die einzelnen Devices eines \gls{iot} Systems sind an einen Gateway angeschlossen. Dies kann fix per Kabel oder über eine Drahtlosschnittstelle wie z. Bsp. Bluetooh umgesetzt sein. Typsicherweise werden Kleincomputer (Single Board Computer) wie ein Raspberry Pi oder Intel Galileo eingesetzt. Diese Geräte zeichen sich aus durch sehr kompakte Bauform (Kreditkatenformat) und bieten trotzdem genügend Ressourcen um darauf hardwareunabhängige Anwendungen (z. Bsp. Java, Python, Javascript) laufen zu lassen. 
+Ein Gateway führt die Daten der einzelnen Devices zusammen und vereinheiltliche die Formate der Daten. Ausserdem übernimmt er die Kommunikation mit der Aussenwelt, indem er eine Verbindung zum MQTT Broker herstellt.
 
 \begin{figure}[H]
 	\centering
@@ -33,6 +28,9 @@ Der Broker ist bei \acrshort{a_mqtt} Anwendungen von zentraler Bedeutung, da all
 Es können grundsätzlich beliebige Applikationen auf allen gängigen Plattformen und Technologien mit den System kommunizieren. Die einzige Grundbedingung ist, dass die Applikation \acrshort{a_mqtt} fähig ist, was sich durch das Einbinden der entsprechenden Libraries einfach realisieren lässt.
 \\
 
+
+\textbf{Device Description} \\
+Ein Device wird als ganzes mit einen Schema becshrieben. Die Device Description wird als retained MQTT Message bein start des Devices resp. Gateways an den Broker geschickt.
 
 Bei der Beschreibung eines einzelnen Devices werden folgende drei Bereiche unterschieden:
 
@@ -53,7 +51,7 @@ Ein Device muss bekanntgeben, auf welche Commands mit welchen Paramtern es reagi
 \begin{figure}[H]
 	\centering
 		\includegraphics[width=0.8\textwidth]{diag/Overview.png}
-	\caption{\label{fig:overview}Übersicht der}
+	\caption{\label{fig:overview}Systemübersicht}
 \end{figure}
 
 
@@ -67,30 +65,30 @@ Die Topic Hiearachie wird nach folgenden Muster aufgebaut:
 		\includegraphics[width=1.0\textwidth]{diag/topic_hierarchy.png}
 	\caption{\label{fig:tempitTopics}Aufbau MQTT Topics mit Beispieldaten}
 \end{figure}
-TODO: farben, was fix, was variabel
+
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|l|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Level } & {\bf Beschreibung } & {\bf Beispiel } \\ 
  \hline
  0  &   \textbf{Applikation} \newline Identifikation der Anwendung.  &    
   thesisDemo   \\ \hline
  
- 1  &   \textbf{Gruppe}  \newline Gruppierung der Devices auf Stufe 1, beispielsweise nach Standort  &     - Bern  \\ \hline
+ 1  &   \textbf{Gruppe}  \newline Gruppierung der Devices auf Stufe 1 &   Bern  \\ \hline
 
- 2  &   \textbf{Untergruppe} \newline Gruppierung der Devices auf Stufe 2, beispielsweise nach Quartier   &   - Lorraine  \\ \hline
+ 2  &   \textbf{Untergruppe} \newline Gruppierung der Devices auf Stufe 2   &   Lorraine  \\ \hline
 
  3  &   \textbf{Devicetyp} \newline Bezeichnung, um was für einen Typ von Sensor oder Aktor es sich handelt.  &   Temperatursensor   \\ \hline
 
- 4  &   \textbf{Device Instanz} \newline Da mehrere Devices vom selben Typ im Einsatz sein können, wird auf dieser Stufe mit einer eindeutigen ID der konkrete Sensor resp. Aktor angegeben.   &    temp001   \\ \hline
+ 4  &   \textbf{Device Instanz} \newline Da mehrere Devices vom selben Typ im Einsatz sein können, wird auf dieser Stufe mit einer eindeutigen ID der konkrete Sensor resp. Aktor angegeben.   &    temp1   \\ \hline
  
  5  &   \textbf{Kategorisierung Devicedaten} \newline  Die Eigenschaften und Daten werden in die nachfolgenden Teile aufgegliedert.  &     events, state, commands, schema   \\ \hline
  
- 6  &   \textbf{Objektname} \newline Name es State, Events oder Commands \newline     &     Temperatur   \\ \hline
+ 6  &   \textbf{Objektname} \newline Name es State, Events oder Commands    &     temp\_Obj   \\ \hline
 
- 6  &   \textbf{Schema Format} \newline Falls es sich um ein Unterobjekt von 'schema' handelt, wird hier das Format des Schemas angegeben   &     YAML, JSON   \\ \hline
+ 6  &   \textbf{Schema Format} \newline Als Unterobjekt von 'schema', wird hier das Format des Schemas angegeben   &     YAML, JSON   \\ \hline
  
 
 \end{tabularx}
@@ -98,3 +96,10 @@ TODO: farben, was fix, was variabel
 \end{table}
 
 
+\section{Abgrenzung}
+
+\subsection{Security}
+Der Faktor Security wird in diesem Konzept bewusst nicht behandelt. Es wird davon ausgegangen, dass alle Teilnehmer des Systems dazu berechtigt sind und innerhalb des Systems nur Nachrichtenaustausch nach dem Beschriebenen Konzept vorkommt.
+
+\subsection{Optimierungen Datenmenge}
+Bei der strukturierung der Device Topic Hierarchie und dem Format der Payload Daten (Schema, State, etc.) ist im Rahmen dieser Arbeit Verständlichkeit und Übersichtlichkeit höher priorisiert als die Optimierung auf möglichst geringe Datenmengen.
