@@ -59,6 +59,10 @@ function deviceClick(schemaTopic) {
     // TODO: meta infos (version , etc).
     //$('#commands').text(json.id).append(' - ').append(json.version);
 
+    var infoCnt = '';
+
+    $('#doc').append(createSection('Info', renderInfo(json)));
+
     var stateCnt = '';
     json.stateDescription.states.forEach(function (state) {
         stateCnt += renderState(state, deviceTopic);
@@ -104,6 +108,15 @@ function createSection(title, content) {
     res += '    </div>';
 
     res += '</div>';
+
+    return res;
+}
+
+function renderInfo(deviceDesc) {
+    var res = '';
+    res += '<strong>Id: </strong>' + deviceDesc.id + '<br>';
+    res += '<strong>Version: </strong>' + deviceDesc.version + '<br>';
+    res += '<strong>Description: </strong>' + deviceDesc.description + '<br>';
 
     return res;
 }

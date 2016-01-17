@@ -1,0 +1,1 @@
+{"version":3,"sources":["config.js"],"names":[],"mappings":";;AAAA,IAAI,GAAG,gBAAgB;AAAC,AACxB,IAAI,GAAG,IAAI,CAAC;AACZ,UAAU,GAAG,MAAM;AAAC","file":"config-compiled.js","sourcesContent":["host = '46.101.165.125'; // hostname or IP address of broker\nport = 9001;\ndescFormat = 'YAML'; // YAML or JSON\n"]}
