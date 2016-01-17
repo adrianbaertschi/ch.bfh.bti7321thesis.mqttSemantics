@@ -44,7 +44,7 @@ public class MqttCommandReceiver implements MqttCallback {
 
 		if(mqttDevice.handleCommand(commandName, message.getPayload())) {
 			// Re-publish State
-			MqttPublisher.getInstance().publishState(mqttDevice.toThing());
+			MqttPublisher.getInstance().publishState(mqttDevice.toDevice());
 		}
 	}
 

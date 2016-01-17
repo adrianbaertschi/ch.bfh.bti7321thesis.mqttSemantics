@@ -100,7 +100,7 @@ public class MockDevice extends MqttBricklet {
 	}
 
 	@Override
-	public void setUpDevice() {
+	public void setUpBricklet() {
 		this.bricklet = new Device("aaa", new IPConnection()) {
 			
 			@Override

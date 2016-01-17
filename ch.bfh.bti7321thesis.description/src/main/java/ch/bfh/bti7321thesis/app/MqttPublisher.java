@@ -20,7 +20,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
-import ch.bfh.bti7321thesis.app.Config.SchemaFormat;
+import ch.bfh.bti7321thesis.app.Config.DescriptionFormat;
 
 /**
  * Main Class for Publishing the Messages and Device Descriptions.
@@ -41,10 +41,7 @@ public class MqttPublisher {
 	
 	private static Config options;
 	
-	private Map<String, ObjectMapper> objectmappers = new HashMap<String, ObjectMapper>();
-
-	private boolean addRandomtoEvents = false;
-	
+	private Map<DescriptionFormat, ObjectMapper> objectmappers = new HashMap<DescriptionFormat, ObjectMapper>();
 
 	private MqttPublisher() {
 		validateSetting();
@@ -62,6 +59,18 @@ public class MqttPublisher {
 		}
 		if(options.getMqttBrokerUri() == null) {
 			throw new IllegalStateException("Broker URL not set");
+		}
+		
+		if(options.getDescriptionQoS() < 0 || options.getDescriptionQoS() > 2) {
+			throw new IllegalStateException("descriptionQoS invalid");
+		}
+		
+		if(options.getEventsQoS() < 0 || options.getEventsQoS() > 2) {
+			throw new IllegalStateException("eventQoS invalid");
+		}
+		
+		if(options.getStateQos() < 0 || options.getStateQos() > 2) {
+			throw new IllegalStateException("stateQoS invalid");
 		}
 		
 		if(options.getMqttClientIdPrefix() == null) {
@@ -117,22 +126,19 @@ public class MqttPublisher {
 	}
 	
 	private void setUpJackson() {
-		if(options.getSchemaFormat() == SchemaFormat.YAML || options.getSchemaFormat() == SchemaFormat.JSON_AND_YAML) {
-			ObjectMapper objectmapperYaml = new ObjectMapper(new YAMLFactory());
+		ObjectMapper objectmapperYaml = new ObjectMapper(new YAMLFactory());
 
-			// Attributes with null values should be skipped
-			objectmapperYaml.setSerializationInclusion(Include.NON_NULL);
+		// Attributes with null values should be skipped
+		objectmapperYaml.setSerializationInclusion(Include.NON_NULL);
 
-			this.objectmappers.put("YAML", objectmapperYaml);
+		this.objectmappers.put(DescriptionFormat.YAML, objectmapperYaml);
 
-		} 
-
-		if(options.getSchemaFormat() == SchemaFormat.JSON || options.getSchemaFormat() == SchemaFormat.JSON_AND_YAML) {
+		if (options.getDescriptionFormat() == DescriptionFormat.JSON) {
 			ObjectMapper objectmapperJson = new ObjectMapper();
 
 			// Attributes with null values should be skipped
 			objectmapperJson.setSerializationInclusion(Include.NON_NULL);
-			this.objectmappers.put("JSON", objectmapperJson);
+			this.objectmappers.put(DescriptionFormat.JSON, objectmapperJson);
 		}
 	}
 	
@@ -161,9 +167,6 @@ public class MqttPublisher {
 
 		String baseTopic = TopicUtil.getBaseTopic(options.getAppId(), device) + "/events/" + eventName;
 		String payloadStr = payload.toString();
-		if (addRandomtoEvents) {
-			payloadStr += " " + Math.random();
-		}
 
 		pubEvent(baseTopic, payloadStr);
 	}
@@ -175,7 +178,7 @@ public class MqttPublisher {
 	 */
 	public void publishDesc(MqttDevice device) {
 		String desc = "";
-		for (Entry<String, ObjectMapper> entry : objectmappers.entrySet()) {
+		for (Entry<DescriptionFormat, ObjectMapper> entry : objectmappers.entrySet()) {
 
 			try {
 				desc = entry.getValue().writerWithDefaultPrettyPrinter()
@@ -228,21 +231,24 @@ public class MqttPublisher {
 
 	private void pubState(String topic, Object payload) {
 
-		for(Entry<String, ObjectMapper> objectmapper : objectmappers.entrySet()) {
-			try {
-				String state = objectmapper.getValue().writerWithDefaultPrettyPrinter().writeValueAsString(payload);
-				LOG.info("Publishing on " + topic + " data: " + state);
-				
-				MqttMessage message = new MqttMessage(state.getBytes());
-				message.setRetained(true);
-				message.setQos(options.getStateQos());
-				
-				IMqttDeliveryToken imMqttDeliveryToken = mqttClientPub.publish(topic, message);
-				imMqttDeliveryToken.waitForCompletion();
-			} catch (MqttException | JsonProcessingException e) {
-				LOG.log(Level.SEVERE, "", e);
-			}
+		// for(Entry<String, ObjectMapper> objectmapper :
+		// objectmappers.entrySet()) {
+
+		try {
+			ObjectMapper yamlMapper = objectmappers.get(DescriptionFormat.YAML);
+			String state = yamlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(payload);
+			LOG.info("Publishing on " + topic + " data: " + state);
+
+			MqttMessage message = new MqttMessage(state.getBytes());
+			message.setRetained(true);
+			message.setQos(options.getStateQos());
+
+			IMqttDeliveryToken imMqttDeliveryToken = mqttClientPub.publish(topic, message);
+			imMqttDeliveryToken.waitForCompletion();
+		} catch (MqttException | JsonProcessingException e) {
+			LOG.log(Level.SEVERE, "", e);
 		}
+		// }
 	}
 
 }

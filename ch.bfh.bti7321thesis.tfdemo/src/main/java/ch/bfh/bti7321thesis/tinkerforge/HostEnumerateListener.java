@@ -5,18 +5,15 @@ import java.util.logging.Logger;
 import com.tinkerforge.BrickletDualButton;
 import com.tinkerforge.BrickletHumidity;
 import com.tinkerforge.BrickletJoystick;
-import com.tinkerforge.BrickletMotionDetector;
 import com.tinkerforge.BrickletTemperatureIR;
 import com.tinkerforge.IPConnection;
 import com.tinkerforge.IPConnection.EnumerateListener;
 import com.tinkerforge.IPConnectionBase;
 
-import ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonDevice;
-import ch.bfh.bti7321thesis.tinkerforge.devices.HumidityDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonMqttBricklet;
+import ch.bfh.bti7321thesis.tinkerforge.devices.HumidityMqttBricklet;
 import ch.bfh.bti7321thesis.tinkerforge.devices.JoyStickDevice;
-import ch.bfh.bti7321thesis.tinkerforge.devices.MockDevice;
-import ch.bfh.bti7321thesis.tinkerforge.devices.MotionDetectorDevice;
-import ch.bfh.bti7321thesis.tinkerforge.devices.TempIrDevice;
+import ch.bfh.bti7321thesis.tinkerforge.devices.TempIrMqttBricklet;
 
 public class HostEnumerateListener implements EnumerateListener {
 	
@@ -29,8 +26,8 @@ public class HostEnumerateListener implements EnumerateListener {
 		this.setHostname(hostname);
 		this.ipcon = ipcon;
 		
-		MockDevice mockDevice = new MockDevice(hostname, ipcon, hostname);
-		TinkerforgeDeviceRegistry.getInstance().add(mockDevice);
+//		MockDevice mockDevice = new MockDevice(hostname, ipcon, hostname);
+//		TinkerforgeDeviceRegistry.getInstance().add(mockDevice);
 	}
 
 	@Override
@@ -49,14 +46,14 @@ public class HostEnumerateListener implements EnumerateListener {
 		case BrickletTemperatureIR.DEVICE_IDENTIFIER:
 			LOG.info(this.getHostname() + " " + BrickletTemperatureIR.DEVICE_DISPLAY_NAME + " found");
 			
-			TempIrDevice tempIrDevice = new TempIrDevice(uid, ipcon, hostname);
+			TempIrMqttBricklet tempIrDevice = new TempIrMqttBricklet(uid, ipcon, hostname);
 			TinkerforgeDeviceRegistry.getInstance().add(tempIrDevice);
 			
 			break;
 		case BrickletDualButton.DEVICE_IDENTIFIER:
 			LOG.info(hostname + " " + BrickletDualButton.DEVICE_DISPLAY_NAME + " found");
 			
-			DualButtonDevice dualButtonDevice = new DualButtonDevice(uid, ipcon, hostname);
+			DualButtonMqttBricklet dualButtonDevice = new DualButtonMqttBricklet(uid, ipcon, hostname);
 			TinkerforgeDeviceRegistry.getInstance().add(dualButtonDevice);
 			
 			break;
@@ -67,16 +64,16 @@ public class HostEnumerateListener implements EnumerateListener {
 			TinkerforgeDeviceRegistry.getInstance().add(joyStickDevice);
 			
 			break;
-		case BrickletMotionDetector.DEVICE_IDENTIFIER:
-			LOG.info(hostname + " " + BrickletMotionDetector.DEVICE_DISPLAY_NAME + " found");
-			
-			MotionDetectorDevice motionDetectorDevice = new MotionDetectorDevice(uid, ipcon, hostname);
-			TinkerforgeDeviceRegistry.getInstance().add(motionDetectorDevice);
-			
-			break;
+//		case BrickletMotionDetector.DEVICE_IDENTIFIER:
+//			LOG.info(hostname + " " + BrickletMotionDetector.DEVICE_DISPLAY_NAME + " found");
+//			
+//			MotionDetectorDevice motionDetectorDevice = new MotionDetectorDevice(uid, ipcon, hostname);
+//			TinkerforgeDeviceRegistry.getInstance().add(motionDetectorDevice);
+//			
+//			break;
 		case BrickletHumidity.DEVICE_IDENTIFIER:
 			LOG.info(hostname + " " + BrickletHumidity.DEVICE_DISPLAY_NAME + " found");
-			HumidityDevice humidityDevice = new HumidityDevice(uid, ipcon, hostname);
+			HumidityMqttBricklet humidityDevice = new HumidityMqttBricklet(uid, ipcon, hostname);
 			TinkerforgeDeviceRegistry.getInstance().add(humidityDevice);
 		default:
 			LOG.warning("Unknown Device: " + enumInfo);

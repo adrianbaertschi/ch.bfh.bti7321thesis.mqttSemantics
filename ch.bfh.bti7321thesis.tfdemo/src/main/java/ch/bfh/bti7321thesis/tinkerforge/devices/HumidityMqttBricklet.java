@@ -16,14 +16,14 @@ import com.tinkerforge.TimeoutException;
 import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.desc.DeviceDescription;
 
-public class HumidityDevice extends MqttBricklet<BrickletHumidity> {
+public class HumidityMqttBricklet extends MqttBricklet<BrickletHumidity> {
 
-	public HumidityDevice(String uid, IPConnection ipcon, String stackName) {
+	public HumidityMqttBricklet(String uid, IPConnection ipcon, String stackName) {
 		super(uid, ipcon, stackName);
 	}
 	
 	@Override
-	public void setUpDevice() {
+	public void setUpBricklet() {
 		bricklet = new BrickletHumidity(uid, ipcon);
 
 		try {
@@ -36,7 +36,7 @@ public class HumidityDevice extends MqttBricklet<BrickletHumidity> {
 
 			@Override
 			public void humidity(int humidity) {
-				MqttPublisher.getInstance().pubEvent(HumidityDevice.this.toThing(), "Humidity", humidity / 10.0);
+				MqttPublisher.getInstance().pubEvent(HumidityMqttBricklet.this.toDevice(), "Humidity", humidity / 10.0);
 			}
 		});
 	}

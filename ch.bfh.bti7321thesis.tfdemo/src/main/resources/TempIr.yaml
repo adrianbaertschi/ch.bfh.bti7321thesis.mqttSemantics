@@ -1,6 +1,12 @@
 ---
 id: "IoT - Temperature IR Bricklet"
 version: "0.0.1"
+description: |
+  The Temperature IR Bricklet is equipped with a infrared thermometer. 
+  It can extend the features of a Brick with the capability of contactless temperature measurement.
+  You can read out object temperature and ambient temperature in °C. 
+  It is possible to define the emissivity of the object you want to measure (most infrared thermometers can't do this) . 
+  With configurable events it is possible to react on changing temperatures without polling.
 stateDescription:
   states:
   - name: "AmbientTemperatureInterval"
@@ -8,19 +14,19 @@ stateDescription:
       min: 0
       max: 9223372036854775807
       type: "Long"
-    description: "Time in ms"
+    description: The period in ms with which the ambient temperature is measured. A value of 0 means no measurement.
   - name: "ObjectTemperatureInterval"
     range:
       min: 0
       max: 9223372036854775807
       type: "Long"
-    description: "TODO"
+    description: The period in ms with which the object temperature is measured. A value of 0 means no measurement.
   - name: "DebouncePeriod"
     range:
       min: 0
       max: 9223372036854775807
       type: "Long"
-    description: "TODO"
+    description: Period of time in ms in which the 
   - name: "Emissivity"
     range:
       min: 6553

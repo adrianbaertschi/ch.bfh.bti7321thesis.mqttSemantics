@@ -91,7 +91,7 @@ public class JoyStickDevice extends MqttBricklet<BrickletJoystick> {
 	}
 
 	@Override
-	public void setUpDevice() {
+	public void setUpBricklet() {
 		bricklet = new BrickletJoystick(uid, ipcon);
 		
 		try {
@@ -106,8 +106,8 @@ public class JoyStickDevice extends MqttBricklet<BrickletJoystick> {
 			@Override
 			public void position(short x, short y) {
 				LOG.fine("X:" + x + " Y: " + y);
-				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosX", x);
-				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toThing(), "PosY", y);
+				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toDevice(), "PosX", x);
+				MqttPublisher.getInstance().pubEvent(JoyStickDevice.this.toDevice(), "PosY", y);
 			}
 		});
 		

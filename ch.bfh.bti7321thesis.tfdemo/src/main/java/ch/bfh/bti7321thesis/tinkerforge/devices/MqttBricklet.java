@@ -26,24 +26,22 @@ public abstract class MqttBricklet<T extends Device> {
 		this.stackName = stackName;
 		this.uid = uid;
 		this.ipcon = ipcon;
-		setUpDevice();
+		setUpBricklet();
 		
-		MqttPublisher.getInstance().publishState(this.toThing());
-		MqttPublisher.getInstance().publishDesc(this.toThing());
+		MqttPublisher.getInstance().publishState(this.toDevice());
+		MqttPublisher.getInstance().publishDesc(this.toDevice());
 	}
 	
 	
-	// TODO Setupt, init ein eigene Methode gliedern, ähnlich wie TinkerForgeBaseSensor
-	
-	public abstract void setUpDevice();
+	public abstract void setUpBricklet();
 
-	public T getDevice() {
-		return bricklet;
-	}
+//	public T getDevice() {
+//		return bricklet;
+//	}
 	
 	public String getUid() {
 		try {
-			return getDevice().getIdentity().uid;
+			return bricklet.getIdentity().uid;
 		} catch (TimeoutException | NotConnectedException e) {
 			e.printStackTrace();
 		}
@@ -60,7 +58,7 @@ public abstract class MqttBricklet<T extends Device> {
 	
 	public abstract DeviceDescription getDescription();
 	
-	public MqttDevice toThing() {
+	public MqttDevice toDevice() {
 		MqttDevice mqttThing = new MqttDevice();
 		
 		String hostName = "Host";
@@ -74,7 +72,7 @@ public abstract class MqttBricklet<T extends Device> {
 		
 		mqttThing.setSubGroup(this.getStackName());
 		try {
-			mqttThing.setDeviceType(TinkerforgeBrickletDB.getDisplayName(this.getDevice().getIdentity().deviceIdentifier));
+			mqttThing.setDeviceType(TinkerforgeBrickletDB.getDisplayName(this.bricklet.getIdentity().deviceIdentifier));
 		} catch (TimeoutException | NotConnectedException e) {
 			e.printStackTrace();
 		}

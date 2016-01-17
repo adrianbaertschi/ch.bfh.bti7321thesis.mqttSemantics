@@ -14,7 +14,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import ch.bfh.bti7321thesis.app.Config;
-import ch.bfh.bti7321thesis.app.Config.SchemaFormat;
+import ch.bfh.bti7321thesis.app.Config.DescriptionFormat;
 import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.tinkerforge.log.StdoutConsoleHandler;
 
@@ -41,7 +41,7 @@ public class TinkerforgeApp {
 		Config options = new Config();
 		options.setMqttBrokerUri(loadConfigValue("brokerUri"));
 //		options.setMqttClientId("TfDemoApp");
-		options.setSchemaFormat(SchemaFormat.JSON_AND_YAML);
+		options.setDescriptionFormat(DescriptionFormat.YAML);
 		options.setAppId(loadConfigValue("appId"));
 		options.setMqttCallback(new MqttCommandReceiver());
 		MqttPublisher.setConfig(options);

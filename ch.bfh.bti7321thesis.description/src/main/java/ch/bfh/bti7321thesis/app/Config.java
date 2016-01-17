@@ -9,11 +9,11 @@ import org.eclipse.paho.client.mqttv3.MqttCallback;
  *
  */
 public class Config {
-	public enum SchemaFormat {
-		JSON, YAML, JSON_AND_YAML
+	public enum DescriptionFormat {
+		JSON, YAML
 	};
 
-	private SchemaFormat schemaFormat = SchemaFormat.YAML;
+	private DescriptionFormat descriptionFormat = DescriptionFormat.YAML;
 	private String mqttBrokerUri;
 	private String mqttClientIdPrefix;
 	private String appId;
@@ -61,17 +61,17 @@ public class Config {
 		this.mqttCallback = mqttCallback;
 	}
 
-	public SchemaFormat getSchemaFormat() {
-		return schemaFormat;
+	public DescriptionFormat getDescriptionFormat() {
+		return descriptionFormat;
 	}
 
 	/**
 	 * Set the Desired Format for the Device Descriptions
 	 * 
-	 * @param schemaFormat
+	 * @param descriptionFormat
 	 */
-	public void setSchemaFormat(SchemaFormat schemaFormat) {
-		this.schemaFormat = schemaFormat;
+	public void setDescriptionFormat(DescriptionFormat descriptionFormat) {
+		this.descriptionFormat = descriptionFormat;
 	}
 
 	public String getMqttClientIdPrefix() {
@@ -84,7 +84,7 @@ public class Config {
 	 * Two connections wille be established. One for Publishing
 	 * [mqttClientIdPrefix]_pub and one for the subscruptions
 	 * [mqttClientIdPrefix]_sub. <br>
-	 * If not Spefified, a randon IDs will be generated.
+	 * If not Spefified, a randon prefix will be generated.
 	 * 
 	 * @param mqttClientIdPrefix
 	 *            Prefix for the Client IDs

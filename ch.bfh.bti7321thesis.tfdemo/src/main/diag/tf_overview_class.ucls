@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.1.9" icons="true" automaticImage="PNG" always-add-relationships="false" generalizations="true" 
+  realizations="true" associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <class id="1" language="java" name="ch.bfh.bti7321thesis.tinkerforge.TinkerforgeApp" 
+    project="ch.bfh.bti7321thesis.tfdemo" 
+    file="/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/TinkerforgeApp.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="218" y="268"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="ch.bfh.bti7321thesis.tinkerforge.HostEnumerateListener" 
+    project="ch.bfh.bti7321thesis.tfdemo" 
+    file="/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/HostEnumerateListener.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="773" y="295"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="ch.bfh.bti7321thesis.tinkerforge.BrickEnumerator" 
+    project="ch.bfh.bti7321thesis.tfdemo" 
+    file="/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/BrickEnumerator.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="466" y="295"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="ch.bfh.bti7321thesis.tinkerforge.devices.MqttBricklet" 
+    project="ch.bfh.bti7321thesis.tfdemo" 
+    file="/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/devices/MqttBricklet.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="542" y="619"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="ch.bfh.bti7321thesis.tinkerforge.devices.DualButtonMqttBricklet" 
+    project="ch.bfh.bti7321thesis.tfdemo" 
+    file="/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/devices/DualButtonMqttBricklet.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="852" y="899"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="ch.bfh.bti7321thesis.tinkerforge.devices.HumidityMqttBricklet" 
+    project="ch.bfh.bti7321thesis.tfdemo" 
+    file="/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/devices/HumidityMqttBricklet.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="238" y="899"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="ch.bfh.bti7321thesis.tinkerforge.devices.TempIrMqttBricklet" 
+    project="ch.bfh.bti7321thesis.tfdemo" 
+    file="/ch.bfh.bti7321thesis.tfdemo/src/main/java/ch/bfh/bti7321thesis/tinkerforge/devices/TempIrMqttBricklet.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="542" y="899"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <generalization id="8">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="9">    
+    <end type="SOURCE" refId="7"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <generalization id="10">    
+    <end type="SOURCE" refId="6"/>    
+    <end type="TARGET" refId="4"/>  
+  </generalization>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

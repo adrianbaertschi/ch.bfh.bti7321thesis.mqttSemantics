@@ -18,7 +18,7 @@ import com.tinkerforge.TimeoutException;
 import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.desc.DeviceDescription;
 
-public class TempIrDevice extends MqttBricklet<BrickletTemperatureIR> {
+public class TempIrMqttBricklet extends MqttBricklet<BrickletTemperatureIR> {
 
 	private Logger LOG = Logger.getLogger(this.getClass().getName());
 
@@ -26,7 +26,7 @@ public class TempIrDevice extends MqttBricklet<BrickletTemperatureIR> {
 	private ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 
 	
-	public TempIrDevice(String uid, IPConnection ipcon, String stackName) {
+	public TempIrMqttBricklet(String uid, IPConnection ipcon, String stackName) {
 		super(uid, ipcon, stackName);
 //		super.stackName = stackName;
 		
@@ -219,7 +219,7 @@ public class TempIrDevice extends MqttBricklet<BrickletTemperatureIR> {
 
 
 	@Override
-	public void setUpDevice() {
+	public void setUpBricklet() {
 		bricklet = new BrickletTemperatureIR(uid, ipcon);
 		
 		// setup
@@ -237,7 +237,7 @@ public class TempIrDevice extends MqttBricklet<BrickletTemperatureIR> {
 			public void objectTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				LOG.fine("Object Temp: " + temp);
-				MqttPublisher.getInstance().pubEvent(TempIrDevice.this.toThing(), "ObjectTemp", temp);
+				MqttPublisher.getInstance().pubEvent(TempIrMqttBricklet.this.toDevice(), "ObjectTemp", temp);
 			}
 		});
 
@@ -247,7 +247,7 @@ public class TempIrDevice extends MqttBricklet<BrickletTemperatureIR> {
 			public void ambientTemperature(short temperature) {
 				Double temp = temperature / 10.0;
 				LOG.fine("Ambient Temp: " + temp);
-				MqttPublisher.getInstance().pubEvent(TempIrDevice.this.toThing(), "AmbientTemp", temp);
+				MqttPublisher.getInstance().pubEvent(TempIrMqttBricklet.this.toDevice(), "AmbientTemp", temp);
 			}
 		});
 	}
