@@ -7,7 +7,7 @@ var client = new Paho.MQTT.Client(host, port, '/', 'descBrowser');
 client.onMessageArrived = onMessage;
 client.onconnectionlost = onDisconnect;
 function onConnect() {
-    client.subscribe('+/+/+/+/+/schema/YAML', onMessage);
+    client.subscribe('+/+/+/+/+/schema/' + descFormat, onMessage);
     console.log("MQTT connected");
 }
 
@@ -47,10 +47,12 @@ function deviceClick(schemaTopic) {
 
     $('#txt').val(schemas[schemaTopic]);
 
-    var json = jsyaml.load(schemas[schemaTopic]);
-
-    // use this if Schema ist in JSON
-    // var json = JSON.parse(schemas[this.id]);
+    var json;
+    if (descFormat === 'YAML') {
+        json = jsyaml.load(schemas[schemaTopic]);
+    } else if (descFormat === 'JSON') {
+        json = JSON.parse(schemas[schemaTopic]);
+    }
 
     $('#doc').text('');
 
