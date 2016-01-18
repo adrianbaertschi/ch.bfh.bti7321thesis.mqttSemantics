@@ -15,7 +15,6 @@
   <graph edgedefault="directed" id="G">
     <data key="d0"/>
     <node id="n0">
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="611.0" width="592.2" x="380.39999999999964" y="217.0"/>
@@ -28,7 +27,6 @@
     </node>
     <node id="n1">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:SVGNode>
           <y:Geometry height="100.0" width="60.0" x="195.79999999999995" y="481.0"/>
@@ -51,7 +49,6 @@ Integrator<y:LabelModel>
     </node>
     <node id="n2">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="424.0" y="296.0"/>
@@ -70,7 +67,6 @@ Integrator<y:LabelModel>
     </node>
     <node id="n3">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="430.0" y="385.0"/>
@@ -89,7 +85,6 @@ Integrator<y:LabelModel>
     </node>
     <node id="n4">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="424.0" y="465.0"/>
@@ -108,7 +103,6 @@ Integrator<y:LabelModel>
     </node>
     <node id="n5">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="419.0" y="554.0"/>
@@ -127,7 +121,6 @@ Integrator<y:LabelModel>
     </node>
     <node id="n6">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="424.0" y="649.0"/>
@@ -146,7 +139,6 @@ Integrator<y:LabelModel>
     </node>
     <node id="n7">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="429.0" y="733.8"/>
@@ -166,7 +158,6 @@ Library konfigurieren<y:LabelModel>
     </node>
     <node id="n8">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="254.80000000000018" x="682.0" y="354.20000000000005"/>
@@ -185,7 +176,6 @@ Library konfigurieren<y:LabelModel>
     </node>
     <node id="n9">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="217.20000000000005" x="698.5000000000001" y="459.20000000000005"/>
@@ -205,7 +195,6 @@ Devices anzeigen<y:LabelModel>
     </node>
     <node id="n10">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="687.5000000000001" y="564.2"/>
@@ -224,14 +213,13 @@ Devices anzeigen<y:LabelModel>
     </node>
     <node id="n11">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:ShapeNode>
           <y:Geometry height="50.0" width="222.0" x="698.5000000000001" y="669.2"/>
           <y:Fill hasColor="false" transparent="false"/>
           <y:BorderStyle color="#000000" type="line" width="1.0"/>
           <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="plain" hasBackgroundColor="false" hasLineColor="false" height="34.265625" modelName="custom" textColor="#000000" visible="true" width="150.1484375" x="35.92578125" y="7.8671875">UC10 - Commands an 
-Device Senden<y:LabelModel>
+Device senden<y:LabelModel>
               <y:SmartNodeLabelModel distance="4.0"/>
             </y:LabelModel>
             <y:ModelParameter>
@@ -244,7 +232,6 @@ Device Senden<y:LabelModel>
     </node>
     <node id="n12">
       <data key="d4"/>
-      <data key="d5"/>
       <data key="d6">
         <y:SVGNode>
           <y:Geometry height="100.0" width="60.0" x="1034.4" y="480.79999999999995"/>
@@ -267,7 +254,6 @@ Fremdsystem<y:LabelModel>
     </node>
     <edge id="e0" source="n1" target="n2">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-111.0" ty="0.0"/>
@@ -279,7 +265,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e1" source="n1" target="n3">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-111.0" ty="0.0"/>
@@ -291,7 +276,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e2" source="n1" target="n4">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-111.0" ty="0.0"/>
@@ -303,7 +287,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e3" source="n1" target="n5">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-111.0" ty="0.0"/>
@@ -315,7 +298,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e4" source="n1" target="n6">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-111.0" ty="0.0"/>
@@ -327,7 +309,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e5" source="n1" target="n7">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="-111.0" ty="0.0"/>
@@ -339,7 +320,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e6" source="n12" target="n8">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="127.40000000000009" ty="0.0"/>
@@ -351,7 +331,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e7" source="n12" target="n9">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="108.60000000000002" ty="0.0"/>
@@ -363,7 +342,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e8" source="n12" target="n10">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="111.0" ty="0.0"/>
@@ -375,7 +353,6 @@ Fremdsystem<y:LabelModel>
     </edge>
     <edge id="e9" source="n12" target="n11">
       <data key="d8"/>
-      <data key="d9"/>
       <data key="d10">
         <y:PolyLineEdge>
           <y:Path sx="0.0" sy="0.0" tx="111.0" ty="0.0"/>
