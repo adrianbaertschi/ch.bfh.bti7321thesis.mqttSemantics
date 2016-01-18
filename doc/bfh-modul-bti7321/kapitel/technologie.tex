@@ -44,7 +44,7 @@ Jede Nachricht wird an ein bestimmtes Topic gesendet. Grundsätzlich kann jeder 
 Zum Beispiel könnte ein Thermometer seine Temperatur im Topic \texttt{house/livingroom/temperature} veröffentlichen.\\ \\
 Um die Nachrichten zu erhalten, muss sich nun ein anderer Client für dieses Topic einschreiben. Dabei können die Wildcards \texttt{+} und \texttt{\#} verwendet werden.\\
 Das \texttt{+} Symbol steht für eine Ebene in der Topic Hierarchie.\\
-Beispiel: \texttt{house/+/temperature} steht für die Temperaturmeldungen aller Räume des Hauses .
+Beispiel: \texttt{house/+/temperature} steht für die Temperaturmeldungen aller Räume des Hauses.
 
 \begin{itemize}
 	\item \texttt{house/livingroom/temperature}
@@ -63,35 +63,33 @@ Beispiel: Wenn ein Client das Topic \texttt{house/\#} abonniert, erhält dieser 
 \end{itemize}
 
 \subsection{Messages}
-Messages in MQTT sind sehr einfach aufgebaut. Eine Message hat folgende Attribute:\\
+Daten werden als Messages an ein bestimmtes Topic versendet. Eine Message hat folgende Attribute:
 
-\begin{table}[h!]
+\begin{table}[H]
 \centering
-\begin{tabular}{ |l|l| }
+\begin{tabular}{|l|l|}
 	\hline \rowcolor{lightgray}
-	Attribut & Beschreibung \\ 
-	\hline
-	Payload    	& Beliebige Daten im Binärformat. Maximal 256 MB     \\
-	QoS    		& Quality of Service 0, 1 oder 2. Details in Kapitel \ref{qos}    \\ 
-	Retained    & Flag, true oder false, Details in Kapitel \ref{retained}     \\ 
-	\hline
+	\textbf{Attribut} & \textbf{Beschreibung} \\ \hline
+	Payload   & Beliebige Daten im Binärformat. Maximal 256 MB     \\ \hline
+	QoS       & Quality of Service 0, 1 oder 2. Details in Kapitel \ref{qos}    \\ \hline
+	Retained  & Flag, true oder false, Details in Kapitel \ref{retained}     \\  	\hline
 \end{tabular}
 \caption{Aufbau einer MQTT Message}
 \end{table}
 
 
 \subsection{Quality of Service} \label{qos}
-MQTT bietet drei verschiedene QoS Einstellungen für das versenden von Nachrichten.
+MQTT bietet drei verschiedene QoS Einstellungen für das versenden von Messages.
 \begin{itemize}
-\item 0: Die Nachricht wird einmal versendet, es gibt keine Bestätigung des Empfängers.
-\item 1: (Standard) Die Nachricht wird mindestens einmal beim Empfänger ankommen. Es wird so lange versucht zu senden, bis eine Bestätigung erhalten wurde.
-\item 2: Mit ein Handhshake Mechanismus wird sichergestellt, dass die Nachricht genau einmal beim Empfänger angekommen ist.
+\item 0: Die Message wird einmal versendet, es gibt keine Bestätigung des Empfängers.
+\item 1: (Standard) Die Message wird mindestens einmal beim Empfänger ankommen. Es wird so lange versucht zu senden, bis eine Bestätigung erhalten wurde.
+\item 2: Mit ein Handshake Mechanismus wird sichergestellt, dass die Message genau einmal beim Empfänger angekommen ist.
 \end{itemize}
 
 Je höher die QoS Einstellung, desto mehr Resourcen werden beim versenden benötigt und es desto mehr Daten werden über das Netzwerk gesendet.
 
 \subsection{Retaines Messages} \label{retained}
-Bei einer MQTT Message kann das Retained Flag gesetzt werden. Damit wird pro Topic die letzte Nachricht auf dem Broker gespeichert. Verbindet sich ein neuer Client und abonniert das Topic, erhält er die retained Message sofort. Dies kann nützlich sien bei Anwendungen mit Topics, die sehr lange Pausen zwischen den Meldungen haben.
+Bei einer MQTT Message kann das Retained Flag gesetzt werden. Damit wird pro Topic die letzte Message auf dem Broker gespeichert. Verbindet sich ein neuer Client und abonniert das Topic, erhält er die retained Message sofort. Dies kann nützlich sien bei Anwendungen mit Topics, die sehr lange Pausen zwischen den Messages haben.
 
 \subsection{Last Will}
 Jeder Client, der sich zum Broker vebindet, kann eine ''Last Will'' Message angeben. Diese Meldung wird an das gewünschte Topic gesendet, sobald die Verbindung beendet wird.
@@ -139,12 +137,11 @@ Die verschiedenen Hersteller von MQTT Anwendungen entwickeln jeweils ihre eigene
 
 \subsection{IBM Internet of Things Foundation}
 
-IBM hat unter dem Brand `IBM IoT Foundation' \cite{ibmIotF:home} einen Dienst entwickelt, mit dem vernetzte Geräte verwaltet werden können. Als Kommunikationsprotokoll wird MQTT eingesetzt. Die Plattform verwendet folgende konzeptionelle Ideen:
+IBM hat unter dem Brand `IBM IoT Foundation' \cite{ibmIotF:home} einen Dienst entwickelt, mit dem vernetzte Geräte verwaltet werden können. Als Kommunikationsprotokoll wird MQTT eingesetzt. Die Platform verwendet unter Anderem folgende konzeptionelle Ideen:
 \begin{itemize}
-    \item Organizations: Eindeutige Identifikation der Kunden der Plattform
 	\item Devices: Beliebiges vernetztes Gerät. Versendet Events und reagiert auf Commands.
-	\item Applications: Anwendung, welche mit den Daten der Devices interagiert.
-	\item Events: Daten, welche von den Devices an die Plattform gesendet werden
+	\item Applications: Externe Anwendungen, welche mit den Daten der Devices interagieren.
+	\item Events: Daten, welche von den Devices an die Platform gesendet werden
 	\item Commands: Applications können mittels Commands mit den Devices kommunizieren.
 \end{itemize}
 
@@ -197,16 +194,16 @@ Grundsätzlich unterstützt IBM IoT Foundation ein beliebiges Payload Format. Es
 
 \subsection{Tinkerforge MQTT Proxy}
 
-Tinkerforge hat ein modulares System von Sensoren und Aktoren (so gennate Bricklets) entwickelt, die u. A. für Prototyping und in der Ausbildung (auch an der BFH) eingesetzt werden. Um die Mudule zu steuern, wird klassischerweise das bereitstellete SDK in der gewünschten Programmiersprache verwendet. 
-Tinkerforge ausserdem eine Anwendung entwickelt und die Bausteine per MQTT ansprechen zu können \cite{tinkerf:mqtt}.
+Tinkerforge hat ein modulares System von Sensoren und Aktoren (so gennate Bricklets) entwickelt, die u. A. für Prototyping und in der Ausbildung (auch an der BFH) eingesetzt werden. Um die Mudule zu steuern, wird klassischerweise das bereitgestellte \acrfull{sdk} in der gewünschten Programmiersprache verwendet. 
+Tinkerforge hat eine Anwendung entwickelt um die Bausteine per MQTT ansprechen zu können \cite{tinkerf:mqtt}.
 
 \textbf{Topics} \\
-Die Tinkerforge Devices senden ihre Daten an ein MQTT Topic nach Schema \\ \code{tinkerforge/<prefix>/<uid>/<suffix>}.
+Die Tinkerforge Bricklets senden ihre Daten an ein MQTT Topic nach Schema \\ \code{tinkerforge/<prefix>/<uid>/<suffix>}.
 
-Ein Temperatur Bricklet mit \acrfull{uid} \code{xf2} würde also den gemessenen Wert an das Topic \\
+Ein Temperatur Bricklet mit \acrshort{uid} \code{xf2} würde also den gemessenen Wert an das Topic \\
 \code{tinkerforge/bricklet/temperature/xf2/temperature} senden.
 
-Die Bricklets reagieren auf Messages die an ein passendes Topic mit Siffix \code{/set} gesendet werden. Sollen beispielsweise die LEDs des Dualbutton Bricklets mit UID \code{mxg} eingeschaltet werden, muss eine Message an das Topic \code{tinkerforge/bricklet/dual\_button/mxg/led\_state/set} gesendet werden mit folgendem Payload:
+Die Bricklets reagieren auf Messages die an ein passendes Topic mit Suffix \code{/set} gesendet werden. Sollen beispielsweise die LEDs des Dualbutton Bricklets mit \acrshort{uid} \code{mxg} eingeschaltet werden, muss eine Message an das Topic \code{tinkerforge/bricklet/dual\_button/mxg/led\_state/set} gesendet werden mit folgendem Payload:
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -256,7 +253,7 @@ Textbasierte Formate bieten den Vorteil, dass sie von Menschen ohne weitere Hilf
 Binäre Formate haben den Vorteil, dass die Daten bei der \gls{serialisierung} dichter codiert werden können, somit werden die Dateien meistens kleiner als bei textbasierten Formaten. Der grosse Nachteil ist, dass man für die Interpretation von binären Daten immer auf eine Beschreibung (in Form eines Schemas) angewiesen ist.
 
 \textbf{JSON} \\
-\gls{json} ist ein textbasiertes Datenformat, welches Key-Value Paare für die Strukturierung nutzt. Dank dem einfachen Aufbau ist es sehr weit verbreitet und Libraries sind für alle populären Platformen verfügbar.
+\gls{json} ist ein textbasiertes Datenformat, welches verschachtelte Key-Value Paare für die Strukturierung nutzt. Dank dem einfachen Aufbau ist es sehr weit verbreitet und Libraries sind für alle populären Platformen verfügbar.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -276,12 +273,12 @@ Binäre Formate haben den Vorteil, dass die Daten bei der \gls{serialisierung} d
 }
 
 \end{minted}
-\caption{JSON Beispiel, (148 byte)}
+\caption{JSON Beispiel}
 \end{listing}
 
 
 \textbf{YAML} \\ 
-\gls{yaml} ist dem JSON Format sehr ähnlich, ist aber stärker auf Lesbarkeit ausgerichtet. Für die Strukturierung der Daten kann die kompakte schreibweise mit Leerzeichen verwendet werden. 
+\gls{yaml} ist dem \gls{json} Format sehr ähnlich, ist aber stärker auf Lesbarkeit ausgerichtet. Für die Strukturierung der Daten kann die kompakte schreibweise mit Leerzeichen verwendet werden. 
 YAML ist ein Superset von JSON, das bedeuted jedes gültige \gls{json} Dokument ist auch ein gültiges \gls{yaml} Dokument.
 
 \begin{listing}[H]
@@ -304,10 +301,8 @@ address:
 \caption{YAML Beispiel}
 \end{listing}
 
-TODO: Glossar Einträge ab hier
-
 \textbf{XML} \\
-Mit XML werden die Informationen in hierarchische Elemente (Tags) verschachtelt, welche mit Attributen versehen werden können. XML Dokumente werden dadurch rasch sehr gross und haben viel redundante Daten. Häufig werden XML Schemas eingesetzt, um die gewünschte Struuktur eines Dokuments und dessen Datentypen zu beschreiben.
+Mit \gls{xml} werden die Informationen in hierarchische Elemente (Tags) verschachtelt, welche mit Attributen versehen werden können. XML Dokumente werden dadurch rasch sehr gross und haben viel redundante Daten. Häufig werden XML Schemas eingesetzt, um die gewünschte Struuktur eines Dokuments und dessen Datentypen zu beschreiben.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -334,7 +329,7 @@ Mit XML werden die Informationen in hierarchische Elemente (Tags) verschachtelt,
 
 
 \textbf{Protocol Buffers} \\
-Protocul Buffers ist ein Mechanismus zur Serialisierung von Daten. Der Entwickler muss ein Schema seiner Datenstruktueren erstellen (.proto Datei).
+Protocol Buffers ist ein Mechanismus zur binären Serialisierung von Daten. Der Entwickler muss ein Schema seiner Datenstruktueren erstellen (.proto Datei).
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -395,15 +390,15 @@ XML:              \tab{200 Byte}
 
 Für Dateien, welche für Menschen gut lesbar sein sollen, eignet sich aufgrund der Formatierung YAML am besten. 
 
-Ein weiterer wichtiger Faktor ist, dass auf den eingesetzten Plattformen Libraries für das Format zur Verfügung stehen. Da JSON und XML am weitesten verbreitet sind, ist für diese beiden Formaten auch die grösste Auswahl an Libraries zu finden. Für alle vier der hier behandelten Formaten sind inzwischen Libaries für alle gängigen Plattformen verfügbar.
+Ein weiterer wichtiger Faktor ist, dass auf den eingesetzten Platformen Libraries für das Format zur Verfügung stehen. Da JSON und XML am weitesten verbreitet sind, ist für diese beiden Formaten auch die grösste Auswahl an Libraries zu finden. Für alle vier der hier behandelten Formaten sind inzwischen Libaries für alle gängigen Platformen verfügbar.
 
 
 \section{Bestehende Beschreibungssprachen}
 
-Es gibt diverse bestehende Sprachen zur Beschreibung von Schnittstellen. Vor allen bei Webservices werden diese häufig eingesetzt.
+Es gibt diverse bestehende Sprachen zur Beschreibung von Schnittstellen und Daten. Vor allen bei Webservices werden diese häufig eingesetzt.
 
 \subsection{WSDL}
-Für die Beschreibung von SOAP Webservices wird eine WSDL Datei verwendet. WSDL ist eine auf XML basierende Sprache und beschreibt die Methoden und Datentypen des Webservice. Das Schema wird verwendet, um daraus Zugriffsklassen zu generieren und für die Validierung der Requests.
+Für die Beschreibung von \gls{soap} Webservices wird eine \gls{wsdl} Datei verwendet. WSDL ( Web Services Description Language) ist eine auf \gls{xml} basierende Sprache und beschreibt die Methoden und Datentypen eines Webservice. Das WSDL Schema kann verwendet werden, um daraus Zugriffsklassen zu generieren und für die Validierung der Aufrufe.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -475,7 +470,7 @@ Für die Beschreibung von SOAP Webservices wird eine WSDL Datei verwendet. WSDL 
 
 
 \subsection{Swagger Spec}
-Webservices, welche nach dem RESTful Architekturstil umgesetzt sind, können u.A. mithilfe eines Schemas von Swagger beschrieben werden. Ein Schema in JSON oder YAML gibt an, welche Funktionalität der Webservice zur Verfügung stellt. Mithilfe eines Code Generators können aus dem Schema Zugriffsklassen für den Webservice generiert werden.
+Webservices, welche nach dem \gls{rest} Architekturstil umgesetzt sind, können u.A. mithilfe eines Schemas von Swagger \cite{swagger} beschrieben werden. Ein Schema in \gls{json} oder \gls{yaml} gibt an, welche Funktionalität der Webservice zur Verfügung stellt. Mithilfe eines Code Generators können aus dem Schema Zugriffsklassen für den Webservice generiert werden.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
