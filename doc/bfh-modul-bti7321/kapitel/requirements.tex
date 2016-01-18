@@ -4,8 +4,11 @@
 \section{Use Cases}
 Die funktionalen Anforderungen werden in diesem Kapitel mit Use Cases beschrieben.
 
-TODO: UC Diagram
-
+\begin{figure}[H]
+	\centering
+		\includegraphics[width=0.8\textwidth]{diag/use_cases.png}
+	\caption{Use Case Diagramm}
+\end{figure}
 \textbf{Aktoren} \\
 In den Use Case Beschreibungen werden die folgenden Aktoren als Benutzer des Systems verwendet:
 
@@ -13,13 +16,13 @@ In den Use Case Beschreibungen werden die folgenden Aktoren als Benutzer des Sys
 Device Integrator:      \tab{Erstellt die Device Description und integriert die Device Description Library} \\
 Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen der Devices.} \\
 
-\subsection{UC01 - Beschreibung Device}
+\subsection{UC01 - Device beschreiben}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC01: Beschreibung Device \\  \hline
+ {\bf Use Case ID }    & UC01 - Device beschreiben \\  \hline
  {\bf Beschreibung }   & In einem Schema müssen die Metadaten der Status- Event- und Commandinformationen aufgeführt werden können.
  \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
@@ -34,13 +37,13 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC01: Beschreibung Device}
 \end{table}
 
-\subsection{UC02 - Angabe Datentypen}
+\subsection{UC02 - Datentypen angeben}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC02: Angabe Datentypen \\  \hline
+ {\bf Use Case ID }    & UC02 - Datentypen angeben \\  \hline
  {\bf Beschreibung }   & Für die State- Event- und Commandangeben muss definiert werden können, welche Datentypen die Werte aufweisen. \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Device Description wird erstellt. \\ \hline
@@ -52,13 +55,13 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC02: Angabe Datentypen}
 \end{table}
 
-\subsection{UC03 - Definition Range}
+\subsection{UC03 - Range definieren}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC03: Definition Range \\  \hline
+ {\bf Use Case ID }    & UC03 - Range definieren \\  \hline
  {\bf Beschreibung }   & Bei der Beschreibung eines Datentypen muss angegeben werden können, in welchem Bereich (Minimum, Maximum) der Wert sein kann. \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Device Description wird erstellt. \\ \hline
@@ -70,12 +73,12 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC03: Definition Range}
 \end{table}
 
-\subsection{UC04 - Definition Enum}
+\subsection{UC04 - Enum definieren}
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC04: Definition Enum \\  \hline
+ {\bf Use Case ID }    & UC04 - Enum definieren \\  \hline
  {\bf Beschreibung }   & Es muss möglich sein, einen Datentypen als Auswahl aus einer fixen Liste (Enum) zu definieren. \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Device Description wird erstellt. \\ \hline
@@ -87,13 +90,13 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC04: Definition Enum}
 \end{table}
 
-\subsection{UC05 - Gruppierung Devices}
+\subsection{UC05 - Devices gruppieren}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC05: Gruppierung Devices \\  \hline
+ {\bf Use Case ID }    & UC05 - Devices gruppieren \\  \hline
  {\bf Beschreibung }   & Die Devices müssen so in die Topic Hierarchie eingegliedert werden, dass sie benutzerdefiniert gruppiert werden können. \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Descriptions der Devices werden published. \\ \hline
@@ -107,12 +110,12 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC05: Gruppierung Devices}
 \end{table}
 
-\subsection{UC06 - Konfiguration Device Description Library}
+\subsection{UC06 - Device Description Library konfigurieren}
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC06: Konfiguration \\  \hline
+ {\bf Use Case ID }    & UC06 - Device Description Library konfigurieren \\  \hline
  {\bf Beschreibung }   & Die Device Description Library muss so aufgebau sein, dass Optionen wie das Format des Schemas oder die Broker URL konfigurierbar sind.  \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Library wird initialisiert. \\ \hline
@@ -124,13 +127,13 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC06: Konfiguration Device Description Library}
 \end{table}
 
-\subsection{UC07 - Anzeige Devices}
+\subsection{UC07 - Devices anzeigen}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC07: Anzeige Devices \\  \hline
+ {\bf Use Case ID }    & UC07 - Devices anzeigen \\  \hline
  {\bf Beschreibung }   & Es muss möglich sein, in einer Weboberfläche eine Liste mit den registrierten Devices anzuzeigen. \\ \hline
  {\bf Aktor }          & Entwickler Fremdsystem \\ \hline
  {\bf Auslöser }       & Webapplikation zur Anzeige der Devices wird geöffnet. \\ \hline
@@ -145,12 +148,12 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC07: Anzeige Devices}
 \end{table}
 
-\subsection{UC08 - Anzeige Device Description}
+\subsection{UC08 - Device Description anzeigen}
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC08: Anzeige Device Description \\  \hline
+ {\bf Use Case ID }    & UC08 - Device Description anzeigen \\  \hline
  {\bf Beschreibung }   & Es muss möglich sein, in einer Weboberfläche zu einem Device die Description anzuzeigen. \\ \hline
  {\bf Aktor }          & Entwickler Fremdsystem \\ \hline
  {\bf Auslöser }       & Der Benutzer will Description eines Devices einsehen. \\ \hline
@@ -165,13 +168,13 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC08: Anzeige Device Description}
 \end{table}
 
-\subsection{UC09 - Anzeige Eventdaten eines Devices}
+\subsection{UC09 - Eventdaten eines Devices anzeigen}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC09: Anzeige Eventdaten \\  \hline
+ {\bf Use Case ID }    & UC09 - Eventdaten eines Devices anzeigen \\  \hline
  {\bf Beschreibung }   & Es muss möglich sein, in der Weboberfläche die Daten der Events anzuzeigen, welche das Device erzeugt. \\ \hline
  {\bf Aktor }          & Entwickler Fremdsystem \\ \hline
  {\bf Auslöser }       & Der Benutzer möchte die Daten eines Events anzeigen. \\ \hline
@@ -189,13 +192,13 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \caption{UC09: Anzeige Eventdaten eines Devices}
 \end{table}
 
-\subsection{UC10 - Versenden eines Commands}
+\subsection{UC10 - Commands an Device Senden}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC10: Anzeige Eventdaten \\  \hline
+ {\bf Use Case ID }    & UC10 - Commands an Device Senden \\  \hline
  {\bf Beschreibung }   & Es muss möglich sein, in der Weboberfläche einen Command an ein Device zu senden. \\ \hline
  {\bf Aktor }          & Entwickler Fremdsystem \\ \hline
  {\bf Auslöser }       & Der Benutzer möchte einen Command ein Device senden. \\ \hline
