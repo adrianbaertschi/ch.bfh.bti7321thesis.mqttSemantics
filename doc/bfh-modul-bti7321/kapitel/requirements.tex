@@ -6,15 +6,15 @@ Die funktionalen Anforderungen werden in diesem Kapitel mit Use Cases beschriebe
 
 \begin{figure}[H]
 	\centering
-		\includegraphics[width=0.8\textwidth]{diag/use_cases.png}
+		\includegraphics[width=0.9\textwidth]{diag/use_cases.png}
 	\caption{Use Case Diagramm}
 \end{figure}
 \textbf{Aktoren} \\
 In den Use Case Beschreibungen werden die folgenden Aktoren als Benutzer des Systems verwendet:
 
 \NumTabs{4}
-Device Integrator:      \tab{Erstellt die Device Description und integriert die Device Description Library} \\
-Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen der Devices.} \\
+Device Integrator: Erstellt die Descriptions für seine Devices und integriert die MQTT Device Description Library. \\
+Entwickler Fremdsystem: Möchte eine Applikation entwickeln, welche mit den Devices interagiert. \\
 
 \subsection{UC01 - Device beschreiben}
 
@@ -29,9 +29,9 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
  {\bf Auslöser }       & Device Description wird erstellt \\ \hline
  {\bf Vorbedingungen } & Funktionalität des Devices ist bekannt \\ \hline
  {\bf Ablauf }         & 
-     1. Benutzer erstellt Beschreibung des Device mit der Java MQTT Device Library oder manuell \newline                                             
-     2. Die Anwendung published das Schema des Devices als retained MQTT Message.  \\ \hline
- {\bf Nachbedingungen} & De Device Description ist auf dem MQTT Broker hinterlegt und kann abgefragt werden. \\ \hline
+     1. Benutzer erstellt Beschreibung des Device mit der Java MQTT Device Description Library oder manuell \newline                                             
+     2. Die Anwendung published die Description des Devices als retained MQTT Message.  \\ \hline
+ {\bf Nachbedingungen} & Die Device Description ist auf dem MQTT Broker hinterlegt und kann abgefragt werden. \\ \hline
   
 \end{tabularx}
 \caption{UC01: Beschreibung Device}
@@ -47,8 +47,8 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
  {\bf Beschreibung }   & Für die State- Event- und Commandangeben muss definiert werden können, welche Datentypen die Werte aufweisen. \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Device Description wird erstellt. \\ \hline
- {\bf Vorbedingungen } & API für das Ansprechen des Devices ist bekannt. \\ \hline
- {\bf Ablauf }         & Benutzer definiert in der Device Description für die State, Event und Commandobjekte die Datentypen. \\ \hline
+ {\bf Vorbedingungen } & \gls{api} für das Ansprechen des Devices ist bekannt. \\ \hline
+ {\bf Ablauf }         & Benutzer definiert in der Device Description für die State-, Event- und Commandobjekte die Datentypen. \\ \hline
  {\bf Nachbedingungen} &  Die Datentypen der Description Objekte sind im Schema integriert. \\ \hline
   
 \end{tabularx}
@@ -67,7 +67,7 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
  {\bf Auslöser }       & Device Description wird erstellt. \\ \hline
  {\bf Vorbedingungen } & Datentyp und Range des Wertes ist bekannt. \\ \hline
  {\bf Ablauf }         & Benutzer definiert zu einem Datentypen den Range, in dem der Wert liegen kann. \\ \hline
- {\bf Nachbedingungen} & Datenttyp ist mit der Range Information ergänzt. \\ \hline
+ {\bf Nachbedingungen} & Datentyp ist mit der Range Information ergänzt. \\ \hline
   
 \end{tabularx}
 \caption{UC03: Definition Range}
@@ -102,7 +102,7 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
  {\bf Auslöser }       & Descriptions der Devices werden published. \\ \hline
  {\bf Vorbedingungen } & Devices sind bereit und Descriptions wurden erstellt. \\ \hline
  {\bf Ablauf }         & 
-  1. Benutzer definiert die Attribute für die Gruppierung der Devices (Gruppe, Untergruppe, Device Typ) mit er Java MQTT Device Library. \newline
+  1. Benutzer definiert die Attribute für die Gruppierung der Devices (Gruppe, Untergruppe, Device Typ) mit der Java MQTT Device Description Library. \newline
   2. MQTT Device Description Library erzeigt aus den Gruppierungsattributen der Devices die Topics für das publishing der Daten und Descriptions. \\ \hline
  {\bf Nachbedingungen} & Die Devices sind nach den Anforderungen des Benutzers gruppiert. \\ \hline
   
@@ -120,7 +120,7 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Library wird initialisiert. \\ \hline
  {\bf Vorbedingungen } & Angaben für die Konfiguration sind bekannt. \\ \hline
- {\bf Ablauf }         & Beim der Initialisierung der Library werden die Angaben für Applikations Id, Broker URL, Schema Format, etc. gesetzt. \\ \hline
+ {\bf Ablauf }         & Bei der Initialisierung der Library werden die Angaben für Applikations Id, Broker URL, Schema Format, etc. gesetzt. \\ \hline
  {\bf Nachbedingungen} & Library ist initialisiert und bereit für die Verwendung. \\ \hline
   
 \end{tabularx}
@@ -140,7 +140,7 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
  {\bf Vorbedingungen } & Device Descriptions wurden published. \\ \hline
  {\bf Ablauf }         & 
      1. Benutzer öffnet Webapplikation zur Anzeige der Devices. \newline
-     2. Webapplikation verbindet sich auf MQTT Broker und emprängt die hinterlegten Device Descriptions. \newline
+     2. Webapplikation verbindet sich auf MQTT Broker und empfängt die hinterlegten Device Descriptions. \newline
      3. Webapplikation stellt die gefundenen Devices in einer Liste dar. \\ \hline
  {\bf Nachbedingungen} & Der Benutzer hat eine Übersicht über die vorhanden Devices. \\ \hline
   
@@ -161,8 +161,8 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
  {\bf Ablauf }         & 
      1. Benutzer wählt gewünschtens Device aus der Liste. \newline
      2. Webapplikation zeigt die Description des Devices im Klartext an. \newline
-     3. Webapplikation interpretiert die Description und erstellt eine Übersichtliche Darstellung für den Benutzer \\ \hline
- {\bf Nachbedingungen} & Device Description wird als Klartext und in interpretierter Form angezeit.\\ \hline
+     3. Webapplikation interpretiert die Description und erstellt eine übersichtliche Darstellung für den Benutzer \\ \hline
+ {\bf Nachbedingungen} & Device Description wird als Klartext und in interpretierter Form angezeigt.\\ \hline
   
 \end{tabularx}
 \caption{UC08: Anzeige Device Description}
@@ -184,30 +184,30 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
      Device ist online und versendet Events. \\ \hline
  {\bf Ablauf }         & 
      1. Der Benutzer sucht im Bereich 'Events' den gewünschten Eintrag und registriert sich für den Empfang der Eventdaten. \newline
-     2. Die Webapplikation stellt Verbindung stellt Verbindung zum Broker her und empfängt die gewünschten Events. \newline
-     3. Die Webapplikation zeigt die empfangenen Daten den Benutzer an. \\ \hline
- {\bf Nachbedingungen} & Der Benutzer erhält die Eventdaten des Devices. \\ \hline
+     2. Die Webapplikation stellt eine Verbindung zum Broker her und empfängt die gewünschten Events. \newline
+     3. Die Webapplikation zeigt die empfangenen Daten dem Benutzer an. \\ \hline
+ {\bf Nachbedingungen} & Der Benutzer sieht die Eventdaten des Devices. \\ \hline
   
 \end{tabularx}
 \caption{UC09: Anzeige Eventdaten eines Devices}
 \end{table}
 
-\subsection{UC10 - Commands an Device Senden}
+\subsection{UC10 - Commands an Device senden}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline
- {\bf Use Case ID }    & UC10 - Commands an Device Senden \\  \hline
+ {\bf Use Case ID }    & UC10 - Commands an Device senden \\  \hline
  {\bf Beschreibung }   & Es muss möglich sein, in der Weboberfläche einen Command an ein Device zu senden. \\ \hline
  {\bf Aktor }          & Entwickler Fremdsystem \\ \hline
  {\bf Auslöser }       & Der Benutzer möchte einen Command ein Device senden. \\ \hline
  {\bf Vorbedingungen } & 
      Der Benutzer hat ein Device gewählt (UC08). \newline
-     Devicedescription stellt mindestens einen Command zur Verfügung. \newline 
+     Das Device hat reagiert auf mindestens einen Command und weist dies in der Descriptiona aus. \newline 
      Device ist online und kann den Command empfangen. \\ \hline
  {\bf Ablauf }         & 
-     1. Der Benutzer sucht im Bereich 'Commands' den gewünschten Eintrag und gibt den Ihalt des Commands an. \newline
+     1. Der Benutzer sucht im Bereich 'Commands' den gewünschten Eintrag und gibt den Inhalt der Command Nachricht an. \newline
      2. Der Benutzer löst das Versenden des Commands aus. \newline
      3. Die Webapplikation leitet den Command an den MQTT Broker weiter. \newline
      4. Das Device empfängt dem Command und reagiert entsprechend. \newline
@@ -225,12 +225,12 @@ Entwickler Fremdsystem: \tab{Ist als interessiert an den Daten und Funktionen de
 \section{Nichtfunktionale Anforderungen}
 
 \subsection{Erweiterbarkeit Devices}
-Die Lösung soll so gestaltet sein, dass es möglich ist, Devices von unterschiedlichen Herstellern einzubinden.
+Die Lösung soll so gestaltet sein, dass es möglich ist Devices von unterschiedlichen Herstellern einzubinden.
 
 \subsection{Erweiterbarkeit Datenformate}
-Die Lösung soll so gestaltet sein, dass es möglich ist, verschiedene Datenformate für die Beschreibungen und Nutzdaten der der Devices zu verwenden.
+Die Lösung soll so gestaltet sein, dass es möglich ist, verschiedene Datenformate für die Beschreibungen und Nutzdaten der Devices zu verwenden.
 
-\subsection{Einfache Installation}
+\subsection{Einfache Verwendung}
 Das System soll für den Anwender einfach zu installieren und zu konfigurieren sein.
 
 \subsection{Kompatibilität}
