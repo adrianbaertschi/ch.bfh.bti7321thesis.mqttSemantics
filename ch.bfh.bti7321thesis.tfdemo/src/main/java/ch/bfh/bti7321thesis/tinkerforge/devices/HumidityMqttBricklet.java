@@ -15,6 +15,11 @@ import com.tinkerforge.TimeoutException;
 
 import ch.bfh.bti7321thesis.app.MqttPublisher;
 import ch.bfh.bti7321thesis.desc.DeviceDescription;
+import ch.bfh.bti7321thesis.desc.Range;
+import ch.bfh.bti7321thesis.desc.cmd.CommandDescription;
+import ch.bfh.bti7321thesis.desc.event.Event;
+import ch.bfh.bti7321thesis.desc.event.EventDescription;
+import ch.bfh.bti7321thesis.desc.state.StateDescription;
 
 public class HumidityMqttBricklet extends MqttBricklet<BrickletHumidity> {
 
@@ -54,6 +59,24 @@ public class HumidityMqttBricklet extends MqttBricklet<BrickletHumidity> {
 	@Override
 	public DeviceDescription getDescription() {
 		
+//		return readFromFile();
+		
+		DeviceDescription deviceDescription = new DeviceDescription("IoT-" + BrickletHumidity.DEVICE_DISPLAY_NAME, "0.0.1");
+		deviceDescription.setStateDescription(new StateDescription());
+		
+		EventDescription eventDescription = new EventDescription();
+		Event event = new Event("Humidity", new Range<Double>(0.0, 100.0), "Relative Humidity in percent");
+		eventDescription.addEvent(event);
+		deviceDescription.setEventDescription(eventDescription);
+
+		CommandDescription commandDescription = new CommandDescription();
+		deviceDescription.setCommandDescription(commandDescription);
+
+		return deviceDescription;
+
+	}
+	
+	private DeviceDescription readFromFile() {
 		ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
 		DeviceDescription desc = null;
 		try {
@@ -64,21 +87,6 @@ public class HumidityMqttBricklet extends MqttBricklet<BrickletHumidity> {
 			e.printStackTrace();
 		}
 		return desc;
-		
-//		DeviceDescription deviceDescription = new DeviceDescription("IoT-" + BrickletHumidity.DEVICE_DISPLAY_NAME,
-//				"0.0.1");
-//		deviceDescription.setStateDescription(new StateDescription());
-//		
-//		EventDescription eventDescription = new EventDescription();
-//		Event event = new Event("Humidity", new Range<Double>(0.0, 100.0), "Relative Humidity in percent");
-//		eventDescription.addEvent(event);
-//		deviceDescription.setEventDescription(eventDescription);
-//
-//		CommandDescription commandDescription = new CommandDescription();
-//		deviceDescription.setCommandDescription(commandDescription);
-//
-//		return deviceDescription;
-
 	}
 
 

@@ -14,7 +14,6 @@ public class Event {
 	
 	@JsonIgnore
 	private ComplexType complexType;
-	//TODO: complextyperef
 	
 	public Event() {
 		

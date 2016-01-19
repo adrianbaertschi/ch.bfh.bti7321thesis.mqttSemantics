@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ch.bfh.bti7321thesis.desc.ComplexType;
 import ch.bfh.bti7321thesis.desc.Options;
 import ch.bfh.bti7321thesis.desc.Range;
@@ -12,6 +14,8 @@ import ch.bfh.bti7321thesis.desc.Range;
 public class StateDescription {
 
 	private List<State> states = new ArrayList<State>();
+	
+	@JsonIgnore
 	private final Set<ComplexType> types = new HashSet<ComplexType>();
 
 	public List<State> getStates() {

@@ -12,7 +12,7 @@ public class Command {
 	private String name;
 	private final Map<String, Object> params = new HashMap<String, Object>();
 	private String linkedState;
-	// TODO: desc;
+	private String description;
 	
 	public Command() {
 		
@@ -53,5 +53,13 @@ public class Command {
 	// TODO: change to vararg
 	public void setLinkedState(String linkedState) {
 		this.linkedState = linkedState;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }

@@ -5,11 +5,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import ch.bfh.bti7321thesis.desc.ComplexType;
 
 public class EventDescription {
 	
 	private final List<Event> events = new ArrayList<Event>();
+	
+	@JsonIgnore
 	private final Set<ComplexType> types = new HashSet<ComplexType>();
 
 
