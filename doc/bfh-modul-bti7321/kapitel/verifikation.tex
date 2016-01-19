@@ -58,3 +58,20 @@ Anhand der definierten Use Cases wird getestet, ob die funktionalen Anforderunge
 \end{tabularx}
 \caption{Verifikation nichtfunktionale Anforderungen}
 \end{table}
+
+
+
+
+\section{Verbesserungsmöglichkeiten}
+
+Während der Umsetzung und dem Test des Systems wurden die folgenden drei Hauptpunkte identifiziert, bei denen das grösste Verbesserungspotenzial vorliegt.
+
+\subsection{Device Description: Darstellung Typen}
+Bei der Darstellung der Device Description war die grösste Schwierigkeit die Abbildung von Typinformationen. Die aktuelle Lösung mit drei verschiedenen Möglichkeiten zur Beschreibung von Typen (Range, Enum und ComplexType) sollte vereinfacht werden.
+
+\subsection{Description Library: Integration Deserialisierung}
+In der aktuellen Implementation der MQTT Device Description Library werden die Payload Daten der empfangenen Commands als Byte Array an den Aufrufer der Library geliefert.
+Da die Library das Schema des empfangenen Commands kennt, würde es Sinn machen, die Deserialisierung der Daten in die Library zu integrieren und somit dem Aufrufer das erstellte Objekte zu übergeben.
+
+\subsection{Device Description an Devicetyp anhängen}
+In der Hierarchie der MQTT Topics ist die Device Description momentan einer Device Instanz untergeordnet. Bei vielen Devices in der selben Gruppierung vom gleichen Typ würde dies zu Redundanz und unnötig grossen Datenmengen führen, da die gleiche Device Description für jede Instanz versendet würde. Um dies zu optimieren, müsste die Device Description unterhalb des Devicetyps in die Schema Hierachie eingegliedert werden. Mit diesem Ansatz wäre pro Devicetyp nur noch das Versenden von einer Device Description nötig.
