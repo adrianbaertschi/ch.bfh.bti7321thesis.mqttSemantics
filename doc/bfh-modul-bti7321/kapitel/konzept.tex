@@ -1,7 +1,7 @@
 \chapter{Konzept}
 \label{chap:konzept}
 
-Dieses Kapitel beschreibt die konzeptionellen Überlegungen der Lösung. Als erstes werden die grundlegenden Begriffe erklärt, welche in den darauf folgenden Kapiteln verwendet werden. Das Zusammenspiel der einzenen Komponeten und der Aufbau der MQTT Topic Hierarchie werden erläutert. 
+Dieses Kapitel beschreibt die konzeptionellen Überlegungen der Lösung. Als erstes werden die grundlegenden Begriffe erklärt, welche in den darauf folgenden Kapiteln verwendet werden. Das Zusammenspiel der einzelnen Komponenten und der Aufbau der MQTT Topic Hierarchie werden erläutert. 
 
 \section{Allgemein}
 
@@ -12,7 +12,7 @@ Sensoren und Aktoren werden unter dem Begriff Device zusammengefasst.
 
 
 \textbf{IoT Gateway} \\
-Die einzelnen Devices eines \gls{iot} Systems sind an einen Gateway angeschlossen. Dies kann fix per Kabel oder über eine Drahtlosschnittstelle wie z. Bsp. Bluetooh umgesetzt sein. Typsicherweise werden Kleincomputer (Single Board Computer) wie ein Raspberry Pi oder Intel Galileo eingesetzt. Diese Geräte zeichnen sich aus durch sehr kompakte Bauform (Kreditkatenformat) und bieten trotzdem genügend Ressourcen um darauf hardwareunabhängige Anwendungen (z. Bsp. Java, Python, Javascript) laufen zu lassen. 
+Die einzelnen Devices eines \gls{iot} Systems sind an einen Gateway angeschlossen. Dies kann fix per Kabel oder über eine Drahtlosschnittstelle wie z. Bsp. Bluetooh umgesetzt sein. Typischerweise werden Kleincomputer (Single Board Computer) wie ein Raspberry Pi oder Intel Galileo eingesetzt. Diese Geräte zeichnen sich aus durch sehr kompakte Bauform (Kreditaktenformat) und bieten trotzdem genügend Ressourcen um darauf hardwareunabhängige Anwendungen (z. Bsp. Java, Python, Javascript) laufen zu lassen. 
 Ein Gateway führt die Daten der einzelnen Devices zusammen und vereinheitlicht die Formate der Daten. Ausserdem übernimmt er die Kommunikation mit der Aussenwelt, indem er eine Verbindung zum MQTT Broker herstellt.
 
 \begin{figure}[H]
@@ -22,10 +22,10 @@ Ein Gateway führt die Daten der einzelnen Devices zusammen und vereinheitlicht 
 \end{figure}
 
 \textbf{MQTT-Broker} \\
-Der Broker ist bei \acrshort{a_mqtt} Anwendungen von zentraler Bedeutung, da alle Daten via Broker zwischen den Teilnehmern ausgetauscht werden. Pro System gibt es typischerweise einen Broker. Dieser muss für alle Teilnehmener (Gateways und Applikationen) einfach zu erreichen sein und eine hohe Verfügbarkeit aufweisen.
+Der Broker ist bei \acrshort{a_mqtt} Anwendungen von zentraler Bedeutung, da alle Daten via Broker zwischen den Teilnehmern ausgetauscht werden. Pro System gibt es typischerweise einen Broker. Dieser muss für alle Teilnehmer (Gateways und Applikationen) einfach zu erreichen sein und eine hohe Verfügbarkeit aufweisen.
 
 \textbf{Applikation} \\
-Es können grundsätzlich beliebige Applikationen auf allen gängigen Platformen und Technologien mit den System kommunizieren. Die einzige Grundbedingung ist, dass die Applikation \acrshort{a_mqtt} fähig ist, was sich durch das Einbinden der entsprechenden Libraries einfach realisieren lässt.
+Es können grundsätzlich beliebige Applikationen auf allen gängigen Plattformen und Technologien mit den System kommunizieren. Die einzige Grundbedingung ist, dass die Applikation \acrshort{a_mqtt} fähig ist, was sich durch das Einbinden der entsprechenden Libraries einfach realisieren lässt.
 \\
 
 
@@ -35,7 +35,7 @@ Ein Device wird als ganzes mit einen Schema beschrieben. Die Device Description 
 Eine Device Description enthält folgende Hauptbereiche:
 
 \textbf{State} \\
-Die Menge aller Eigenschaften des Devices und deren Werte werden als State bezeichnet. Beispielsweise Name, Firmwareversion, etc. Der State eines Devices ist beständig, d.h. solange keine Interaktion statfindet , verändert sich der State nicht.
+Die Menge aller Eigenschaften des Devices und deren Werte werden als State bezeichnet. Beispielsweise Name, Firmwareversion, etc. Der State eines Devices ist beständig, d.h. solange keine Interaktion stattfindet , verändert sich der State nicht.
 
 
 \textbf{Events} \\
@@ -45,7 +45,7 @@ Tritt auf dem Device ein Ereignis ein, wird dadurch ein Event erzeugt. Ein Event
 \textbf{Commands} \\
 Eine Applikation interagiert mit einem Device, indem Commands an eines oder mehrere Devices gesendet werden. Die Devices empfangen die Commands und reagieren entsprechend. Ein Command ist bestimmt durch einen Namen und Parameter mit dazugehörigen Werten. 
 Beispielsweise kann bei einem Temperatursensor über einen Command \code{SetInterval: 10s} der Abstand der Messungen eingestellt werden.
-Ein Device muss bekanntgeben, auf welche Commands mit welchen Paramtern es reagiert.
+Ein Device muss bekanntgeben, auf welche Commands mit welchen Parametern es reagiert.
 
 
 \begin{figure}[H]

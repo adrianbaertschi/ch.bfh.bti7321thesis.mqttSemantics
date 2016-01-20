@@ -1,10 +1,10 @@
 \chapter{Umsetzung}
 \label{chap:umsetzung}
 
-Die Umsetzung hatte drei Module als Ergebnis. Als erstes wurde eine wiederwendbare Java Library entwickelt, welche genutzt werden kann, um Devices in das beschriebene Konzept zu integrieren. Der zweite Baustein ist eine Webapplikation, beschrieben im Abschnitt \ref{ums:devBrowser}, mit der die Device Descriptions interpretiert werden. Im Abschnitt \ref{ums:tinker} wird die Umsetzung eines Prototypen mit Tinkerforge Sensoren und Aktoren beschrieben.
+Die Umsetzung hatte drei Module als Ergebnis. Als erstes wurde eine wiederverwendbare Java Library entwickelt, welche genutzt werden kann, um Devices in das beschriebene Konzept zu integrieren. Der zweite Baustein ist eine Webapplikation, beschrieben im Abschnitt \ref{ums:devBrowser}, mit der die Device Descriptions interpretiert werden. Im Abschnitt \ref{ums:tinker} wird die Umsetzung eines Prototypen mit Tinkerforge Sensoren und Aktoren beschrieben.
 
 \section{MQTT Device Description Library}
-Um die Integration von Devices und das Erstellen von Device Description zu vereinfachen, wird eine Java Library entwickelt. Damit ist es möglich, Anwendugen für IoT Gateways in Java zu entwickeln.
+Um die Integration von Devices und das Erstellen von Device Description zu vereinfachen, wird eine Java Library entwickelt. Damit ist es möglich, Anwendungen für IoT Gateways in Java zu entwickeln.
 
 Die Library übernimmt folgende Aufgaben:
 \begin{itemize}
@@ -34,17 +34,17 @@ Die Parameter der Library (MQTT Broker URL, Application ID, etc.) können vom An
  
  MqttPublisher & Hauptklasse der Library. wird verwendet für das versenden der MQTT Nachrichten. \\ \hline
 
- Config & Wird verwendet, um bei der Initialsierung von MqttPublisher die Konfiguration abzugeben \\ \hline
+ Config & Wird verwendet, um bei der Initialisierung von MqttPublisher die Konfiguration abzugeben \\ \hline
  
  DescriptionFormat & Enum mit der Angaben zu den möglichen Formaten der Device Description.\\ \hline
  
  MqttTopic & Hilfsklasse die Abbildung von MQTT Topics.\\ \hline
  
- TopicUtil & Hilfsklasse für die Erstelltung von MQTT Topics.\\ \hline
+ TopicUtil & Hilfsklasse für die Erstellung von MQTT Topics.\\ \hline
  
  MqttDevice & Klasse für die Abbildung von Devices. \\ \hline
  
- DeviceDescription & Enhält alle Attribute der DeviceDescription.  \\ \hline
+ DeviceDescription & Enthält alle Attribute der Device Description.  \\ \hline
  
 \end{tabularx}
 \caption{Beschreibung der Klassen}
@@ -102,7 +102,7 @@ MqttPublisher.getInstance().pubEvent(device, "event", "22");
 \end{listing}
 
 \textbf{Konfiguration} \\
-Über das \code{Config} Objekt wird die Library konfiguriert. Für die als Plichtfeld aufgeführten Parameter müssen Werte angegeben werden, ansonsten wird bei der ersten Verwendung eine entsprechende Exception ausgelöst. Die optionalen Parameter erhalten bei keiner Angabe des Anwenders den angegebenen Standardwert.
+Über das \code{Config} Objekt wird die Library konfiguriert. Für die als Pflichtfeld aufgeführten Parameter müssen Werte angegeben werden, ansonsten wird bei der ersten Verwendung eine entsprechende Exception ausgelöst. Die optionalen Parameter erhalten bei keiner Angabe des Anwenders den angegebenen Standardwert.
 
 
 \begin{table}[H]
@@ -169,7 +169,7 @@ Die Anwendung zeigt die auf einem Broker publizierten Devices in einer Liste an.
 \newpage
 
 \textbf{Bereich State} \\
-Die State Objekte werden mit Beschreibung und den Typangaben anzezeigt. Zudem wird das Topic ausgegeben, auf welchem die entsprechenden State Informationen publiziert wurden.
+Die State Objekte werden mit Beschreibung und den Typangaben angezeigt. Zudem wird das Topic ausgegeben, auf welchem die entsprechenden State Informationen publiziert wurden.
 
 
 \textbf{Bereich Events}
@@ -215,7 +215,7 @@ Als zweiter Teil der Webapplikation ist die Darstellung aller MQTT Topics des ko
 Vor allen während der Entwicklung und dem Einbinden von neuen Devices hat sich diese Darstellung als sehr hilfreich erwiesen.
 
 \subsection{Installation und Konfiguration}
-Der MQTT Broker, auf den die Webapplikation zugreift, muss per Websockets erreichbar sein. Dafür eignet sich zum Beispiel der Mosquitto Broker. Während der Entwicklung der Applikationen wurde eine Mosquitto Installation mithilfe eines vorbereiteten Docker Images (\url{https://hub.docker.com/r/toke/mosquitto/}) durchgeführt und für sämtiche Tests verwendet.
+Der MQTT Broker, auf den die Webapplikation zugreift, muss per Websockets erreichbar sein. Dafür eignet sich zum Beispiel der Mosquitto Broker. Während der Entwicklung der Applikationen wurde eine Mosquitto Installation mithilfe eines vorbereiteten Docker Images (\url{https://hub.docker.com/r/toke/mosquitto/}) durchgeführt und für sämtliche Tests verwendet.
 
 Um die Webapplikation verwenden zu können, muss lediglich der Inhalt des Verzeichnisses \newline  \code{ch.bfh.bti7321thesis.schemabrowser} des Source Codes auf einen Webserver kopiert und die Datei \code{js/app/config.js} angepasst werden.
 
@@ -262,7 +262,7 @@ Folgende Sensoren resp. Aktoren wurden für die Integration ausgewählt:
  \newline Mehr Informationen: \newline \url{http://www.tinkerforge.com/en/doc/Hardware/Bricklets/Humidity.html} & 
  \imagetop{\includegraphics[width=0.4\linewidth]{bilder/bricklet_humidity.jpg}}    \\ \hline
  
- Sensor Temperatur Infrarot & Besteht einem Temperatursensor für die Umgebung und einem Infrarotsensor für die Messung der Objekttemperatur \newline 
+ Sensor Temperatur Infrarot & Besteht einem Temperatursensor für die Umgebung und einem Infrarotsensor für die Messung der Objekttemperatur. \newline 
  \newline Mehr Informationen: \newline \url{http://www.tinkerforge.com/en/doc/Hardware/Bricklets/Temperature_IR.html} & 
  \imagetop{\includegraphics[width=0.4\linewidth]{bilder/bricklet_temperature_ir.jpg}}    \\ \hline
  
@@ -296,7 +296,7 @@ Quelle Bilder: \url{http://www.tinkerforge.com/en/doc/index.html}
 
  BrickEnumerator & Thread, welcher für jeden angegebenen Tinkerforge Stack die Devices (Bricklets) sucht. \\ \hline
  
- HostEnumerateListener & Epfängt die gefundenen Tinkerforge Devices und erstellt die entsprechenden \code{MqttBricklets} \\ \hline
+ HostEnumerateListener & Empfängt die gefundenen Tinkerforge Devices und erstellt die entsprechenden \code{MqttBricklets} \\ \hline
  
  MqttBricklet &  Abstrakte Oberklasse für die konkreten Bricklet Implementationen. Definiert die abstrakten Methoden \code{setUpBricklet()}, \code{getState()}, \code{handleCommand(...)},  und \code{getDescription()}, welche von den Subklassen implementiert werden. \newline Mit der Methode \code{toDevice()} wird eine Instant der Klasse \code{MqttDevice} erzeugt, welche die Subklassen verwenden um z. Bsp. Events zu versenden. \\ \hline
  

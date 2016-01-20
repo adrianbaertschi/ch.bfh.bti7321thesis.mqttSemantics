@@ -2,7 +2,7 @@
 \label{chap:einleitung}
 
 Bei Systemen im \acrfull{iot} Umfeld sind sehr viele und auch unterschiedliche Geräte in einen Netzwerk miteinander verbunden. 
-Für diese Machine-To-Machine Kommunikation werden andere Netzwerkprotokolle eingesetzt als für traditionelle, beispielsweise auf HTTP basierende Internetanwendungen. Dies ist nötig, weil die Geräte stark eingeschränkte Resourcen haben und die Netzwerke geringe Bandbreiten aufweisen.
+Für diese Machine-To-Machine Kommunikation werden andere Netzwerkprotokolle eingesetzt als für traditionelle, beispielsweise auf HTTP basierende Internetanwendungen. Dies ist nötig, weil die Geräte stark eingeschränkte Ressourcen haben und die Netzwerke geringe Bandbreiten aufweisen.
 
 MQTT ist ein Protokoll, welches die Anforderungen für IoT Systeme erfüllen soll. Beim Entwurf des Protokolls wurde auf Einfachheit und Leichtgewichtigkeit grossen Wert gelegt. Mit MQTT ist es möglich, fast beliebige Daten in beliebiger Codierung zu versenden. Dies bietet den Entwicklern der Systeme grosse Freiheiten. \\
 Es ist aber ersichtlich, dass die fehlende Struktur und Beschreibung der Daten gewisse Schwierigkeiten mit sich bringt. 
@@ -11,12 +11,12 @@ Eine Anwendung, welche Nachrichten per MQTT erhalten möchte, muss wissen an wel
 
 Ist dies einmal bekannt, erhält der Empfänger zwar die gewünschte Nachricht, kann deren Inhalt aber nicht interpretieren.
 
-Beispielsweise wird eine Messung eines Temperatursensors via MQTT versendet werden. Der Sensor liefert den Wert 22° Celsius.
+Beispielsweise wird eine Messung eines Temperatursensors via MQTT versendet. Der Sensor liefert den Wert 22° Celsius.
 Der ganzzahlige Wert 22 wird als binärer Wert \texttt{10110} versendet.
 
-Der Empfänger erhält nun die MQTT Nachricht \texttt{10110}. Er weis aber nicht, was mit diesem Wert anzufangen ist. Wird dieser Wert nicht nach dem gleichen Schema interpretiert wie der codiert wurde, so werden Daten erzeugt welche nicht der Ursprungsinformation entsprechen.
+Der Empfänger erhält nun die MQTT Nachricht \texttt{10110}. Er weis aber nicht, was mit diesem Wert anzufangen ist. Wird dieser Wert nicht nach dem gleichen Schema interpretiert wie er codiert wurde, so werden Daten erzeugt welche nicht der Ursprungsinformation entsprechen.
 Der Empfänger müsste wissen, dass es sich um einen Integer Wert (hier 32 bit signed) handelt, damit die Daten in das richtige Format gebracht werden können.
 
 Ausserdem muss der Empfänger jetzt noch wissen, was die Information für eine Bedeutung hat (Semantik). In diesem Beispiel also, dass es sich um einen Temperaturwert in °Celsius handelt.
 
-Die Erzeuger der Daten stellen diese Information den Entwicklern von Anwendungen zurzeit typischweise in einen Dokument zur Verfügung. Diese sogenannte out-out-band Dokumentation ist aber aufwändig in der Nachführung von Änderungen. Auch ist es schwierig die Struktur der Daten einheitlich und klar zu erklären.
+Die Erzeuger der Daten stellen diese Information den Entwicklern von Anwendungen zurzeit typischerweise in einem Dokument zur Verfügung. Diese sogenannte out-out-band Dokumentation ist aber aufwändig in der Nachführung von Änderungen. Auch ist es schwierig die Struktur der Daten einheitlich und klar zu erklären.

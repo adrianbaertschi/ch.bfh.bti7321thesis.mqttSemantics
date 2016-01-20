@@ -18,7 +18,7 @@ Die Definition der primitiven Datentypen orientiert sich an den Datentypen von J
 \begin{tabular}{ |l|l|r|r| }
 
  \hline \rowcolor{lightgray}
- {\bf Datentyp } & {\bf Beschreibung } & {\bf Minimun } & {\bf Maximum } \\  \hline
+ {\bf Datentyp } & {\bf Beschreibung } & {\bf Minimum } & {\bf Maximum } \\  \hline
 
 
  Integer  &   32 Bit ganzzahlig, signed     &  $-2^{31}$ & $2^{31}$-1  \\ \hline
@@ -38,7 +38,7 @@ Die Definition der primitiven Datentypen orientiert sich an den Datentypen von J
 
 \section{Schema}
 
-Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeldern ist der Feldname kursiv formatiert.
+Nachfolgend werden die Felder der Device Description aufgeführt. Bei Pflichtfeldern ist der Feldname kursiv formatiert.
 
 \subsection{DeviceDescription Objekt}
 
@@ -86,7 +86,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
  \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
- \textit{name}  &   String   & Bezeichung des State Eintrages. Wird gleichzeitig als Subtopic für den eigentlichen Wert genutzt.  \\ \hline
+ \textit{name}  &   String   & Bezeichnung des State Eintrages. Wird gleichzeitig als Subtopic für den eigentlichen Wert genutzt.  \\ \hline
  range  &   Range   &  Information zum Wert des State.   \\ \hline
  options  &   Enum   & Wird verwendet, falls der State Wert eine Auswahl aus einer fixen Menge ist.   \\ \hline
  complexTypeRef  &   String   & Falls der Wert des State mit einen komplexen Typen abgebildet wird, wird mit diesem Feld der Name des Typs angegeben.   \\ \hline

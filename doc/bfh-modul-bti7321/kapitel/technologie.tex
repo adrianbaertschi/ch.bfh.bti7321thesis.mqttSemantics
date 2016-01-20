@@ -18,7 +18,7 @@ Im OSI Modell ist MQTT auf dem Application Layer eingeordnet, basierend auf dem 
 \end{figure}
 
 \subsection{Publish/Subscribe}
-MQTT funktioniert nach dem Publish/Subscribe Pattern. Im Gegensatz zum klassichen Client/Server Prinzip registrieren sich die Clients (Subscriber) bei einem Broker für bestimmte Bereiche (Topics), zu denen sie Nachrichten erhalten möchten.
+MQTT funktioniert nach dem Publish/Subscribe Pattern. Im Gegensatz zum klassischen Client/Server Prinzip registrieren sich die Clients (Subscriber) bei einem Broker für bestimmte Bereiche (Topics), zu denen sie Nachrichten erhalten möchten.
 \\ \\
 
 \begin{figure}[H]
@@ -31,7 +31,7 @@ MQTT funktioniert nach dem Publish/Subscribe Pattern. Im Gegensatz zum klassiche
 \par
 Ein Publisher, (z. Bsp. ein Sensor) sendet seine Nachrichten an den Broker. Alle Subscriber, die sich für das entsprechende Topic eingeschrieben haben, erhalten die Nachricht vom Broker. 
 \\ \\
-Diese Entkopplung der Teilnemhner bringt diverse Vorteile mit sich:
+Diese Entkopplung der Teilnehmer bringt diverse Vorteile mit sich:
 
 \begin{itemize}
 \item Publisher und Subscriber müssen sich gegenseitig nicht kennen
@@ -40,7 +40,7 @@ Diese Entkopplung der Teilnemhner bringt diverse Vorteile mit sich:
 \end{itemize}
 
 \subsection{Topics}
-Jede Nachricht wird an ein bestimmtes Topic gesendet. Grundsätzlich kann jeder Client zu jedem Topic des Brokers Nachristen veröffentlichen. Die Topics sind hierarchisch aufgebaut, die Ebenen werden durch einen Slash (/) getrennt.\\
+Jede Nachricht wird an ein bestimmtes Topic gesendet. Grundsätzlich kann jeder Client zu jedem Topic des Brokers Nachrichten veröffentlichen. Die Topics sind hierarchisch aufgebaut, die Ebenen werden durch einen Slash (/) getrennt.\\
 Zum Beispiel könnte ein Thermometer seine Temperatur im Topic \texttt{house/livingroom/temperature} veröffentlichen.\\ \\
 Um die Nachrichten zu erhalten, muss sich nun ein anderer Client für dieses Topic einschreiben. Dabei können die Wildcards \texttt{+} und \texttt{\#} verwendet werden.\\
 Das \texttt{+} Symbol steht für eine Ebene in der Topic Hierarchie.\\
@@ -83,16 +83,16 @@ MQTT bietet drei verschiedene QoS Einstellungen für das versenden von Messages.
 \begin{itemize}
 \item 0: Die Message wird einmal versendet, es gibt keine Bestätigung des Empfängers.
 \item 1: (Standard) Die Message wird mindestens einmal beim Empfänger ankommen. Es wird so lange versucht zu senden, bis eine Bestätigung erhalten wurde.
-\item 2: Mit ein Handshake Mechanismus wird sichergestellt, dass die Message genau einmal beim Empfänger angekommen ist.
+\item 2: Mit einem Handshake Mechanismus wird sichergestellt, dass die Message genau einmal beim Empfänger angekommen ist.
 \end{itemize}
 
-Je höher die QoS Einstellung, desto mehr Resourcen werden beim versenden benötigt und es desto mehr Daten werden über das Netzwerk gesendet.
+Je höher die QoS Einstellung, desto mehr Ressourcen werden beim versenden benötigt und es desto mehr Daten werden über das Netzwerk gesendet.
 
 \subsection{Retaines Messages} \label{retained}
 Bei einer MQTT Message kann das Retained Flag gesetzt werden. Damit wird pro Topic die letzte Message auf dem Broker gespeichert. Verbindet sich ein neuer Client und abonniert das Topic, erhält er die retained Message sofort. Dies kann nützlich sien bei Anwendungen mit Topics, die sehr lange Pausen zwischen den Messages haben.
 
 \subsection{Last Will}
-Jeder Client, der sich zum Broker vebindet, kann eine ''Last Will'' Message angeben. Diese Meldung wird an das gewünschte Topic gesendet, sobald die Verbindung beendet wird.
+Jeder Client, der sich zum Broker verbindet, kann eine ''Last Will'' Message angeben. Diese Meldung wird an das gewünschte Topic gesendet, sobald die Verbindung beendet wird.
 
 \pagebreak
 
@@ -137,11 +137,11 @@ Die verschiedenen Hersteller von MQTT Anwendungen entwickeln jeweils ihre eigene
 
 \subsection{IBM Internet of Things Foundation}
 
-IBM hat unter dem Brand `IBM IoT Foundation' \cite{ibmIotF:home} einen Dienst entwickelt, mit dem vernetzte Geräte verwaltet werden können. Als Kommunikationsprotokoll wird MQTT eingesetzt. Die Platform verwendet unter Anderem folgende konzeptionelle Ideen:
+IBM hat unter dem Brand `IBM IoT Foundation' \cite{ibmIotF:home} einen Dienst entwickelt, mit dem vernetzte Geräte verwaltet werden können. Als Kommunikationsprotokoll wird MQTT eingesetzt. Die Plattform verwendet unter Anderem folgende konzeptionelle Ideen:
 \begin{itemize}
 	\item Devices: Beliebiges vernetztes Gerät. Versendet Events und reagiert auf Commands.
 	\item Applications: Externe Anwendungen, welche mit den Daten der Devices interagieren.
-	\item Events: Daten, welche von den Devices an die Platform gesendet werden
+	\item Events: Daten, welche von den Devices an die Plattform gesendet werden
 	\item Commands: Applications können mittels Commands mit den Devices kommunizieren.
 \end{itemize}
 
@@ -194,7 +194,7 @@ Grundsätzlich unterstützt IBM IoT Foundation ein beliebiges Payload Format. Es
 
 \subsection{Tinkerforge MQTT Proxy}
 
-Tinkerforge hat ein modulares System von Sensoren und Aktoren (so gennate Bricklets) entwickelt, die u. A. für Prototyping und in der Ausbildung (auch an der BFH) eingesetzt werden. Um die Mudule zu steuern, wird klassischerweise das bereitgestellte \acrfull{sdk} in der gewünschten Programmiersprache verwendet. 
+Tinkerforge hat ein modulares System von Sensoren und Aktoren (so genannte Bricklets) entwickelt, die u. A. für Prototyping und in der Ausbildung (auch an der BFH) eingesetzt werden. Um die Module zu steuern, wird klassischerweise das bereitgestellte \acrfull{sdk} in der gewünschten Programmiersprache verwendet. 
 Tinkerforge hat eine Anwendung entwickelt um die Bausteine per MQTT ansprechen zu können \cite{tinkerf:mqtt}.
 
 \textbf{Topics} \\
@@ -248,12 +248,12 @@ In diesem Kapitel werden verschiedene Datenformate kurz beschrieben, welche für
 
 Grundsätzlich muss zwischen textbasierten und binären Formaten unterschieden werden.
 
-Textbasierte Formate bieten den Vorteil, dass sie von Menschen ohne weitere Hilfsmittel gelesen und meistens auch interpretiert werden können. Die textuellen Formate haben jedoch Nachteile, wenn binären Daten (Bilder, Video, Audio etc.) codiert werden sollen. Zwar ist es möglich, die binären Daten in ein textbasiertes Format zu integrieren (beispielsweise mittels Kovertierung zu \gls{base64}), dies führt aber zur Aufblähung der Datenmenge.
+Textbasierte Formate bieten den Vorteil, dass sie von Menschen ohne weitere Hilfsmittel gelesen und meistens auch interpretiert werden können. Die textuellen Formate haben jedoch Nachteile, wenn binären Daten (Bilder, Video, Audio etc.) codiert werden sollen. Zwar ist es möglich, die binären Daten in ein textbasiertes Format zu integrieren (beispielsweise mittels Konvertierung zu \gls{base64}), dies führt aber zur Aufblähung der Datenmenge.
 
 Binäre Formate haben den Vorteil, dass die Daten bei der \gls{serialisierung} dichter codiert werden können, somit werden die Dateien meistens kleiner als bei textbasierten Formaten. Der grosse Nachteil ist, dass man für die Interpretation von binären Daten immer auf eine Beschreibung (in Form eines Schemas) angewiesen ist.
 
 \textbf{JSON} \\
-\gls{json} ist ein textbasiertes Datenformat, welches verschachtelte Key-Value Paare für die Strukturierung nutzt. Dank dem einfachen Aufbau ist es sehr weit verbreitet und Libraries sind für alle populären Platformen verfügbar.
+\gls{json} ist ein textbasiertes Datenformat, welches verschachtelte Key-Value Paare für die Strukturierung nutzt. Dank dem einfachen Aufbau ist es sehr weit verbreitet und Libraries sind für alle populären Plattformen verfügbar.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -278,8 +278,8 @@ Binäre Formate haben den Vorteil, dass die Daten bei der \gls{serialisierung} d
 
 
 \textbf{YAML} \\ 
-\gls{yaml} ist dem \gls{json} Format sehr ähnlich, ist aber stärker auf Lesbarkeit ausgerichtet. Für die Strukturierung der Daten kann die kompakte schreibweise mit Leerzeichen verwendet werden. 
-YAML ist ein Superset von JSON, das bedeuted jedes gültige \gls{json} Dokument ist auch ein gültiges \gls{yaml} Dokument.
+\gls{yaml} ist dem \gls{json} Format sehr ähnlich, ist aber stärker auf Lesbarkeit ausgerichtet. Für die Strukturierung der Daten kann die kompakte Schreibweise mit Leerzeichen verwendet werden. 
+YAML ist ein Superset von JSON, das bedeutet jedes gültige \gls{json} Dokument ist auch ein gültiges \gls{yaml} Dokument.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -302,7 +302,7 @@ address:
 \end{listing}
 
 \textbf{XML} \\
-Mit \gls{xml} werden die Informationen in hierarchische Elemente (Tags) verschachtelt, welche mit Attributen versehen werden können. XML Dokumente werden dadurch rasch sehr gross und haben viel redundante Daten. Häufig werden XML Schemas eingesetzt, um die gewünschte Struuktur eines Dokuments und dessen Datentypen zu beschreiben.
+Mit \gls{xml} werden die Informationen in hierarchische Elemente (Tags) verschachtelt, welche mit Attributen versehen werden können. XML Dokumente werden dadurch rasch sehr gross und haben viel redundante Daten. Häufig werden XML Schemas eingesetzt, um die gewünschte Struktur eines Dokuments und dessen Datentypen zu beschreiben.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -329,7 +329,7 @@ Mit \gls{xml} werden die Informationen in hierarchische Elemente (Tags) verschac
 
 
 \textbf{Protocol Buffers} \\
-Protocol Buffers ist ein Mechanismus zur binären Serialisierung von Daten. Der Entwickler muss ein Schema seiner Datenstruktueren erstellen (.proto Datei).
+Protocol Buffers ist ein Mechanismus zur binären Serialisierung von Daten. Der Entwickler muss ein Schema seiner Datenstrukturen erstellen (.proto Datei).
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -390,7 +390,7 @@ XML:              \tab{200 Byte}
 
 Für Dateien, welche für Menschen gut lesbar sein sollen, eignet sich aufgrund der Formatierung YAML am besten. 
 
-Ein weiterer wichtiger Faktor ist, dass auf den eingesetzten Platformen Libraries für das Format zur Verfügung stehen. Da JSON und XML am weitesten verbreitet sind, ist für diese beiden Formaten auch die grösste Auswahl an Libraries zu finden. Für alle vier der hier behandelten Formaten sind inzwischen Libaries für alle gängigen Platformen verfügbar.
+Ein weiterer wichtiger Faktor ist, dass auf den eingesetzten Plattformen Libraries für das Format zur Verfügung stehen. Da JSON und XML am weitesten verbreitet sind, ist für diese beiden Formaten auch die grösste Auswahl an Libraries zu finden. Für alle vier der hier behandelten Formaten sind inzwischen Libaries für alle gängigen Plattformen verfügbar.
 
 
 \section{Bestehende Beschreibungssprachen}

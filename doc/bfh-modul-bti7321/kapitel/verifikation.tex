@@ -12,7 +12,7 @@ Anhand der definierten Use Cases wird getestet, ob die funktionalen Anforderunge
  
  UC01 - Device beschreiben & Entwickeltes Schema enthält die geforderten Angaben. & OK \\ \hline
 
- UC02 - Datentypen angeben   & Die Beschreibungsobjekte können mit Datentypen vesehen werden. & OK \\ \hline
+ UC02 - Datentypen angeben   & Die Beschreibungsobjekte können mit Datentypen versehen werden. & OK \\ \hline
 
  UC03 - Range definieren    & Die Datentypen können mit Ranges eingeschränkt werden. & OK \\ \hline
 
@@ -20,7 +20,7 @@ Anhand der definierten Use Cases wird getestet, ob die funktionalen Anforderunge
 
  UC05 - Devices gruppieren & Die Devices können auf verschiedenen Stufen gruppiert werden. & OK \\ \hline
 
- UC06 - Device Description Library konfigurieren & Die Library ist so aufgebaut, dass  Konfigurationsparamter gesetzt werden können. & OK \\ \hline
+ UC06 - Device Description Library konfigurieren & Die Library ist so aufgebaut, dass  Konfigurationsparameter gesetzt werden können. & OK \\ \hline
 
  UC07 - Devices anzeigen & Devices werden in der Webapplikation angezeigt. & OK \\ \hline
 
@@ -38,7 +38,7 @@ Anhand der definierten Use Cases wird getestet, ob die funktionalen Anforderunge
 
 
 
-\section{Nichtfunktionale Anforderungen}
+\section{Nicht-funktionale Anforderungen}
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|c|}
@@ -50,13 +50,13 @@ Anhand der definierten Use Cases wird getestet, ob die funktionalen Anforderunge
 
  Erweiterbarkeit Datenformate   & Durch den gewählten Aufbau der Topic Hierarchie ist es möglich, verschiedene Formate für die Device Description zu verwenden. & OK \\ \hline
 
- Einfache Installation    & Die Device Description Library kann als Maven Modul in bestehende Anwendungen integriert werden. Die Wepplikation kann ohne Abhängigkeiten intalliert werden, die Konfiguration ist zentral definiert. & OK \\ \hline
+ Einfache Installation    & Die Device Description Library kann als Maven Modul in bestehende Anwendungen integriert werden. Die Webapplikation kann ohne Abhängigkeiten installiert werden, die Konfiguration ist zentral definiert. & OK \\ \hline
 
- Kompatibilität     & Die entwickelte Lösung besiert auf dem bestehenden MQTT Protokoll und ist somit kompatibel für die Anbindung an beliebigen Applikationen auf Basis von MQTT. & OK \\ \hline
+ Kompatibilität     & Die entwickelte Lösung basiert auf dem bestehenden MQTT Protokoll und ist somit kompatibel für die Anbindung an beliebigen Applikationen auf Basis von MQTT. & OK \\ \hline
 
 
 \end{tabularx}
-\caption{Verifikation nichtfunktionale Anforderungen}
+\caption{Verifikation nicht-funktionale Anforderungen}
 \end{table}
 
 
@@ -74,4 +74,4 @@ In der aktuellen Implementation der MQTT Device Description Library werden die P
 Da die Library das Schema des empfangenen Commands kennt, würde es Sinn machen, die Deserialisierung der Daten in die Library zu integrieren und somit dem Aufrufer das erstellte Objekte zu übergeben.
 
 \subsection{Device Description an Devicetyp anhängen}
-In der Hierarchie der MQTT Topics ist die Device Description momentan einer Device Instanz untergeordnet. Bei vielen Devices in der selben Gruppierung vom gleichen Typ würde dies zu Redundanz und unnötig grossen Datenmengen führen, da die gleiche Device Description für jede Instanz versendet würde. Um dies zu optimieren, müsste die Device Description unterhalb des Devicetyps in die Schema Hierachie eingegliedert werden. Mit diesem Ansatz wäre pro Devicetyp nur noch das Versenden von einer Device Description nötig.
+In der Hierarchie der MQTT Topics ist die Device Description momentan einer Device Instanz untergeordnet. Bei vielen Devices in der selben Gruppierung vom gleichen Typ würde dies zu Redundanz und unnötig grossen Datenmengen führen, da die gleiche Device Description für jede Instanz versendet würde. Um dies zu optimieren, müsste die Device Description unterhalb des Devicetyps in die Schema Hierarchie eingegliedert werden. Mit diesem Ansatz wäre pro Devicetyp nur noch das Versenden von einer Device Description nötig.

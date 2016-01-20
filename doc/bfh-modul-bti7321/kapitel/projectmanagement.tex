@@ -9,10 +9,10 @@
  \hline \rowcolor{lightgray}
  {\bf Name } & {\bf Rolle } & {\bf Aufgaben} \\  \hline
   \parbox[t]{5cm}{\textbf{Prof. Dr. Ing. Reto E. König} \\ \textit{Berner Fachhochschule}}  &   Betreuer  &
-  Hauptansprechsperson für Studierenden, verantwortlich für den Ablauf der Thesis. Beurteilung aufgrund von Aufgabenstellung und abgegebenen Artefakten.   \\
+   für Studierenden, verantwortlich für den Ablauf der Thesis. Beurteilung aufgrund von Aufgabenstellung und abgegebenen Artefakten.   \\
  \hline
   \parbox[t]{5cm}{\textbf{Dr. Federico Flueckiger} \\ \textit{Eidg.  Finanzdepartement}} &   Experte     &
-  Beurteilung aufgrund der Aufgabenstellung und abgelieferten Artefakten sowie mindestends ein bis zwei Sitzungen mit dem Studierenden. \\ 
+  Beurteilung aufgrund der Aufgabenstellung und abgelieferten Artefakten sowie mindestens ein bis zwei Sitzungen mit dem Studierenden. \\ 
 \hline
  \textbf{Adrian Bärtschi}                &   Studierender   &     
  Selbständiges Projektmanagement während der Thesis. Setzt die Aufgaben gemäss Aufgabenstellung und Vorgaben des Betreuers um. Organisiert Kommunikation mit dem Betreuer und Experten.   \\
@@ -29,7 +29,7 @@ Die Arbeit umfasst gemäss Aufgabenstellung folgende Ziele:
 \begin{itemize}
     \item Definition einer Beschreibungssprache für vernetzte Geräte.
     \item Die Beschreibung muss von Menschen und Computern interpretiert werden können.
-    \item Die Beschreibung muss die Eingabe- und Ausgabeparameter der Geräte beeinhalten.
+    \item Die Beschreibung muss die Eingabe- und Ausgabeparameter der Geräte beinhalten.
     \item Die Beschreibung soll möglichst die aktuelle MQTT Spezifikation (3.1.1) nicht verletzen.
 \end{itemize}
 
@@ -58,13 +58,13 @@ Die Aufgabenstellung wurde in Meilensteine aufgeteilt, um eine grobe Planung zu 
 
 \section{Ressourcen}
 
-Die gesamte Thesis umfasst gemäss Modulplan der BFH einen Arbeitsaufwand von 360 Stunden. Dies beinhaltet die Konzeption und Umsetzung der Lösung, Abprachen mit Betreuer und Experte, das Erstellen der Dokumentation und die Vorbereitung der Präsentationen für den Finaltag und die Verteidigung.
+Die gesamte Thesis umfasst gemäss Modulplan der BFH einen Arbeitsaufwand von 360 Stunden. Dies beinhaltet die Konzeption und Umsetzung der Lösung, Absprachen mit Betreuer und Experte, das Erstellen der Dokumentation und die Vorbereitung der Präsentationen für den Finaltag und die Verteidigung.
 
 Es sind keine Kosten für Softwarelizenzen oder andere Ressourcen angefallen.
 
 
 \section{Aufwände}
-Nachfolgend ist der Gesamtaufand von 360 Stunden der Arbeit auf einzelen Tasks aufgeteilt. Ausserdem werden bei grösseren Differenzen zwischen geplanten und geleisteten Stunden die Gründe dafür angegeben.
+Nachfolgend sind die einzelnen einzelnen Tasks der Thesis aufgeführt. Ausserdem werden bei grösseren Differenzen zwischen geplanten und geleisteten Stunden die Gründe dafür angegeben.
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|r|r|X|}
@@ -125,19 +125,19 @@ Nachfolgend ist der Gesamtaufand von 360 Stunden der Arbeit auf einzelen Tasks a
 \end{table}
 
 \section{Ablage}
-Diese Dokumentation sowie sämltlicher Source Code sind auf dem Github Repository unter \\ \url{https://github.com/barta3/ch.bfh.bti7321thesis.mqttSemantics} verfügbar.
+Sämtliche Ergebnisse der Thesis sind auf dem Github Repository unter \\ \url{https://github.com/barta3/ch.bfh.bti7321thesis.mqttSemantics} verfügbar.
 
 \section{Reflektion}
 
 Dieser Abschnitt blickt auf das Vorgehen während der Thesis zurück und beschreibt kurz die wichtigsten Eindrücke.
 
-Da die Aufgabenstellung relativ offen formuliert ist, war es zu Beginn der Arbeit schwierig sich vorzustellen wie die Lösung aussehen soll und was sie alles beinhaltet. In dieser Phase haben vor allen die regelmässigen Besprechungen mit Reto König geholfen, um Ideen zu diskutieren und jeweils die nächsten Schritte zu planen.
+Da die Aufgabenstellung relativ offen formuliert ist, war es zu Beginn der Arbeit schwierig sich vorzustellen wie die Lösung aussehen soll und was sie alles beinhaltet. In dieser Phase haben vor allem die regelmässigen Besprechungen mit Reto König geholfen, um Ideen zu diskutieren und jeweils die nächsten Schritte zu planen.
 
 Aufgrund der geringen Verbreitung und Bekanntheit des MQTT Protokolls sind keine etablierten Lösungen vorhanden, von deren Erfahrungen man profitieren konnte. Dies bot jedoch auch eine grosse Freiheit bei der Gestaltung und Umsetzung der eigenen Lösung.
 
 Beim Entwurf der Device Description und der Umsetzung hat sich gezeigt, dass sich ein iteratives Vorgehen   gut eignet. Mit der frühen Entwicklung von Prototypen und ständiger Verbesserung und Anpassung konnte die Aufgabenstellung gut in kleinere Pakete aufgeteilt werden.
 
-Da die eingesetzten Devices von Tinkerforge viele verschiedene Interaktionsmöglichkeiten bieten, konnten nicht alle Funktionen mit der Device Description abgebildet werden. Bei Devices, welche einen spezifischeren Einsatzzweck haben, sollten dann die Device Descriptions auch enstsprechend kompakter werden.
+Da die eingesetzten Devices von Tinkerforge viele verschiedene Interaktionsmöglichkeiten bieten, konnten nicht alle Funktionen mit der Device Description abgebildet werden. Bei Devices, welche einen spezifischeren Einsatzzweck haben, sollten dann die Device Descriptions auch entsprechend kompakter werden.
 
 
 Für die Erarbeitung der Dokumentation wurde LaTeX verwendet, basierend auf der Vorlage der BFH. Dies hat sich nach anfänglichen Schwierigkeiten bei der Installation als gute Entscheidung erwiesen. Dank der vordefinierten Formatierung konnte ich mich auf die das Erstellen der Inhalte konzentrieren. Ausserden eignete sich diese Dokumentationsform gut für das eingesetzte Versionskontrollsystem (Git).

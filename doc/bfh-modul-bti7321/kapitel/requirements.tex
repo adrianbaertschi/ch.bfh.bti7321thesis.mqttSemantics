@@ -44,7 +44,7 @@ Entwickler Fremdsystem: Möchte eine Applikation entwickeln, welche mit den Devi
 
  \hline
  {\bf Use Case ID }    & UC02 - Datentypen angeben \\  \hline
- {\bf Beschreibung }   & Für die State- Event- und Commandangeben muss definiert werden können, welche Datentypen die Werte aufweisen. \\ \hline
+ {\bf Beschreibung }   & Für die State- Event- und Commandangaben muss definiert werden können, welche Datentypen die Werte aufweisen. \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Device Description wird erstellt. \\ \hline
  {\bf Vorbedingungen } & \gls{api} für das Ansprechen des Devices ist bekannt. \\ \hline
@@ -103,7 +103,7 @@ Entwickler Fremdsystem: Möchte eine Applikation entwickeln, welche mit den Devi
  {\bf Vorbedingungen } & Devices sind bereit und Descriptions wurden erstellt. \\ \hline
  {\bf Ablauf }         & 
   1. Benutzer definiert die Attribute für die Gruppierung der Devices (Gruppe, Untergruppe, Device Typ) mit der Java MQTT Device Description Library. \newline
-  2. MQTT Device Description Library erzeigt aus den Gruppierungsattributen der Devices die Topics für das publishing der Daten und Descriptions. \\ \hline
+  2. MQTT Device Description Library erzeugt aus den Gruppierungsattributen der Devices die Topics für das publishing der Daten und Descriptions. \\ \hline
  {\bf Nachbedingungen} & Die Devices sind nach den Anforderungen des Benutzers gruppiert. \\ \hline
   
 \end{tabularx}
@@ -116,7 +116,7 @@ Entwickler Fremdsystem: Möchte eine Applikation entwickeln, welche mit den Devi
 
  \hline
  {\bf Use Case ID }    & UC06 - Device Description Library konfigurieren \\  \hline
- {\bf Beschreibung }   & Die Device Description Library muss so aufgebau sein, dass Optionen wie das Format des Schemas oder die Broker URL konfigurierbar sind.  \\ \hline
+ {\bf Beschreibung }   & Die Device Description Library muss so aufgebaut sein, dass Optionen wie das Format des Schemas oder die Broker URL konfigurierbar sind.  \\ \hline
  {\bf Aktor }          & Device Integrator \\ \hline
  {\bf Auslöser }       & Library wird initialisiert. \\ \hline
  {\bf Vorbedingungen } & Angaben für die Konfiguration sind bekannt. \\ \hline
@@ -157,7 +157,7 @@ Entwickler Fremdsystem: Möchte eine Applikation entwickeln, welche mit den Devi
  {\bf Beschreibung }   & Es muss möglich sein, in einer Weboberfläche zu einem Device die Description anzuzeigen. \\ \hline
  {\bf Aktor }          & Entwickler Fremdsystem \\ \hline
  {\bf Auslöser }       & Der Benutzer will Description eines Devices einsehen. \\ \hline
- {\bf Vorbedingungen } & Mindestens eine Devicedesription ist vorhanden und wird in der Weboberfläche angezeigt (UC07) \\ \hline
+ {\bf Vorbedingungen } & Mindestens eine Device Desription ist vorhanden und wird in der Weboberfläche angezeigt (UC07) \\ \hline
  {\bf Ablauf }         & 
      1. Benutzer wählt gewünschtens Device aus der Liste. \newline
      2. Webapplikation zeigt die Description des Devices im Klartext an. \newline
@@ -204,7 +204,7 @@ Entwickler Fremdsystem: Möchte eine Applikation entwickeln, welche mit den Devi
  {\bf Auslöser }       & Der Benutzer möchte einen Command ein Device senden. \\ \hline
  {\bf Vorbedingungen } & 
      Der Benutzer hat ein Device gewählt (UC08). \newline
-     Das Device hat reagiert auf mindestens einen Command und weist dies in der Descriptiona aus. \newline 
+     Das Device hat reagiert auf mindestens einen Command und weist dies in der Description aus. \newline 
      Device ist online und kann den Command empfangen. \\ \hline
  {\bf Ablauf }         & 
      1. Der Benutzer sucht im Bereich 'Commands' den gewünschten Eintrag und gibt den Inhalt der Command Nachricht an. \newline
@@ -222,7 +222,7 @@ Entwickler Fremdsystem: Möchte eine Applikation entwickeln, welche mit den Devi
 
 
 
-\section{Nichtfunktionale Anforderungen}
+\section{Nicht-funktionale Anforderungen}
 
 \subsection{Erweiterbarkeit Devices}
 Die Lösung soll so gestaltet sein, dass es möglich ist Devices von unterschiedlichen Herstellern einzubinden.
