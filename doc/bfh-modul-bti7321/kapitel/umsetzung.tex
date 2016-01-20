@@ -1,20 +1,21 @@
 \chapter{Umsetzung}
 \label{chap:umsetzung}
 
-Die Umsetzung hatte drei Module als Ergebnis.
+Die Umsetzung hatte drei Module als Ergebnis. Als erstes wurde eine wiederwendbare Java Library entwickelt, welche genutzt werden kann, um Devices in das beschriebene Konzept zu integrieren. Der zweite Baustein ist eine Webapplikation, beschrieben im Abschnitt \ref{ums:devBrowser}, mit der die Device Descriptions interpretiert werden. Im Abschnitt \ref{ums:tinker} wird die Umsetzung eines Prototypen mit Tinkerforge Sensoren und Aktoren beschrieben.
 
 \section{MQTT Device Description Library}
-Um die Integration von Devices und das Erstellen von Device Description zu vereinfachen, wird eine Java Library entwickelt. Damit ist es möglich, Anwendugen für IoT Gateways in Java zu entwickeln. Zusammen mit der 
+Um die Integration von Devices und das Erstellen von Device Description zu vereinfachen, wird eine Java Library entwickelt. Damit ist es möglich, Anwendugen für IoT Gateways in Java zu entwickeln.
 
 Die Library übernimmt folgende Aufgaben:
 \begin{itemize}
 \item Handling der MQTT Verbindung zum Broker
-\item Versenden von Event- Command-, und State Informationen mittels MQTT Messages
+\item Versenden von Event- und State Informationen mittels MQTT Messages
+\item Empfangen von Command Messages
 \item Einheitliche Abbildung der Devices und Topics
 \item Hilfsklassen zur Erstellung der Device Descriptions
 \end{itemize}
 
-Die Parameter der Library (MQTT Broker, Application ID, etc.) müssen vom Aufrufer der Library konfiguriert werden können.
+Die Parameter der Library (MQTT Broker URL, Application ID, etc.) können vom Anwender der Library konfiguriert werden.
 
 
 \subsection{Klassendiagramm}
@@ -101,19 +102,18 @@ MqttPublisher.getInstance().pubEvent(device, "event", "22");
 \end{listing}
 
 \textbf{Konfiguration} \\
-Über das \code{Config} Objekt wird dierLibrary konfiguriert. Folgende Parameter können gesetzt werden:
-
+Über das \code{Config} Objekt wird die Library konfiguriert. Für die als Plichtfeld aufgeführten Parameter müssen Werte angegeben werden, ansonsten wird bei der ersten Verwendung eine entsprechende Exception ausgelöst. Die optionalen Parameter erhalten bei keiner Angabe des Anwenders den angegebenen Standardwert.
 
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
 
  \hline \rowcolor{lightgray}
- {\bf Name } & {\bf Beschreibung }  \\  \hline
+ {\bf Parameter } & {\bf Beschreibung }  \\  \hline
  
  mqttBrokerUri & Pflichtfeld. URI des MQTT Brokers (inkl. Protokoll und Port) \newline Beispiel: tcp://iot.eclipse.org:1883 \\ \hline
  
- mqttClientIdPrefix & Prefix für die ClientIds der MQTT Connections. Es werden zwei Connections aufgebaus. Für das Publishing eine mit ClientId {[mqttClientIdPrefix]}\_pub und eine Connection für das Empfangen von Messages mit ClientId {[mqttClientIdPrefix]}\_sub \newline Falls kein Wert angegeben wird, wird eine zufälliges Prefix generiert. \\ \hline
+ mqttClientIdPrefix & Präfix für die ClientIds der MQTT Connections. Es werden zwei Connections aufgebaut. Für das Publishing eine mit ClientId {[mqttClientIdPrefix]}\_pub und eine zweite Connection für das Empfangen von Messages mit ClientId {[mqttClientIdPrefix]}\_sub \newline Falls kein Wert angegeben wird, wird eine zufälliges Präfix generiert. \\ \hline
  
  appId & Pflichtfeld. Identifikation der Applikation. \\ \hline
  
@@ -136,7 +136,7 @@ MqttPublisher.getInstance().pubEvent(device, "event", "22");
 
 \subsection{Verwendete Komponenten} {
 
-Für die Umsetzung der MQTT Device Description Library wurden folgende Komponenten integriert:
+Für die Umsetzung der MQTT Device Description Library wurden folgende Fremdkomponenten integriert:
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|X|}
@@ -144,7 +144,7 @@ Für die Umsetzung der MQTT Device Description Library wurden folgende Komponent
  \hline \rowcolor{lightgray}
  {\bf Komponente } & {\bf Beschreibung }  \\  \hline
  
- Eclipse Paho & MQTT Client Implementation. \newline \url{http://www.eclipse.org/paho} \\ \hline
+ Eclipse Paho & MQTT Client Implementation \newline \url{http://www.eclipse.org/paho} \\ \hline
 
  Jackson JSON Processor & JSON Serialisierung und Parsing \newline \url{http://wiki.fasterxml.com/JacksonHome} \\ \hline
  
@@ -155,9 +155,9 @@ Für die Umsetzung der MQTT Device Description Library wurden folgende Komponent
 \end{table}
 
 
-\section{Device Browser}
+\section{Device Browser} \label{ums:devBrowser}
 Mit der entwickelten Webapplikation lassen sich die Device Descriptions übersichtlich darstellen. Die Applikation ist als reine Clientanwendung in Javascript umgesetzt.
-Die Anwenung zeigt die auf einem Broker publizierten Devices in einer Liste an. Zu einem Device kann der Benutzer sich die Device Description im Klartext anzeigen lassen. Die Device Description wird interpretiert und unterteilt in die verschiedenen Bereiche werden die Attribute angezeigt.
+Die Anwendung zeigt die auf einem Broker publizierten Devices in einer Liste an. Zu einem Device kann der Benutzer sich die Device Description im Klartext anzeigen lassen. Die Device Description wird interpretiert und unterteilt in die verschiedenen Bereiche werden die Attribute angezeigt.
 
 \begin{figure}[H]
 	\centering
@@ -165,10 +165,13 @@ Die Anwenung zeigt die auf einem Broker publizierten Devices in einer Liste an. 
 	\caption{Screenshot Device Browser}
 \end{figure}
 
+
+\newpage
+
 \textbf{Bereich State} \\
 Die State Objekte werden mit Beschreibung und den Typangaben anzezeigt. Zudem wird das Topic ausgegeben, auf welchem die entsprechenden State Informationen publiziert wurden.
 
-\newpage
+
 \textbf{Bereich Events}
 
 \begin{figure}[H]
@@ -177,7 +180,7 @@ Die State Objekte werden mit Beschreibung und den Typangaben anzezeigt. Zudem wi
     \caption{Device Browser Event Darstellung}
 \end{figure}
 
-Die Event Informationen werden mit Name, Beschreibung und Angaben zum Typ angezeigt. Pro Events wird das Topic ausgegeben. Mit dem betötigen der Schaltfläche 'Subscribe' verbindet sich die Webaplikation auf das Topic des Events und zeigt die empfangenen Daten im Textfeld an. Mit einem Erneuten Klick auf die Schaltfläche wird die Verbindung beendet.
+Die Event Informationen werden mit Name, Beschreibung und Angaben zum Typ angezeigt. Pro Event wird das Topic ausgegeben. Mit dem Betätigen der Schaltfläche 'Subscribe' verbindet sich die Webapplikation auf das Topic des Events und zeigt die empfangenen Daten im Textfeld an. Mit einem Erneuten Klick auf die Schaltfläche wird die Verbindung beendet.
 
 \newpage
 \textbf{Bereich Commands}
@@ -201,7 +204,6 @@ Für die Command Objekte der Device Description werden nebst Name, Beschreibung 
 Falls das Schema Complex Types beinhaltet, werden diese hier aufgelistet. Für jeden Complex Type wird der Name und eine Liste der Properties (Attribute) aufgeführt.
 
 \textbf{Topic Tree} \\
-
 Als zweiter Teil der Webapplikation ist die Darstellung aller MQTT Topics des konfigurierten Brokers eingebunden. Dafür wurde die Applikation 'd3-MQTT-Topic-Tree' von Ben Hardill (\url{https://github.com/hardillb/d3-MQTT-Topic-Tree}) verwendet.
 
 \begin{figure}[H]
@@ -213,9 +215,9 @@ Als zweiter Teil der Webapplikation ist die Darstellung aller MQTT Topics des ko
 Vor allen während der Entwicklung und dem Einbinden von neuen Devices hat sich diese Darstellung als sehr hilfreich erwiesen.
 
 \subsection{Installation und Konfiguration}
-Der MQTT Broker, auf den die Webapplikation zugreift, muss per Websockets erreichbar sein. Dafür eignet sich zum Beispiel der Mosquitto Broker. Während der Entwicklung der Applikationen wurde eine Mosquitto Installation mithilfe eines vorbereiteten Docker Images (\url{https://hub.docker.com/r/toke/mosquitto/}) durchgeführt und für sämtiche Testst verwendet.
+Der MQTT Broker, auf den die Webapplikation zugreift, muss per Websockets erreichbar sein. Dafür eignet sich zum Beispiel der Mosquitto Broker. Während der Entwicklung der Applikationen wurde eine Mosquitto Installation mithilfe eines vorbereiteten Docker Images (\url{https://hub.docker.com/r/toke/mosquitto/}) durchgeführt und für sämtiche Tests verwendet.
 
-Um die Webapplikation verwenden zu können, muss lediglich der Inhalt des Verzeichnisses \newline  \code{ch.bfh.bti7321thesis.schemabrowser} auf einen Webserver kopiert und die Datei \code{js/app/config.js} angepasst werden.
+Um die Webapplikation verwenden zu können, muss lediglich der Inhalt des Verzeichnisses \newline  \code{ch.bfh.bti7321thesis.schemabrowser} des Source Codes auf einen Webserver kopiert und die Datei \code{js/app/config.js} angepasst werden.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -229,15 +231,15 @@ port = 9001;             // Websocket Port of broker
 descFormat = 'YAML';     // YAML or JSON
 
 \end{minted}
-\caption{Beipiel Konfiguration Device Browser}
+\caption{Beispiel Konfiguration Device Browser}
 \end{listing}
 
 
 
 %\newpage
-\section{Anwendung Tinkerforge}
+\section{Anwendung Tinkerforge} \label{ums:tinker}
 
-Um die MQTT Device Description Library an einem konkreten Beispiel zu testen, wurden verschiedene Bausteine des Tinkerforge Systems verwendet. Die Tinkerforge Bausteine (auch Bricklets genannt) haben den Vorteil, dass sie einfach zu verwenden sind und es bereits Libraries für die Kommunikation mit der Hardware gibt. Das Ziel der Anwendung war es, zu demonstrieren, dass es möglich ist konkrete Devices mit dem entwickelten Konzept resp. der Device Description Library zu beschreiben und eine Interaktion von ausserhalb per MQTT zu ermöglichen.
+Um die MQTT Device Description Library an einem konkreten Beispiel zu testen, wurden verschiedene Bausteine des Tinkerforge Systems verwendet. Die Tinkerforge Bausteine (auch Bricklets genannt) haben den Vorteil, dass sie einfach zu verwenden sind und es bereits Libraries für die Kommunikation mit der Hardware gibt. Das Ziel der Anwendung war es zu demonstrieren, dass es möglich ist konkrete Devices mit dem entwickelten Konzept resp. der Device Description Library zu beschreiben und eine Interaktion von ausserhalb per MQTT zu ermöglichen.
 
 \begin{figure}[H]
 	\centering
@@ -246,7 +248,7 @@ Um die MQTT Device Description Library an einem konkreten Beispiel zu testen, wu
 \end{figure}
 
 \newpage
-Folgende Sensoren resp. Aktoren wurden ausgewählt:
+Folgende Sensoren resp. Aktoren wurden für die Integration ausgewählt:
 
 \def\imagetop#1{\vtop{\null\hbox{#1}}}
 
@@ -254,7 +256,7 @@ Folgende Sensoren resp. Aktoren wurden ausgewählt:
 \begin{tabularx}{\textwidth}{|l|X|l|}
 
  \hline \rowcolor{lightgray}
- {\bf Komponente } & {\bf Beschreibung } & \textbf{Bild} \\  \hline
+ {\bf Device } & {\bf Beschreibung } & \textbf{Bild} \\  \hline
  
  Sensor Luftfeuchtigkeit & Misst die relative Luftfeuchtigkeit. 
  \newline Mehr Informationen: \newline \url{http://www.tinkerforge.com/en/doc/Hardware/Bricklets/Humidity.html} & 
@@ -296,7 +298,7 @@ Quelle Bilder: \url{http://www.tinkerforge.com/en/doc/index.html}
  
  HostEnumerateListener & Epfängt die gefundenen Tinkerforge Devices und erstellt die entsprechenden \code{MqttBricklets} \\ \hline
  
- MqttBricklet &  Abstrakte Oberklasse für die konkreten Bricklet Implementationen. Definiert die abstrakten Methoden \code{setUpBricklet()}, \code{getState()}, \code{handleCommand(...)},  und \code{getDescription()}, welche von den Subklassen implementiert werden. \newline Mit der Methode \code{toDevice()} wird eine Instant der Klasse \code{MqttDevice} erzeugt wird, welche die Subklassen verwenden um z. Bsp. Events zu versenden. \\ \hline
+ MqttBricklet &  Abstrakte Oberklasse für die konkreten Bricklet Implementationen. Definiert die abstrakten Methoden \code{setUpBricklet()}, \code{getState()}, \code{handleCommand(...)},  und \code{getDescription()}, welche von den Subklassen implementiert werden. \newline Mit der Methode \code{toDevice()} wird eine Instant der Klasse \code{MqttDevice} erzeugt, welche die Subklassen verwenden um z. Bsp. Events zu versenden. \\ \hline
  
  HumidityMqttBricklet &  Implementation für das Humidity Bricklet. \\ \hline
  

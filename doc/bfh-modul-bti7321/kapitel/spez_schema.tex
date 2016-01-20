@@ -1,11 +1,11 @@
 \chapter{Spezifikation Device Description}
 \label{chap:spez}
 
-Dieses Kapitel beschreibt schematisch, wie eine Device Description aufgebaut ist.
+Dieses Kapitel beschreibt schematisch, wie eine einzelne Device Description aufgebaut ist und aus welchen Elementen sie besteht.
 
 \section{Format}
 Die Description wird als \gls{utf8} String im Payload der MQTT Message versendet.
-Als Datenformat kann JSON oder YAML verwendet werden. Die Beschreibungen sind Case sensitiv.
+Als Datenformat kann JSON oder YAML verwendet werden. Gross- und Kleinschreibung der Descriptions wird berücksichtigt.
 
 
 \section{Primitive Datentypen}
@@ -45,7 +45,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
  \textit{id}  &   String   & Identifikation des Devices   \\ \hline
@@ -70,7 +70,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
  \textit{states}  &   Liste State   & Auflistung von State Objekten   \\ \hline
@@ -83,11 +83,11 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
  \textit{name}  &   String   & Bezeichung des State Eintrages. Wird gleichzeitig als Subtopic für den eigentlichen Wert genutzt.  \\ \hline
- range  &   Range   &  \textbf Information zum Wert des State.   \\ \hline
+ range  &   Range   &  Information zum Wert des State.   \\ \hline
  options  &   Enum   & Wird verwendet, falls der State Wert eine Auswahl aus einer fixen Menge ist.   \\ \hline
  complexTypeRef  &   String   & Falls der Wert des State mit einen komplexen Typen abgebildet wird, wird mit diesem Feld der Name des Typs angegeben.   \\ \hline
  description  &   String   &  Allgemeine Beschreibung des State.  \\ \hline
@@ -101,7 +101,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
  \textit{events}  &   Liste Event   & Auflistung von Event Objekten   \\ \hline
@@ -115,7 +115,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
  
  \textit{name}  &   String   &  Name des Events. Wird als Subtopic verwendet, auf dem das Event verschickt wird. \\ \hline
@@ -134,7 +134,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
  \textit{commands}  &   Liste Command   & Auflistung von Command Objekten   \\ \hline
 
@@ -147,7 +147,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
  
  \textit{name}  &   String   &  Name des Commands. Subtopic, an welches der Command gesendet werden muss. \\ \hline
@@ -166,7 +166,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
  \textit{type}  &  String   & Angabe des primitiven Datentypen        \\ \hline
@@ -182,7 +182,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Plichtfeld
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{|l|l|X|}
 
- \hline
+ \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
  values  &   Liste von primitiven Typen   & Liste mit den möglichen Werten   \\ \hline
