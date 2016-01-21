@@ -60,7 +60,7 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Pflichtfel
   
  \textit{commandDescription}  &   CommandDescription    &     \\ \hline
  
- \textit{complexTypes}  &   Liste ComplexTypes    &     \\ \hline
+ \textit{complexTypes}  &   Liste ComplexType    &     \\ \hline
  
 \end{tabularx}
 \caption{DeviceDescription Objekt Schema}
@@ -159,6 +159,37 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Pflichtfel
 \end{table}
 
 
+\subsubsection{ComplexType Objekt}
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline \rowcolor{lightgray}
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+ 
+ \textit{name}  &      String   &  Name des der Complex Types \\ \hline
+ summary  &   String   &  Kurzbeschreibung des Types \\ \hline
+ \textit{properties}  &   Liste Property   &  Liste der Attribute des Typs \\ \hline
+
+\end{tabularx}
+\caption{ComplexType Objekt Schema}
+\end{table}
+
+\subsubsection{Property Objekt}
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{|l|l|X|}
+
+ \hline \rowcolor{lightgray}
+ {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
+ 
+ \textit{name}  &  String   &  Name des des Properties \\ \hline
+ description    &  String   &  Kurze Beschreibung \\ \hline
+ \textit{type}  &  String   &  Angaben zum primitiven Datentyp \\ \hline
+
+\end{tabularx}
+\caption{Property Objekt Schema}
+\end{table}
+
+
 
 
 \subsection{Range Objekt}
@@ -185,9 +216,11 @@ Nachfolgend werden die Felder der Device Description aufgeführt. Bei Pflichtfel
  \hline \rowcolor{lightgray}
  {\bf Feld } & {\bf Datentyp } & {\bf Beschreibung } \\  \hline
 
- values  &   Liste von primitiven Typen   & Liste mit den möglichen Werten   \\ \hline
+ \textit{values}  &   Liste von primitiven Typen   & Liste mit den möglichen Werten   \\ \hline
 
 \end{tabularx}
 \caption{Enum Objekt Schema}
 \end{table}
+
+
 

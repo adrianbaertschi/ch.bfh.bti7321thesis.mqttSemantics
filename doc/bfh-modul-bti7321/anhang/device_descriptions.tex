@@ -1,14 +1,15 @@
 \chapter{Device Descriptions Tinkerforge}
 \label{app:device_descriptions}
 
-\section{Humidity Bricklet}
+\textbf{Humidity Bricklet}
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
                framesep=3mm,
                linenos=false,
                xleftmargin=21pt,
-               tabsize=4]{yaml}
+               tabsize=4,
+               fontsize=\footnotesize]{yaml}
 
 ---
 id: "IoT-Humidity Bricklet"
@@ -51,13 +52,14 @@ complexTypes: []
 
 
 
-\section{Temperatur IR Bricklet}
+\textbf{Temperatur IR Bricklet}
 
 \begin{minted}[frame=single,
                framesep=3mm,
                linenos=false,
                xleftmargin=21pt,
-               tabsize=4]{yaml}
+               tabsize=4,
+               fontsize=\footnotesize]{yaml}
 
 ---
 id: "IoT - Temperature IR Bricklet"
@@ -139,14 +141,12 @@ complexTypes:
   properties:
   - name: "option"
     description: "'x' :Listener is turned off 
-      \ 'o': Listener is triggered when the ambient temperature is outside 
-      \ the min and max values
-      \ 'i': Listener is triggered when the ambient temperature is inside 
-      \ the min and max values
-      \ '<': Listener is triggered when the ambient temperature is smaller 
-      \ than the min value (max is ignored) 
-      \ '>' Listener is triggered when the ambient temperature is greater 
-      \ than the min value (max is ignored)"
+      \ 'o': Listener is triggered when the ambient temperature is outside the min and max values
+      \ 'i': Listener is triggered when the ambient temperature is inside the min and max values
+      \ '<': Listener is triggered when the ambient temperature is smaller than the min value 
+      \ (max is ignored) 
+      \ '>' Listener is triggered when the ambient temperature is greater than the min value
+      \ (max is ignored)"
     type: "String"
   - name: "min"
     description: "Minimal Value"
@@ -162,13 +162,14 @@ complexTypes:
 \end{listing}
 
 
-\section{Dualbutton Bricklet}
+\textbf{Dualbutton Bricklet}
 
 \begin{minted}[frame=single,
                framesep=3mm,
                linenos=false,
                xleftmargin=21pt,
-               tabsize=4]{yaml}
+               tabsize=4,
+               fontsize=\footnotesize]{yaml}
 
 ---
 id: "Dual Button Bricklet"
@@ -222,6 +223,7 @@ eventDescription:
 commandDescription:
   commands:
   - name: "setLedL"
+    description: "2: LED on, 3: LED off"
     parameter:
       state:
         values:
@@ -229,6 +231,7 @@ commandDescription:
         - 3
         type: "Short"
   - name: "setLedR"
+    description: "2: LED on, 3: LED off"
     parameter:
       state:
         values:

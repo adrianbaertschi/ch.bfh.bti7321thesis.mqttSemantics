@@ -132,7 +132,7 @@ Eine Lister mit weiteren Client Libraries ist im MQTT Wiki \cite{clientLibs} zu 
 
 
 \section{Bestehende Systeme}
-Die verschiedenen Hersteller von MQTT Anwendungen entwickeln jeweils ihre eigenen Ansätze, um die Daten zu strukturieren. 
+Die verschiedenen Hersteller von MQTT Anwendungen entwickeln jeweils ihre eigenen Ansätze, um die Topics und Payload Daten zu strukturieren. 
 
 
 \subsection{IBM Internet of Things Foundation}
@@ -398,7 +398,7 @@ Ein weiterer wichtiger Faktor ist, dass auf den eingesetzten Plattformen Librari
 Es gibt diverse bestehende Sprachen zur Beschreibung von Schnittstellen und Daten. Vor allen bei Webservices werden diese häufig eingesetzt.
 
 \subsection{WSDL}
-Für die Beschreibung von \gls{soap} Webservices wird eine \gls{wsdl} Datei verwendet. WSDL ( Web Services Description Language) ist eine auf \gls{xml} basierende Sprache und beschreibt die Methoden und Datentypen eines Webservice. Das WSDL Schema kann verwendet werden, um daraus Zugriffsklassen zu generieren und für die Validierung der Aufrufe.
+Für die Beschreibung von \gls{soap} Webservices wird eine \gls{wsdl} Datei verwendet. WSDL (Web Services Description Language) ist eine auf \gls{xml} basierende Sprache und beschreibt die Methoden und Datentypen eines Webservice. Das WSDL Schema kann verwendet werden, um daraus Zugriffsklassen zu generieren und für die Validierung der Service Aufrufe.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
@@ -470,7 +470,7 @@ Für die Beschreibung von \gls{soap} Webservices wird eine \gls{wsdl} Datei verw
 
 
 \subsection{Swagger Spec}
-Webservices, welche nach dem \gls{rest} Architekturstil umgesetzt sind, können u.A. mithilfe eines Schemas von Swagger \cite{swagger} beschrieben werden. Ein Schema in \gls{json} oder \gls{yaml} gibt an, welche Funktionalität der Webservice zur Verfügung stellt. Mithilfe eines Code Generators können aus dem Schema Zugriffsklassen für den Webservice generiert werden.
+Webservices, welche nach dem \gls{rest} Architekturstil umgesetzt sind, können u. A. mithilfe eines Schemas von Swagger \cite{swagger} beschrieben werden. Ein Schema in \gls{json} oder \gls{yaml} gibt an, welche Funktionalität der Webservice zur Verfügung stellt. Mithilfe eines Code Generators können aus dem Schema Zugriffsklassen für den Webservice generiert werden.
 
 \begin{listing}[H]
 \begin{minted}[frame=single,
