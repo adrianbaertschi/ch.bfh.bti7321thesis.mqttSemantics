@@ -128,7 +128,11 @@ function renderInfo(deviceDesc) {
     var res = '';
     res += '<strong>Id: </strong>' + deviceDesc.id + '<br>';
     res += '<strong>Version: </strong>' + deviceDesc.version + '<br>';
-    res += '<strong>Description: </strong>' + deviceDesc.description + '<br>';
+
+    if(deviceDesc.description) {
+        res += '<strong>Description: </strong>' + deviceDesc.description + '<br>';
+    }
+
 
     return res;
 }
@@ -175,7 +179,15 @@ function renderCmd(cmd, deviceTopic) {
 
     var res = '<strong>' + cmd.name + '</strong> <br>';
 
-    res += 'Linked state: ' + cmd.linkedState + '<br>';
+    if(cmd.description ) {
+        res += cmd.description + '<br>';
+    }
+
+
+    if(cmd.linkedState !== null) {
+        res += 'Linked state: ' + cmd.linkedState + '<br>';
+    }
+
 
 //        console.log(cmd.parameter);
 
@@ -247,6 +259,9 @@ function renderEvent(event, deviceTopic) {
 
 function renderType(type, deviceTopic) {
     var res = '<strong> <p id="type_'+ type.name +'">' + type.name + '</p></strong>';
+    if(type.description) {
+        res += type.description + '<br>';
+    }
 
     res += 'Properties:' + '<br>';
     res += '<ul>';
