@@ -17,16 +17,8 @@ public class ComplexType {
 		this.setName(name);
 	}
 
-	public void addNumberProperty(String name, Class<? extends Number> clazz) {
-		this.properties.add(new Property(name, clazz, null));
-	}
-
 	public void addNumberProperty(String name, Class<? extends Number> clazz, String desc) {
 		this.properties.add(new Property(name, clazz, desc));
-	}
-
-	public void addStringProperty(String name) {
-		this.properties.add(new Property(name, String.class, null));
 	}
 
 	public void addStringProperty(String name, String desc) {

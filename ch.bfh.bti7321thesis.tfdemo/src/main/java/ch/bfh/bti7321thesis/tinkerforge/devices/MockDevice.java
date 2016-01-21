@@ -59,9 +59,9 @@ public class MockDevice extends MqttBricklet {
 		
 		
 		ComplexType tempThreshold = new ComplexType("TemperatureCallbackThreshold");
-		tempThreshold.addStringProperty("option");
-		tempThreshold.addNumberProperty("min", Short.class);
-		tempThreshold.addNumberProperty("max", Short.class);
+		tempThreshold.addStringProperty("option", "");
+		tempThreshold.addNumberProperty("min", Short.class, "");
+		tempThreshold.addNumberProperty("max", Short.class, "");
 		
 		stateDescription.add("AmbientTemperatureCallbackThreshold", tempThreshold, "TODO"); // TODO
 		stateDescription.add("ObjectTemperatureCallbackThreshold",  tempThreshold, "TODO"); // TODO

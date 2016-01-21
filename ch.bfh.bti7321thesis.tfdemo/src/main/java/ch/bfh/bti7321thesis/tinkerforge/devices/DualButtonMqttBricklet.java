@@ -88,8 +88,8 @@ public class DualButtonMqttBricklet extends MqttBricklet<BrickletDualButton> {
 		deviceDescription.setStateDescription(stateDescription);
 		
 		EventDescription eventDescription = new EventDescription();
-		Event eventL = new Event("ButtonL", new Options<String>("Pressed", "Released"), "TODO");
-		Event eventR = new Event("ButtonR", new Options<String>("Pressed", "Released"), "TODO");
+		Event eventL = new Event("ButtonL", new Options<String>("Pressed", "Released"), "State of the left button");
+		Event eventR = new Event("ButtonR", new Options<String>("Pressed", "Released"), "State of the right button");
 		eventDescription.addEvent(eventL);
 		eventDescription.addEvent(eventR);
 		deviceDescription.setEventDescription(eventDescription);
