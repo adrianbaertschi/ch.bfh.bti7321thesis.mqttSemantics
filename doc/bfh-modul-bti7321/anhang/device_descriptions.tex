@@ -10,39 +10,234 @@
                xleftmargin=21pt,
                tabsize=4]{yaml}
 
-
+---
+id: "IoT-Humidity Bricklet"
+version: "0.0.1"
+description: "The Humidity Bricklet can be used to measure relative humidity. 
+  \ The measured humidity can be read out directly in percent, no conversions 
+  \ are necessary, with configurable interval"
+stateDescription:
+  states:
+  - name: "HumidityInterval"
+    range:
+      min: 0
+      max: 9223372036854775807
+      type: "Long"
+    description: "Interval of the measurements in ms."
+eventDescription:
+  events:
+  - name: "Humidity"
+    range:
+      min: 0.0
+      max: 100.0
+      type: "Double"
+    description: "Relative Humidity in percent"
+commandDescription:
+  commands:
+  - name: "SetInterval"
+    linkedState: "HumidityInterval"
+    description: "Set the measurement interval, 0 disables the measurements"
+    parameter:
+      Interval:
+        min: 0
+        max: 9223372036854775807
+        type: "Long"
+complexTypes: []
 
 \end{minted}
 \caption{YAML Device Description Humidity Bricklet}
 \end{listing}
 
+
+
+
 \section{Temperatur IR Bricklet}
 
-\begin{listing}[H]
 \begin{minted}[frame=single,
                framesep=3mm,
                linenos=false,
                xleftmargin=21pt,
                tabsize=4]{yaml}
 
-
+---
+id: "IoT - Temperature IR Bricklet"
+version: "0.0.1"
+stateDescription:
+  states:
+  - name: "AmbientTemperatureInterval"
+    range:
+      min: 0
+      max: 9223372036854775807
+      type: "Long"
+    description: "Time in ms"
+  - name: "ObjectTemperatureInterval"
+    range:
+      min: 0
+      max: 9223372036854775807
+      type: "Long"
+    description: "Interval of the object measurements"
+  - name: "DebouncePeriod"
+    range:
+      min: 0
+      max: 9223372036854775807
+      type: "Long"
+    description: "Debounce Period"
+  - name: "Emissivity"
+    range:
+      min: 6553
+      max: 65535
+      type: "Integer"
+    description: "Emissivity"
+  - name: "AmbientTemperatureCallbackThreshold"
+    complexTypeRef: "TemperatureCallbackThreshold"
+    description: "Theshold object for the ambient temperature"
+  - name: "ObjectTemperatureCallbackThreshold"
+    complexTypeRef: "TemperatureCallbackThreshold"
+    description: "Theshold object for the object temperature"
+eventDescription:
+  events:
+  - name: "ObjectTemp"
+    range:
+      min: -70.0
+      max: 380.0
+      type: "Double"
+    description: "Measured with IR sensor in Celsius"
+  - name: "AmbientTemp"
+    range:
+      min: -40.0
+      max: 125.0
+      type: "Double"
+    description: "Ambient temperature in Celsius"
+commandDescription:
+  commands:
+  - name: "setAmbientTemperatureCallbackPeriod"
+    linkedState: "AmbientTemperatureCallbackPeriod"
+    parameter:
+      CallbackPeriod:
+        min: 0
+        max: 9223372036854775807
+        type: "Long"
+  - name: "setObjectTemperatureCallbackPeriod"
+    linkedState: "ObjectTemperatureCallbackPeriod"
+    parameter:
+      CallbackPeriod:
+        min: 0
+        max: 9223372036854775807
+        type: "Long"
+  - name: "setEmissivity"
+    linkedState: "Emissivity"
+    parameter:
+      Emissity:
+        min: 6553
+        max: 65535
+        type: "Integer"
+  - name: "setAmbientTemperatureCallbackThreshold"
+    parameter:
+      Threshold: "TemperatureCallbackThreshold"
+complexTypes:
+- name: "TemperatureCallbackThreshold"
+  properties:
+  - name: "option"
+    description: "'x' :Listener is turned off 
+      \ 'o': Listener is triggered when the ambient temperature is outside 
+      \ the min and max values
+      \ 'i': Listener is triggered when the ambient temperature is inside 
+      \ the min and max values
+      \ '<': Listener is triggered when the ambient temperature is smaller 
+      \ than the min value (max is ignored) 
+      \ '>' Listener is triggered when the ambient temperature is greater 
+      \ than the min value (max is ignored)"
+    type: "String"
+  - name: "min"
+    description: "Minimal Value"
+    type: "Short"
+  - name: "max"
+    description: "Maximal Value"
+    type: "Short"
 
 \end{minted}
+
+\begin{listing}[H]
 \caption{YAML Device Description Temperatur IR Bricklet}
 \end{listing}
 
 
 \section{Dualbutton Bricklet}
 
-\begin{listing}[H]
 \begin{minted}[frame=single,
                framesep=3mm,
                linenos=false,
                xleftmargin=21pt,
                tabsize=4]{yaml}
 
-
+---
+id: "Dual Button Bricklet"
+version: "0.0.1"
+stateDescription:
+  states:
+  - name: "ButtonLeftPressed"
+    options:
+      values:
+      - true
+      - false
+      type: "Boolean"
+    description: "Left Button presses (true) or releases (false)"
+  - name: "ButtonRightPressed"
+    options:
+      values:
+      - true
+      - false
+      type: "Boolean"
+    description: "Right Button presses (true) or releases (false)"
+  - name: "LedLeft"
+    options:
+      values:
+      - true
+      - false
+      type: "Boolean"
+    description: "Left LED on (true) or off (false)"
+  - name: "LedRight"
+    options:
+      values:
+      - true
+      - false
+      type: "Boolean"
+    description: "Right LED on (true) or off (false)"
+eventDescription:
+  events:
+  - name: "ButtonL"
+    options:
+      values:
+      - "Pressed"
+      - "Released"
+      type: "String"
+    description: "State of the left button"
+  - name: "ButtonR"
+    options:
+      values:
+      - "Pressed"
+      - "Released"
+      type: "String"
+    description: "State of the right button"
+commandDescription:
+  commands:
+  - name: "setLedL"
+    parameter:
+      state:
+        values:
+        - 2
+        - 3
+        type: "Short"
+  - name: "setLedR"
+    parameter:
+      state:
+        values:
+        - 2
+        - 3
+        type: "Short"
+complexTypes: []
 
 \end{minted}
+\begin{listing}[H]
 \caption{YAML Device Description Dual Button Bricklet}
 \end{listing}
